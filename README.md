@@ -5,7 +5,9 @@
 [![GitHub license](https://img.shields.io/github/license/ygqbasic/cloud.svg?style=flat)](https://github.com/ygqbasic/cloud/blob/master/LICENSE) 
 ![GitHub repo-size](https://img.shields.io/github/repo-size/ygqbasic/cloud.svg?style=flat)
 
-
+![GitHub release-date](https://img.shields.io/github/release-date/ygqbasic/cloud.svg?style=flat)
+![GitHub release-date-pre](https://img.shields.io/github/release-date/ygqbasic/cloud.svg?style=flat)
+![GitHub contributors](https://img.shields.io/github/contributors/ygqbasic/cloud.svg?style=flat)
 ## 开始
 ### 安装Go环境
 #### 安装govendor模块
