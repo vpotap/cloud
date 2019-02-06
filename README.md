@@ -2,7 +2,8 @@
 
 云原生发布运维平台
 
-[![GitHub license](https://img.shields.io/github/license/ygqbasic/cloud.svg?style=flat)](https://github.com/ygqbasic/cloud/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/ygqbasic/cloud.svg?style=flat)](https://github.com/ygqbasic/cloud/blob/master/LICENSE) 
+[![GitHub repo-size](https://img.shields.io/github/repo-size/ygqbasic/cloud.svg?style=flat)]
 
 
 ## 开始
