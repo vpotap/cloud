@@ -219,6 +219,12 @@
 			"revision": ""
 		},
 		{
+			"checksumSHA1": "5sh11UoFXUAaoFMw5mDpK1guLyo=",
+			"path": "github.com/ygqbasic/go-harbor",
+			"revision": "28bcddabba544c2607e2540511bb0d4c4345fff5",
+			"revisionTime": "2019-02-06T12:58:21Z"
+		},
+		{
 			"checksumSHA1": "rlxVSaGgqdAgwblsErxTxIfuGfg=",
 			"path": "golang.org/x/crypto/openpgp/errors",
 			"revision": "b8fe1690c61389d7d2a8074a507d1d40c5d30448",
