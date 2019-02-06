@@ -1,0 +1,25 @@
+*.class
+ bin/*
+ /pkg
+# Package Files #
+*.jar
+*.war
+*.ear
+ 
+# ignore Maven generated target folders
+target
+ 
+# ignore eclipse files
+.project
+.classpath
+.settings
+.metadata
+.idea
+*.iml
+.gitignore.bak
+other-api.properties\
+
+app.conf
+server.key
+server.pem
+make.go
