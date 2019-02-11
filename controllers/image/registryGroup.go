@@ -1,22 +1,26 @@
 package registry
 
 import (
-	"github.com/astaxie/beego"
+	"cloud/controllers/base/cluster"
+	"cloud/k8s"
+	"cloud/models/registry"
 	"cloud/sql"
 	"cloud/util"
-	"cloud/models/registry"
-	"cloud/controllers/base/cluster"
-	"strings"
-	"cloud/k8s"
 	"database/sql/driver"
-	"golang.org/x/crypto/openpgp/errors"
+	"strings"
+
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"cloud/controllers/base/quota"
+	"github.com/ygqbasic/go-harbor"
+	"golang.org/x/crypto/openpgp/errors"
+
 	"cloud/cache"
-	"time"
-	"k8s.io/apimachinery/pkg/util/rand"
-	"net"
+	"cloud/controllers/base/quota"
 	"cloud/userperm"
+	"net"
+	"time"
+
+	"k8s.io/apimachinery/pkg/util/rand"
 )
 
 type RegistryGroupController struct {
@@ -29,15 +33,13 @@ func (this *RegistryGroupController) RegistryGroupList() {
 	this.TplName = "image/registry/group/list.html"
 }
 
-// 2018-01-28 9:24
+// 2019-01-28 9:24
 // 仓库组详情入口页面
 // @route /image/registry/group/detail/:hi(.*) [get]
 // @router /image/registry/group/detail/:id:int [get]
 func (this *RegistryGroupController) GroupDetailPage() {
 	registrData := getRegistryGroup(this)
 	this.Data["ServiceName"] = registrData.ServerDomain
-
-
 
 	reg := GetRegistryServerCluster(registrData.ServerDomain, registrData.ClusterName)
 	if len(reg.ServerAddress) > 10 {
@@ -120,7 +122,7 @@ func (this *RegistryGroupController) SaveRegistryGroup() {
 	setJson(this, data)
 }
 
-// 2018-02-12 08:40
+// 2019-02-12 08:40
 // 检查镜像仓库配额
 // 检查资源配额是否够用
 func checkQuota(username string) (bool, string) {
@@ -133,9 +135,9 @@ func checkQuota(username string) (bool, string) {
 	return true, ""
 }
 
-// 仓库组镜像数据
+// Registry group image log
 // @param group
-// 2018-01-29 16:41
+// 2019-01-29 16:41
 // @router /api/registry/group/images/log [get]
 func (this *RegistryGroupController) RegistryImagesLog() {
 	data := make([]registry.CloudImageLog, 0)
@@ -158,7 +160,6 @@ func (this *RegistryGroupController) RegistryImagesLog() {
 		*this.Ctx.Request,
 		&data,
 		registry.CloudImageLog{})
-
 
 	r := util.ResponseMap(data,
 		sql.Count("cloud_image_log", int(num), key),
@@ -184,12 +185,44 @@ func (this *RegistryGroupController) RegistryGroupImages() {
 		searchSql += strings.Replace(registry.SelectCloudImageWhere, "?", key, -1)
 	}
 
+	harborClient := harbor.NewClient(nil, "https://reg.testcloud.com", "admin", "Harbor12345")
+	// Project Name in Harbor
+	opt := &harbor.ListProjectsOptions{Name: group}
+	projects, _, errs := harborClient.Projects.ListProject(opt)
+	if errs == nil {
+		logs.Info(projects)
+	}
+	repoOpt := &harbor.ListRepositoriesOption{ProjectId: projects[0].ProjectID}
+
+	repos, _, reperr := harborClient.Repositories.ListRepository(repoOpt)
+
+	if reperr == nil {
+		logs.Info(repos)
+	}
+
 	num, err := sql.OrderByPagingSql(searchSql,
 		"create_time",
 		*this.Ctx.Request,
 		&data,
 		k8s.CloudImage{})
 
+	if num < len(repos) {
+		//d := k8s.CloudImage{}
+		// imageSearchMap := sql.SearchMap{}
+		// imageSearchMap.Put("GroupId", d.GroupId)
+		// imageSearchMap.Put("CreateUser", getUser(this))
+
+		// masterData := make([]registry.CloudRegistryGroup, 0)
+		// q := sql.SearchSql(d, registry.SelectCloudRegistryGroup, searchMap)
+		// sql.Raw(q).QueryRows(&masterData)
+		// util.SetPublicData(d, getUser(this), &d)
+
+		// q = sql.InsertSql(d, registry.InsertCloudImage)
+		// if d.GroupId > 0 {
+		// 	q = sql.UpdateSql(d, registry.UpdateCloudImage, searchMap, registry.UpdateCloudImageExclude)
+		// }
+		// _, err = sql.Raw(q).Exec()
+	}
 	r := util.ResponseMap(data,
 		sql.Count("cloud_image", int(num), key),
 		this.GetString("draw"))
@@ -203,7 +236,7 @@ func (this *RegistryGroupController) RegistryGroupImages() {
 func getAuthServer(authServer string) (string, string) {
 	authServer = strings.Split(authServer, "/")[2]
 	authServer = strings.Split(authServer, ":")[0]
-	ns ,_ := net.LookupHost(authServer)
+	ns, _ := net.LookupHost(authServer)
 	if len(ns) > 0 {
 		return ns[0], authServer
 	}
@@ -211,7 +244,7 @@ func getAuthServer(authServer string) (string, string) {
 }
 
 // 获取组数据
-// 2018-01-31 21:03
+// 2019-01-31 21:03
 func GetRegistryGroup(groupName string, clusterName string) (registry.CloudRegistryServer, string, string, string) {
 	data := registry.CloudRegistryServer{}
 	q := registry.SelectRegistryServerGroup
@@ -223,10 +256,10 @@ func GetRegistryGroup(groupName string, clusterName string) (registry.CloudRegis
 	nodes := k8s.GetNodesIp(client)
 	logs.Info("执行job获取到节点地址", util.ObjToString(nodes))
 	ip, domain := getAuthServer(data.AuthServer)
-	return data, nodes[rand.Intn(len(nodes)-1)].Ip,ip, domain
+	return data, nodes[rand.Intn(len(nodes)-1)].Ip, ip, domain
 }
 
-// 仓库组器数据
+// 仓库组数据
 // @router /api/registry/group [get]
 func (this *RegistryGroupController) RegistryGroup() {
 	data := make([]registry.CloudRegistryGroup, 0)
@@ -262,9 +295,9 @@ func (this *RegistryGroupController) RegistryGroup() {
 		registry.CloudRegistryGroup{})
 
 	result := make([]registry.CloudRegistryGroup, 0)
-	for _, v := range data{
-		if v.CreateUser !=  user && v.GroupType != "公开" {
-			if ! userperm.CheckPerm(v.GroupName, v.ClusterName, "", perm) {
+	for _, v := range data {
+		if v.CreateUser != user && v.GroupType != "公开" {
+			if !userperm.CheckPerm(v.GroupName, v.ClusterName, "", perm) {
 				continue
 			}
 		}
@@ -278,7 +311,7 @@ func (this *RegistryGroupController) RegistryGroup() {
 	setJson(this, r)
 }
 
-// 2018-02-07 08:26
+// 2019-02-07 08:26
 // 获取selecthtml
 func GetRegistryGroupSelect(user string) string {
 	html := make([]string, 0)
@@ -293,7 +326,7 @@ func GetRegistryGroupSelect(user string) string {
 	return strings.Join(html, "\n")
 }
 
-// 2018-02-07 08:32
+// 2019-02-07 08:32
 // 获取selecthtml
 func GetImageSelect(searchMap sql.SearchMap) string {
 	html := make([]string, 0)
@@ -304,7 +337,7 @@ func GetImageSelect(searchMap sql.SearchMap) string {
 	return strings.Join(html, "\n")
 }
 
-// 2018-02-07 8;39
+// 2019-02-07 8;39
 // 获取版本号select
 func GetImageTagSelect(tag string) string {
 	tags := strings.Split(tag, ",")
@@ -315,7 +348,7 @@ func GetImageTagSelect(tag string) string {
 	return strings.Join(html, "\n")
 }
 
-// 2018-01-28 10:33
+// 2019-01-28 10:33
 func getRegistryGroup(this *RegistryGroupController) registry.CloudRegistryGroup {
 	searchMap := sql.GetSearchMap("GroupId", *this.Ctx)
 	imageName := this.Ctx.Input.Param(":hi")
@@ -342,7 +375,7 @@ func (this *RegistryGroupController) DeleteRegistryGroup() {
 }
 
 // 记录删除镜像审计操作
-// 2018-01-29 08:57
+// 2019-01-29 08:57
 func deleteImageLog(img k8s.CloudImage, this *RegistryGroupController, clustername string) {
 	imglog := registry.CloudImageLog{}
 	imglog.CreateUser = getUser(this)
@@ -357,16 +390,16 @@ func deleteImageLog(img k8s.CloudImage, this *RegistryGroupController, clusterna
 	sql.Raw(q).Exec()
 }
 
-// 2018-01-29 10:57
+// 2019-01-29 10:57
 // 获取镜像数据
 // @router /api/registry/group/images/:id:int [delete]
 func (this *RegistryGroupController) GetRegistryGroupImage() {
 	data := getImageData(this)
-	r := util.ResponseMap(data, 1, 1, )
+	r := util.ResponseMap(data, 1, 1)
 	setJson(this, r)
 }
 
-// 2018-02-07 8:30
+// 2019-02-07 8:30
 // 获取镜像数据
 func GetImageDatas(searchMap sql.SearchMap) []k8s.CloudImage {
 	imgData := make([]k8s.CloudImage, 0)
@@ -382,7 +415,7 @@ func getImageData(this *RegistryGroupController) k8s.CloudImage {
 	if len(imageName) > 0 {
 		searchMap.Put("Name", imageName)
 		searchMap.Put("RepositoriesGroup", this.GetString("GroupName"))
-	}else{
+	} else {
 		sql.GetSearchMap("ImageId", *this.Ctx)
 	}
 	logs.Info("searchMap", searchMap)
@@ -393,7 +426,7 @@ func getImageData(this *RegistryGroupController) k8s.CloudImage {
 	return k8s.CloudImage{}
 }
 
-// 2018-01-29 8:51
+// 2019-01-29 8:51
 // 删除仓库组中的镜像
 // @param tag
 // @param force 删除数据库里的数据
@@ -453,7 +486,7 @@ func setJson(this *RegistryGroupController, data interface{}) {
 	this.ServeJSON(false)
 }
 
-// 2018-01-28 15:55
+// 2019-01-28 15:55
 // 将已经存在的数据查到map,做更新或插入判断
 func getExistsImageMap() util.Lock {
 	existsImages := make([]k8s.CloudImage, 0)
@@ -466,7 +499,7 @@ func getExistsImageMap() util.Lock {
 	return lock
 }
 
-// 2018-02-09 14:05
+// 2019-02-09 14:05
 // 获取镜像信息
 func getRegistryInfo(data []registry.CloudRegistryGroup) util.Lock {
 	lock := util.Lock{}
@@ -489,10 +522,10 @@ func getRegistryInfo(data []registry.CloudRegistryGroup) util.Lock {
 }
 
 // 更新仓库组数据,镜像数量,tag数量
-// 2018-01-27 21:07
+// 2019-01-27 21:07
 var ImageDataUpdate util.Lock
 
-// 2018-02-20 18:34
+// 2019-02-20 18:34
 // 获取镜像下载日志信息
 func getImageLogId(img k8s.CloudImage) registry.CloudImageLog {
 	logData := registry.CloudImageLog{}
@@ -507,7 +540,7 @@ func getImageLogId(img k8s.CloudImage) registry.CloudImageLog {
 				"RepositoriesGroup",
 				img.RepositoriesGroup))
 		sql.Raw(logq).QueryRow(&logData)
-		cache.RegistryLogCache.Put(key, util.ObjToString(logData), time.Minute * 10)
+		cache.RegistryLogCache.Put(key, util.ObjToString(logData), time.Minute*10)
 	}
 	return logData
 }
@@ -574,7 +607,7 @@ func UpdateGroupImageInfo() {
 	}
 }
 
-// 2018-02-07 12:34
+// 2019-02-07 12:34
 // 在部署时使用的镜像数据
 // @router /api/registry/deploy/image [get]
 func (this *RegistryGroupController) GetDeployImage() {
@@ -603,13 +636,13 @@ func (this *RegistryGroupController) GetDeployImage() {
 	setJson(this, r)
 }
 
-// 2018-02-08 13:50
+// 2019-02-08 13:50
 // 获取登录用户
 func getUser(this *RegistryGroupController) string {
 	return util.GetUser(this.GetSession("username"))
 }
 
-// 2018-02-14 19:02
+// 2019-02-14 19:02
 // 获取发布服务时的镜像tag
 func GetImageTag(images string) string {
 	// 创建私有仓库镜像获取私密文件

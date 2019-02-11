@@ -4,14 +4,14 @@ import (
     "cloud/util"
 )
 
-// 2018-02-20 11:03
+// 2019-01-20 11:03
 // 监控服务器访问地址缓存
 type PrometheusServer struct {
     Host string
     Port string
 }
 
-//2018-02-19 18:13:04.8039696 +0800 CST
+//2019-01-19 18:13:04.8039696 +0800 CST
 type CloudAutoScale struct {
     //开始时间
     Start string
@@ -71,7 +71,7 @@ type CloudAutoScale struct {
     Es string
 }
 
-// 2018-02-19 21:01
+// 2019-01-19 21:01
 // 获取自动扩容配置默认配置
 func GetQueryParamDefault() CloudAutoScale  {
     return CloudAutoScale{

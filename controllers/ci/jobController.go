@@ -24,7 +24,7 @@ import (
 	"cloud/userperm"
 )
 
-// 2018-01-25 17:54
+// 2019-01-25 17:54
 // 构建任务配置
 type JobController struct {
 	beego.Controller
@@ -36,7 +36,7 @@ func (this *JobController) JobList() {
 	this.TplName = "ci/job/list.html"
 }
 
-// 2018-01-26 20:34
+// 2019-01-26 20:34
 // 构建任务历史页面
 // @router /ci/job/history/list [get]
 func (this *JobController) JobHistoryList() {
@@ -59,7 +59,7 @@ func (this *JobController) JobDetail() {
 	this.TplName = "ci/job/detail.html"
 }
 
-// 2018-01-29 08;13
+// 2019-01-29 08;13
 // 获取构建dockerfile
 // @router /api/job/dockerfile/:id:int [get]
 func (this *JobController) JobDockerfile() {
@@ -115,7 +115,7 @@ func (this *JobController) JobAdd() {
 	this.TplName = "ci/job/add.html"
 }
 
-// 2018-02-03 21:37
+// 2019-01-03 21:37
 // 获取选项
 func GetSelectHtml(username string, clusterName string) string {
 	data := GetJobName(username, clusterName, "")
@@ -126,7 +126,7 @@ func GetSelectHtml(username string, clusterName string) string {
 	return html
 }
 
-// 2018-02-03 21:55
+// 2019-01-03 21:55
 // 获取构建任务信息
 func GetJobName(username string, clusterName string, itemName string) []ci.CloudBuildJob {
 	perm := userperm.GetResourceName("构建项目", username)
@@ -152,7 +152,7 @@ func GetJobName(username string, clusterName string, itemName string) []ci.Cloud
 }
 
 // 获取构建任务数据
-// 2018-01-25 17:57
+// 2019-01-25 17:57
 // router /api/ci/job [get]
 func (this *JobController) JobData() {
 	setJson(this, GetJobName(util.GetUser(this.GetSession("username")), "", ""))
@@ -211,7 +211,7 @@ func DeleteJobCache(name string) {
 	}
 }
 
-// 2018-02-12 09:30
+// 2019-01-12 09:30
 // 检查镜像仓库配额
 // 检查资源配额是否够用
 func checkQuota(username string) (bool, string) {
@@ -237,7 +237,7 @@ func updateJobContent(jobData ci.CloudBuildJob) ci.CloudBuildJob {
 }
 
 // 获取构建任务数据
-// 2018-01-25 17:45
+// 2019-01-25 17:45
 // router /api/ci/job/name [get]
 func (this *JobController) JobDataName() {
 	//clusterName := this.GetString("ClusterName")
@@ -358,7 +358,7 @@ func (this *JobController) JobDatas() {
 }
 
 // 获取数据
-// 2018-01-26 15:02
+// 2019-01-26 15:02
 func getJobData(this *JobController) ci.CloudBuildJob {
 	jobData := ci.CloudBuildJob{}
 	id := this.Ctx.Input.Param(":id")
@@ -391,7 +391,7 @@ func getJobData(this *JobController) ci.CloudBuildJob {
 
 // json
 // 删除构建任务
-// 2018-01-25 17:46
+// 2019-01-25 17:46
 // @router /api/ci/job/:id:int [delete]
 func (this *JobController) JobDelete() {
 	searchMap := sql.SearchMap{}
@@ -403,7 +403,7 @@ func (this *JobController) JobDelete() {
 	setJson(this, data)
 }
 
-// 2018-01-26 15:56
+// 2019-01-26 15:56
 // 查看构建日志
 // @router /ci/job/logs/:id:int [get]
 func (this *JobController) JobLogsPage() {
@@ -433,7 +433,7 @@ func (this *JobController) JobLogsPage() {
 	this.TplName = "ci/job/log.html"
 }
 
-// 2018-01-26 15:59
+// 2019-01-26 15:59
 // 获取最近一次日志信息
 func getLastLog(jobId int64) ci.CloudBuildJobHistory {
 	history := ci.CloudBuildJobHistory{}
@@ -459,7 +459,7 @@ func getLastLog(jobId int64) ci.CloudBuildJobHistory {
 	return history
 }
 
-// 2018-02-04 15;57
+// 2019-01-04 15;57
 // 获取历史数据,在流水线时候使用到
 func GetHistoryData(jobName string) ci.CloudBuildJobHistory {
 	history := ci.CloudBuildJobHistory{}
@@ -470,7 +470,7 @@ func GetHistoryData(jobName string) ci.CloudBuildJobHistory {
 
 /**
 更新日志
-2018-01-26 6:29
+2019-01-26 6:29
  */
 func updateBuildLog(history ci.CloudBuildJobHistory, logsR string) {
 	if len(logsR) < 10 {
@@ -493,7 +493,7 @@ func updateBuildLog(history ci.CloudBuildJobHistory, logsR string) {
 }
 
 // 完成后更新数据
-// 2018-01-26 20:27
+// 2019-01-26 20:27
 func updateBuildResult(history ci.CloudBuildJobHistory, logsR string, jobData ci.CloudBuildJob, cl kubernetes.Clientset) {
 	updateBuildLog(history, logsR)
 	searchMap := sql.SearchMap{}
@@ -504,7 +504,7 @@ func updateBuildResult(history ci.CloudBuildJobHistory, logsR string, jobData ci
 	k8s.DeleteJob(cl, history.JobName, "")
 }
 
-// 2018-02-04 08:19
+// 2019-01-04 08:19
 // 获取job日志
 // 流水线也用这个日志
 func GetJobLogs(jobData ci.CloudBuildJob) string {
@@ -533,7 +533,7 @@ func GetJobLogs(jobData ci.CloudBuildJob) string {
 }
 
 // 执行任务计划
-// 2018-01-26 15;47
+// 2019-01-26 15;47
 // @router /api/ci/job/logs/:id:int [get]
 func (this *JobController) JobLogs() {
 	jobData := getJobData(this)
@@ -541,7 +541,7 @@ func (this *JobController) JobLogs() {
 	this.Ctx.WriteString(logs)
 }
 
-// 2018-02-08 12:26
+// 2019-01-08 12:26
 // 获取job参数
 func getJobParam(jobData ci.CloudBuildJob, jobName string, registryServer string, groupData registry2.CloudRegistryServer) k8s.JobParam {
 	master, port := hosts.GetMaster(jobData.ClusterName)
@@ -577,7 +577,7 @@ func getJobParam(jobData ci.CloudBuildJob, jobName string, registryServer string
 	return param
 }
 
-// 2018-02-08 12:30
+// 2019-01-08 12:30
 // 插入历史数据
 func writeJobHistory(jobData ci.CloudBuildJob, jobId string, username string, registryServer string) {
 	history := ci.CloudBuildJobHistory{
@@ -600,7 +600,7 @@ func writeJobHistory(jobData ci.CloudBuildJob, jobId string, username string, re
 	sql.Raw(i).Exec()
 }
 
-// 2018-02-03 22:13
+// 2019-01-03 22:13
 // 执行构建任务
 func JobExecStart(jobData ci.CloudBuildJob, username string, jobName string, registryAuth string) string {
 	jobData = updateJobContent(jobData)
@@ -643,7 +643,7 @@ func JobExecStart(jobData ci.CloudBuildJob, username string, jobName string, reg
 }
 
 // 执行任务计划
-// 2018-01-26 15;00
+// 2019-01-26 15;00
 // @router /api/ci/job/exec/:id:int [get]
 func (this *JobController) JobExec() {
 

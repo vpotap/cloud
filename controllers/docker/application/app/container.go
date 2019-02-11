@@ -27,7 +27,7 @@ func getContainerData(this *AppController) app.CloudContainer {
 }
 
 // 容器详情页面
-// 2018-01-16 08:34
+// 2019-01-16 08:34
 // @router /application/container/detail/:hi:string [get]
 func (this *AppController) ContainerDetail() {
 	data := getContainerData(this)
@@ -93,7 +93,7 @@ func (this *AppController) ContainerCommit() {
 	SetAppDataJson(this, util.ApiResponse(true, "保存成功,正在处理中"))
 }
 
-// 2018-01-16 12:20
+// 2019-01-16 12:20
 // 删除容器
 // @router /api/container/:id:int [delete]
 func (this *AppController) ContainerDelete() {
@@ -121,7 +121,7 @@ func (this *AppController) ContainerDelete() {
 }
 
 // 获取容器运行情况
-// 2018-01-15 15:11
+// 2019-01-15 15:11
 // @router /api/container [get]
 func (this *AppController) ContainerData() {
 	data := make([]app.CloudContainer, 0)
@@ -186,7 +186,7 @@ func (this *AppController) ContainerData() {
 	go MakeContainerData("")
 }
 
-// 2018-01-16 8:48
+// 2019-01-16 8:48
 // 更新或写入到数据库
 func writeToDb(containerMap *util.Lock, all app.CloudContainer) {
 	if _, ok1 := containerMap.Get(all.ContainerName); !ok1 {
@@ -195,7 +195,7 @@ func writeToDb(containerMap *util.Lock, all app.CloudContainer) {
 	}
 }
 
-// 2018-01-16 08:51
+// 2019-01-16 08:51
 // 删除数据库多余的数据
 func deleteDbContainer(deleteData util.Lock) {
 	// 删除数据库中的内容
@@ -275,7 +275,7 @@ func getNamespace(namespace string) []app.CloudAppService  {
 	return data
 }
 
-// 2018-01-15 15:25
+// 2019-01-15 15:25
 // 通过任务计划方式获取数据
 func MakeContainerData(namespace string) {
 	if !util.WriteLock("last_update", &LockContainerUpdate, 5) {
@@ -321,7 +321,7 @@ func SetAppDataJson(this *AppController, data interface{}) {
 	this.ServeJSON(false)
 }
 
-// 2018-02-28 09:52
+// 2019-01-28 09:52
 // 填充容器数据
 var cmd = []string{"ps", "aux"}
 
@@ -356,7 +356,7 @@ func setAppData(all app.CloudContainer, d app.CloudAppService, c kubernetes.Clie
 	return all
 }
 
-// 2018-02-28 09:57
+// 2019-01-28 09:57
 // 从redis中获取容器数据
 func getRedisContainer(data app.CloudContainer, appName string, containerName string) app.CloudContainer {
 	var v app.CloudContainer

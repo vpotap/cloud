@@ -219,10 +219,16 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "5sh11UoFXUAaoFMw5mDpK1guLyo=",
+			"checksumSHA1": "PxwuMO+Vk6l0vZmopWLjjqnj9Bg=",
+			"path": "github.com/parnurzeal/gorequest",
+			"revision": "b0604454e3c35c21d4c86e4771dc1e24c896cdd3",
+			"revisionTime": "2019-01-14T09:06:33Z"
+		},
+		{
+			"checksumSHA1": "vc3o7t8yVxp1jzemqx2G6t5jy1E=",
 			"path": "github.com/ygqbasic/go-harbor",
-			"revision": "28bcddabba544c2607e2540511bb0d4c4345fff5",
-			"revisionTime": "2019-02-06T12:58:21Z"
+			"revision": "693923cd89b2029209fccf37021ead2bf6c13b10",
+			"revisionTime": "2019-02-08T06:49:31Z"
 		},
 		{
 			"checksumSHA1": "rlxVSaGgqdAgwblsErxTxIfuGfg=",

@@ -69,14 +69,14 @@ type QueryParam struct {
 	Entname string
 }
 
-// 2018-02-19 11:43
+// 2019-01-19 11:43
 // 获取prometheus api接口
 func getUri(param QueryParam) string {
 	url := "http://" + param.Host + ":" + param.Port + "/api/v1/query_range?"
 	return url
 }
 
-// 2018-02-19 13:40
+// 2019-01-19 13:40
 // 查询监控接口
 func Query(param QueryParam) string {
 	api := getUri(param)
@@ -107,7 +107,7 @@ func Query(param QueryParam) string {
 	return data
 }
 
-// 2018-02-19 13;49
+// 2019-01-19 13;49
 // 获取监控数据值
 func getMonitorData(data string) []interface{} {
 	obj := make(map[string]interface{})
@@ -127,7 +127,7 @@ func getMonitorData(data string) []interface{} {
 	return make([]interface{}, 0)
 }
 
-// 2018-02-19 13;50
+// 2019-01-19 13;50
 // 获取最近几次的结果值
 func GetLastCountData(param QueryParam) float64 {
 	data := Query(param)
@@ -169,7 +169,7 @@ func replaceParam(item string, param string) string {
 	return r
 }
 
-// 2018-02-20 15:14
+// 2019-01-20 15:14
 // 设置 prometheus 监控查询参数
 func systemQuery(namespace string, serviceName string, metricName string, serviceVersion string) string {
 	param := `image!="",pod_name=~"^$SERVICE-NAME.*",name=~"^k8s_.*",instance=~"^.*$",namespace=~"^$NAMESPACE$"`

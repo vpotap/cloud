@@ -105,7 +105,7 @@ fi
 exit 0
 `
 
-// 2018-01-25 10:51
+// 2019-01-25 10:51
 type JobParam struct {
 	// job 名称
 	Jobname string
@@ -170,13 +170,13 @@ type JobParam struct {
 }
 
 // 替换buildcmd
-// 2018-01-26 12:38
+// 2019-01-26 12:38
 func replace(s string, old string, new string) string {
 	return strings.Replace(s, old, new, -1)
 }
 
 // 设置默认参数
-// 2018-01-25 13:02
+// 2019-01-25 13:02
 func setJobInitParam(param JobParam) JobParam {
 	if param.NoProcMax == "" {
 		param.NoProcMax = "4096"
@@ -208,7 +208,7 @@ func setJobInitParam(param JobParam) JobParam {
 }
 
 // 获取build参数
-// 2018-01-25 16:32
+// 2019-01-25 16:32
 func getBuild(param JobParam) string {
 	build := replace(buildCmd, "MAXFILE", param.NoFileMax)
 	build = replace(build, "MINFILE", param.NoFileMin)
@@ -228,7 +228,7 @@ func getBuild(param JobParam) string {
 }
 
 // 获取编译配置文件
-// 2018-01-25 16:34
+// 2019-01-25 16:34
 func getBuildConfigdata(param JobParam) []ConfigureData {
 	// 配置信息
 	config := `[{"ContainerPath":"/build/","DataName":"build-job-` + param.Itemname + `","DataId":"build-cmd"}]`
@@ -248,7 +248,7 @@ func getBuildConfigdata(param JobParam) []ConfigureData {
 }
 
 // 转换参数
-// 2018-01-25 16:37
+// 2019-01-25 16:37
 func getJobParam(conf map[string]interface{}) v1.Job {
 	job := v1.Job{}
 	t1, _ := json.Marshal(conf)
@@ -258,7 +258,7 @@ func getJobParam(conf map[string]interface{}) v1.Job {
 
 // 物理机系统和job系统必须一致
 // 获取配置server创建所需参数
-// 2018-01-25 16:42
+// 2019-01-25 16:42
 func getJobServerParam(param JobParam) ServiceParam {
 	serviceParam := ServiceParam{}
 	dir := beego.AppConfig.String("docker.data.dir") + `data/source/`
@@ -281,7 +281,7 @@ func getJobServerParam(param JobParam) ServiceParam {
 }
 
 // 获取是否要再指定label的机器构建
-// 2018-01-25 16;51
+// 2019-01-25 16;51
 func getJobLables(conf map[string]interface{}, clientSet kubernetes.Clientset) map[string]interface{} {
 	// 获取是否标签有ci的,有的话就去有标签的构建
 	nodes := GetNodes(clientSet, "ci=build")
@@ -301,7 +301,7 @@ func replaceVar(item string, str string)  string{
 }
 
 // 创建job，主要在构建时使用
-// 2018-01-25 10:41
+// 2019-01-25 10:41
 func CreateJob(param JobParam) string {
 
 	param = setJobInitParam(param)
@@ -422,7 +422,7 @@ func CreateJob(param JobParam) string {
 }
 
 // 获取job的pod数据
-// 2018-01-26 18:01
+// 2019-01-26 18:01
 func getJobPod(pod string, cl kubernetes.Clientset, namespace string) ([]corev1.Pod, error) {
 	listOpt := meta_v1.ListOptions{}
 	listOpt.LabelSelector = "job-name=" + pod
@@ -437,7 +437,7 @@ func getJobPod(pod string, cl kubernetes.Clientset, namespace string) ([]corev1.
 }
 
 // 获取构建日志
-// 2018-01-25 16:55
+// 2019-01-25 16:55
 //cl,_ := k8s.GetClient("10.16.55.114","8080")
 //k8s.GetJobLogs(cl, "job-33e87d842bb7712c9688ed4f99c94336-ss8hw")
 
@@ -483,7 +483,7 @@ func GetJobLogs(cl kubernetes.Clientset, pod string, namespace string, line int6
 }
 
 // 构建完成后删除job
-// 2018-01-26 16:34
+// 2019-01-26 16:34
 func DeleteJob(clientSet kubernetes.Clientset, jobName string, namespace string) {
 	if namespace == "" {
 		namespace = util.Namespace("job", "job")
@@ -502,7 +502,7 @@ func DeleteJob(clientSet kubernetes.Clientset, jobName string, namespace string)
 	}
 }
 
-// 2018-02-03 6:31
+// 2019-01-03 6:31
 // 获取job执行计划结果删除job
 func getJobResult(jobParam JobParam, keyword string, timeout int, logtp string) string {
 	cl, _ := GetClient(jobParam.ClusterName)
@@ -525,7 +525,7 @@ func getJobResult(jobParam JobParam, keyword string, timeout int, logtp string) 
 
 // 清除无效的任务计划
 // 构建完成后删除job
-// 2018-01-26 16:34
+// 2019-01-26 16:34
 func ClearJob(clientSet kubernetes.Clientset) {
 	namespace := util.Namespace("job", "job")
 	jobs, err := clientSet.BatchV1().Jobs(namespace).List(meta_v1.ListOptions{})

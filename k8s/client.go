@@ -122,7 +122,7 @@ func GetYamlClient(cluster string, groups string, version string, api string) (*
 	return cl, err
 }
 
-// 2018-02-28 09:26
+// 2019-01-28 09:26
 // 获取用来执行命令和websocke使用的client
 func GetRestlient(cluster string) (*rest.RESTClient, restclient.Config, error) {
 	groupversion := schema.GroupVersion{

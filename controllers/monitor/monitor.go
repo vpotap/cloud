@@ -33,7 +33,7 @@ func (this *AutoScaleController) AutoScaleLogs() {
 	this.TplName = "monitor/scale/logs.html"
 }
 
-// 2018-02-19 18:19
+// 2019-01-19 18:19
 // 自动伸缩管理添加页面
 // @router /monitor/scale/add [get]
 func (this *AutoScaleController) AutoScaleAdd() {
@@ -77,7 +77,7 @@ func (this *AutoScaleController) AutoScaleAdd() {
 }
 
 // 获取自动伸缩数据
-// 2018-01-20 12:56
+// 2019-01-20 12:56
 // router /api/monitor/scale [get]
 func (this *AutoScaleController) AutoScaleData() {
 	// 自动伸缩数据
@@ -111,7 +111,7 @@ func (this *AutoScaleController) AutoScaleSave() {
 	setAutoScaleJson(this, data)
 }
 
-// 2018-02-19 18:22
+// 2019-01-19 18:22
 // 获取自动伸缩信息
 func GetAutoScaledata() []monitor.CloudAutoScale {
 	// 自动伸缩数据
@@ -121,7 +121,7 @@ func GetAutoScaledata() []monitor.CloudAutoScale {
 	return data
 }
 
-// 2018-02-20 17:42
+// 2019-01-20 17:42
 // 自动伸缩日志
 // @router /api/monitor/scale/logs [get]
 func (this *AutoScaleController) AutoScaleLogsData() {
@@ -178,7 +178,7 @@ func (this *AutoScaleController) AutoScaleDatas() {
 
 // json
 // 删除自动伸缩
-// 2018-02-05 18:05
+// 2019-01-05 18:05
 // @router /api/monitor/scale/:id:int [delete]
 func (this *AutoScaleController) AutoScaleDelete() {
 	searchMap := sql.SearchMap{}
@@ -210,7 +210,7 @@ func getUser(this *AutoScaleController) string {
 	return util.GetUser(this.GetSession("username"))
 }
 
-// 2018-02-20 08:27
+// 2019-01-20 08:27
 func getHtml(lock util.Lock, name string) string {
 	var data string
 	if _, ok := lock.Get(name); ok {
@@ -222,7 +222,7 @@ func getHtml(lock util.Lock, name string) string {
 	return data
 }
 
-// 2018-02-20 08:01
+// 2019-01-20 08:01
 // 默认系统指标选择
 func getSystemMetricSelect(name string) string {
 	lock := util.Lock{}
@@ -233,7 +233,7 @@ func getSystemMetricSelect(name string) string {
 	return getHtml(lock, name)
 }
 
-// 2018-02-20 08:21
+// 2019-01-20 08:21
 // 监控数据源
 func getDataSourceSelect(name string) string {
 	lock := util.Lock{}
@@ -242,7 +242,7 @@ func getDataSourceSelect(name string) string {
 	return getHtml(lock, name)
 }
 
-// 2018-02-20 10:20
+// 2019-01-20 10:20
 // 缓存服务数据
 func cacheServiceData(clusterName string, appName string, serviceName string) app2.CloudAppService {
 	data := app2.CloudAppService{}
@@ -256,7 +256,7 @@ func cacheServiceData(clusterName string, appName string, serviceName string) ap
 	return data
 }
 
-// 2018-02-20 11:02
+// 2019-01-20 11:02
 // 缓存prometheus服务信息
 func cachePrometheus(data monitor.CloudAutoScale) monitor.PrometheusServer {
 	key := data.ClusterName + data.AppName + data.ServiceName + "prometheus"
@@ -280,7 +280,7 @@ func cachePrometheus(data monitor.CloudAutoScale) monitor.PrometheusServer {
 	return server
 }
 
-// 2018-02-20 10:02
+// 2019-01-20 10:02
 // 执行监控检查和操作扩容
 func execAutoScale(data monitor.CloudAutoScale) {
 	serviceData := cacheServiceData(data.ClusterName, data.AppName, data.ServiceName)
@@ -302,7 +302,7 @@ func execAutoScale(data monitor.CloudAutoScale) {
 	k8s.ParseMonitorData(param)
 }
 
-// 2018-02-20 9:52
+// 2019-01-20 9:52
 // 执行扩容监控和操作
 // 通过任务计划调用
 func CronAutoScale() {

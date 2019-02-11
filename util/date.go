@@ -14,7 +14,7 @@ func GetDate() string {
 	return strings.Split(time.Now().Local().String(), ".")[0]
 }
 
-// 2018-01-26 15:11
+// 2019-01-26 15:11
 // 生成镜像tag按时间戳
 func MakeImageTag() string {
 	t := time.Now().Local().String()
@@ -26,7 +26,7 @@ func MakeImageTag() string {
 }
 
 // 初始化时间
-// 2018-01-15 13:49
+// 2019-01-15 13:49
 var timeMap = Lock{}
 func initTimeMap() {
 	if len(timeMap.GetData()) > 0 {
@@ -41,9 +41,9 @@ func initTimeMap() {
 	timeMap.Put("290304000", "N年前")
 }
 
-// 2018-01-15 13:30
+// 2019-01-15 13:30
 // 获取时间简单格式
-//util.GetMinTime("2018-01-15 14:40:49")
+//util.GetMinTime("2019-01-15 14:40:49")
 func GetMinTime(ctime string) string {
 	if ctime == "" {
 		return "未知"
@@ -102,7 +102,7 @@ func GetMinTime(ctime string) string {
 	return r
 }
 
-// 2018-01-20 9:30
+// 2019-01-20 9:30
 // 将对象转成字符串
 func ObjToString(v interface{}) string  {
 	t, _ := json.Marshal(v)
@@ -124,7 +124,7 @@ func StringsToJSON(str string) string {
 }
 
 // 时间转成时间戳
-// 2018-01-15 13:40
+// 2019-01-15 13:40
 func TimeToStamp(ctime string) int64 {
 	ctime = strings.TrimSpace(ctime)
 	//获取本地location 	//待转化为时间戳的字符串 注意 这里的小时和分钟还要秒必须写 因为是跟着模板走的 修改模板的话也可以不写

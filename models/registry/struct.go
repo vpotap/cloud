@@ -11,7 +11,7 @@ type CloudRegistryServerName struct {
     ServerDomain string
 }
 
-//2018-01-18 16:23:17.4387771 +0800 CST
+//2019-01-18 16:23:17.4387771 +0800 CST
 type CloudDeployImage struct {
     //
     ServerAddress string
@@ -25,7 +25,7 @@ type CloudDeployImage struct {
     Tags string
 }
 
-//2018-01-18 16:23:17.4387771 +0800 CST
+//2019-01-18 16:23:17.4387771 +0800 CST
 type CloudRegistryServer struct {
     //
     ServerAddress string
@@ -76,7 +76,7 @@ type CloudRegistryServer struct {
 
 }
 
-//2018-01-19 22:15:41.9929294 +0800 CST
+//2019-01-19 22:15:41.9929294 +0800 CST
 type CloudRegistryPermissions struct {
     //注册中心名称
     ServiceName string
@@ -110,7 +110,7 @@ type CloudRegistryPermissions struct {
     Description string
 }
 
-//2018-01-27 15:08:25.7829086 +0800 CST
+//2019-01-27 15:08:25.7829086 +0800 CST
 type CloudRegistryGroup struct {
     // tag 数量
     TagNumber int64
@@ -139,7 +139,7 @@ type CloudRegistryGroup struct {
 }
 
 
-//2018-01-28 14:35:48.4221703 +0800 CST
+//2019-01-28 14:35:48.4221703 +0800 CST
 type CloudImageLog struct {
     //操作时间
     CreateTime string
@@ -163,7 +163,7 @@ type CloudImageLog struct {
     Ip string
 }
 
-//2018-02-06 16:46:02.7429371 +0800 CST
+//2019-01-06 16:46:02.7429371 +0800 CST
 type CloudImageSync struct {
     //
     SyncId int64
@@ -203,7 +203,7 @@ type CloudImageSync struct {
     Registry string
 }
 
-//2018-02-09 16:18:14.7085342 +0800 CST
+//2019-01-09 16:18:14.7085342 +0800 CST
 type CloudImageBase struct {
     //
     BaseId int64

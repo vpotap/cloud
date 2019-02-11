@@ -28,7 +28,7 @@ import (
    实现 某个用户或部门 整体的使用资源控制
  */
 
-// 2018-02-11 16:40
+// 2019-01-11 16:40
 func getQuotaUsed(userData string, used quota.QuotaUsed) quota.QuotaUsed {
 
 	used.MemoryUsed = getMemory(userData, used.QuotaName)
@@ -68,7 +68,7 @@ func getQuotaUsed(userData string, used quota.QuotaUsed) quota.QuotaUsed {
 	return used
 }
 
-// 2018-02-11 16:49
+// 2019-01-11 16:49
 // 计算百分比
 func getPercent(a int64, b int64) int64 {
 	if b == 0 {
@@ -78,7 +78,7 @@ func getPercent(a int64, b int64) int64 {
 	return int64(r)
 }
 
-// 2018-02-11 16:47
+// 2019-01-11 16:47
 // 获取用户的配额使用情况
 func setQuotaUserUsed(username string, used quota.QuotaUsed) quota.QuotaUsed {
 	userData := `"` + username + `"`
@@ -86,7 +86,7 @@ func setQuotaUserUsed(username string, used quota.QuotaUsed) quota.QuotaUsed {
 	return used
 }
 
-// 2018-02-11 16:45
+// 2019-01-11 16:45
 // 获取组的配额使用情况
 func setQuotaGroupUsed(groupname string, used quota.QuotaUsed) quota.QuotaUsed {
 	usersData := GetGroupUsers([]string{groupname})
@@ -94,7 +94,7 @@ func setQuotaGroupUsed(groupname string, used quota.QuotaUsed) quota.QuotaUsed {
 	return used
 }
 
-// 2018-02-11 15:24
+// 2019-01-11 15:24
 // 获取同一部门的用户
 // 没有授权的用户可以查询
 func getUsers(username string) string {
@@ -103,7 +103,7 @@ func getUsers(username string) string {
 	return usersData
 }
 
-// 2018-02-11 16:55
+// 2019-01-11 16:55
 // 获取多个组里的所有用户
 func GetGroupUsers(depts []string) string {
 	userDepts := make([]string, 0)
@@ -114,7 +114,7 @@ func GetGroupUsers(depts []string) string {
 	return strings.Join(usersData, ",")
 }
 
-// 2018-02-11 15:30
+// 2019-01-11 15:30
 // 获取服务使用数量
 func getService(userData string, quotaName string) int64 {
 	services := make([]app.CloudAppService, 0)
@@ -129,7 +129,7 @@ func getService(userData string, quotaName string) int64 {
 	return int64(len(services))
 }
 
-// 2018-02-11 15:35
+// 2019-01-11 15:35
 // 获取用户服务使用量
 func getPods(userData string, quotaName string) int64 {
 	pods := make([]app.CloudContainer, 0)
@@ -144,7 +144,7 @@ func getPods(userData string, quotaName string) int64 {
 	return int64(len(pods))
 }
 
-// 2018-02-11 15:39
+// 2019-01-11 15:39
 // 获取用户应用数量
 func getApps(userData string, quotaName string) int64 {
 	apps := make([]app.CloudApp, 0)
@@ -160,7 +160,7 @@ func getApps(userData string, quotaName string) int64 {
 	return int64(len(apps))
 }
 
-// 2018-02-11 16:00
+// 2019-01-11 16:00
 // 获取cpu或内存
 func getCpuMemory(q string, key string) int64 {
 	maps := make([]orm.Params, 0)
@@ -179,7 +179,7 @@ func getCpuMemory(q string, key string) int64 {
 	return 0
 }
 
-// 2018-02-11 15:59
+// 2019-01-11 15:59
 // 获取用户内存使用量
 func getMemory(userData string, quotaName string) int64 {
 	q := replace(userData, app.SelectUsersMemory)
@@ -191,7 +191,7 @@ func getMemory(userData string, quotaName string) int64 {
 	return getCpuMemory(q, "memory")
 }
 
-// 2018-02-11 16:01
+// 2019-01-11 16:01
 // 获取用户cpu使用量
 func getCpu(userData string, quotaName string) int64 {
 	q := replace(userData, app.SelectUsersCpu)
@@ -203,7 +203,7 @@ func getCpu(userData string, quotaName string) int64 {
 	return getCpuMemory(q, "cpu")
 }
 
-// 2018-02-11 15:46
+// 2019-01-11 15:46
 // 获取用户负载均衡数量
 func getLb(userData string) int64 {
 	lbs := make([]lb.CloudLb, 0)
@@ -214,7 +214,7 @@ func getLb(userData string) int64 {
 	return int64(len(lbs))
 }
 
-// 2018-02-12 09:35
+// 2019-01-12 09:35
 // 获取用户负载均衡数量
 func getDockerFile(userData string) int64 {
 	dockerFile := make([]ci.CloudCiDockerfile, 0)
@@ -225,7 +225,7 @@ func getDockerFile(userData string) int64 {
 	return int64(len(dockerFile))
 }
 
-// 2018-02-12 08:05
+// 2019-01-12 08:05
 // 获取用户负载均衡数量
 func getRegistryGroup(userData string) int64 {
 	groups := make([]registry.CloudRegistryGroup, 0)
@@ -247,7 +247,7 @@ func getJob(userData string) int64 {
 	return int64(len(jobs))
 }
 
-// 2018-02-11 15:41
+// 2019-01-11 15:41
 // 获取用户流水线数量
 func getPipeline(userData string) int64 {
 	pipelines := make([]pipeline.CloudPipeline, 0)

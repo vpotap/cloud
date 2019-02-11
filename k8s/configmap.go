@@ -14,7 +14,7 @@ import (
 
 // 创建配置文件
 // @param name
-// 2018-01-17 16:18
+// 2019-01-17 16:18
 // data := app.GetConfgData("adf","asdfasdfdasf")
 // k8s.CreateConfigmap("10.16.55.6","8080",data, "adf","test-app--dfsad")
 func CreateConfigmap(param ServiceParam) {
@@ -57,7 +57,7 @@ func CreateConfigmap(param ServiceParam) {
 
 
 // 生成容器环境变量数据
-// 2018-01-11 21:01
+// 2019-01-11 21:01
 func getEnv(envs string) []map[string]interface{} {
 	data := make([]map[string]interface{}, 0)
 	if len(envs) < 3 {
@@ -83,7 +83,7 @@ func getEnv(envs string) []map[string]interface{} {
 }
 
 
-// 2018-01-17 17:48
+// 2019-01-17 17:48
 // 获取configmap 挂载某个key的配置
 func getConfigKey(keys string) []map[string]interface{} {
 	mapdata := make([]map[string]interface{}, 0)
@@ -147,7 +147,7 @@ func getFilebeatVolumes(storageData string) ([]map[string]interface{}, []map[str
 }
 
 // 加工磁盘卷数据
-// 2018-01-11 13::57
+// 2019-01-11 13::57
 func getVolumes(storagesData string, configData []ConfigureData, param ServiceParam) ([]map[string]interface{}, []map[string]interface{}) {
 	if storagesData == ""{
 		storagesData = `[]`
@@ -260,7 +260,7 @@ func getVolumes(storagesData string, configData []ConfigureData, param ServicePa
 	return storages, voluments
 }
 
-// 2018-01-18 11:31
+// 2019-01-18 11:31
 // 将挂载数据写入到数据
 func WriteMountDataToDb(configname string, dataName string, cluster string, namespace string, mountpath string, serviceName string)  {
 	if cluster == "" || serviceName == "" {

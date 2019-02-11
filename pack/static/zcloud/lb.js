@@ -48,7 +48,7 @@ function setLbIp() {
 
 /**
  * 删除负载服务
- * 2018-02-01 20:59
+ * 2019-01-01 20:59
  */
 function deleteLbServiceSwal(id) {
     Swal("删除该服务", "warning", "确认操作", "不操作", "成功", "失败", " deleteLbService(" + id + ")", "loadLbDetailData()");
@@ -56,7 +56,7 @@ function deleteLbServiceSwal(id) {
 
 /**
  * 删除负载均衡服务
- * 2018-02-01 21:01
+ * 2019-01-01 21:01
  * @param id
  * @return {*}
  */

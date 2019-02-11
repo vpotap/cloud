@@ -13,7 +13,7 @@ function addBase(baseId) {
 
 /**
  * 删除基础镜像
- * 2018-02-09 16:32
+ * 2019-01-09 16:32
  */
 function deleteBaseSwal(id) {
     Swal("删除该基础镜像", "warning", "确认操作", "不操作", "成功", "失败", " deleteBase("+id+")", "loadBaseData()");

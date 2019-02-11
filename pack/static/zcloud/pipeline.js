@@ -42,7 +42,7 @@ function loadContainer(id) {
 
 /**
  * 删除流水线弹出框
- * 2018-02-05 10:24
+ * 2019-01-05 10:24
  */
 function deletePipelineSwal(id, detail) {
     Swal("删除流水线", "warning", "确认操作", "不操作", "成功", "失败", " deletePipeline(" + id + ")", "loadPipelineData()");
@@ -51,7 +51,7 @@ function deletePipelineSwal(id, detail) {
 
 /**
  * 执行流水线弹出框
- * 2018-02-07 5:44
+ * 2019-01-07 5:44
  * @param id
  */
 function startExecPipeline(id) {
@@ -149,7 +149,7 @@ function jobLog(jobId, history) {
 }
 
 /**
- * 2018-02-05 16;38
+ * 2019-01-05 16;38
  * 通过jobname获取日志信息
  * @param jobName
  */
@@ -296,7 +296,7 @@ function loadPipelineHistoryData(key) {
 }
 
 /**
- * 2018-02-05 16:45
+ * 2019-01-05 16:45
  * 获取构建的dockerfile
  * @param historyId
  */

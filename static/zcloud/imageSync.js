@@ -1,5 +1,5 @@
 /**
- * 2018-02-06 20:33
+ * 2019-01-06 20:33
  * 添加镜像同步
  * @param syncId
  */
@@ -16,7 +16,7 @@ function addSync(syncId,copy) {
 
 /**
  * 同意申请弹出框
- * 2018-02-06 21:24
+ * 2019-01-06 21:24
  */
 function ApprovedSyncSwal(id) {
     Swal("将同意该申请", "warning", "确认操作", "不操作", "成功", "失败", " ApprovedSync("+id+")", "loadRegistryData()");
@@ -37,14 +37,14 @@ function ApprovedSync(id) {
 
 /**
  * 删除镜像同步弹出框
- * 2018-01-20 18:09
+ * 2019-01-20 18:09
  */
 function deleteSyncSwal(id) {
     Swal("删除该同步申请", "warning", "确认操作", "不操作", "成功", "失败", " deleteSync("+id+")", "loadRegistryData()");
 }
 
 /**
- * 2018-02-06 20:40
+ * 2019-01-06 20:40
  * 删除镜像同步
  * @param id
  * @return {*}
@@ -58,7 +58,7 @@ function deleteSync(id) {
 
 /**
  * 执行同步
- * 2018-02-06 21:48
+ * 2019-01-06 21:48
  * @param id
  * @return {*}
  */
@@ -70,7 +70,7 @@ function imageSync(id) {
     return result
 }
 /**
- * 2018-02-06 20:36
+ * 2019-01-06 20:36
  * 加载数据
  * @param key
  */

@@ -17,7 +17,7 @@ import (
 )
 
 // 获某个namespace下面的deployment信息
-// {"metadata":{"name":"deploymentexample","namespace":"testservice--asdfasdfdasf","selfLink":"/apis/apps/v1beta1/namespaces/testservice--asdfasdfdasf/deployments/deploymentexample","uid":"c30cd8ea-f34e-11e7-8d1c-0894ef37b2d2","resourceVersion":"3433025","generation":1,"creationTimestamp":"2018-01-07T02:02:06Z","labels":{"release-version":"0","space":"testservice--asdfasdfdasf","uuid":"7e22a9b7fc32748be8527f6e2592ea67","zcloud-app":"testservice--asdfasdfdasf"},"annotations":{"deployment.kubernetes.io/revision":"1"}},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"nginx"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"nginx"}},"spec":{"containers":[{"name":"nginx","image":"nginx:1.10","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"IfNotPresent"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":2,"progressDeadlineSeconds":600},"status":{"observedGeneration":1,"replicas":3,"updatedReplicas":3,"readyReplicas":3,"availableReplicas":3,"conditions":[{"type":"Available","status":"True","lastUpdateTime":"2018-01-07T02:02:09Z","lastTransitionTime":"2018-01-07T02:02:09Z","reason":"MinimumReplicasAvailable","message":"Deployment has minimum availability."},{"type":"Progressing","status":"True","lastUpdateTime":"2018-01-07T02:02:09Z","lastTransitionTime":"2018-01-07T02:02:06Z","reason":"NewReplicaSetAvailable","message":"ReplicaSet \"deploymentexample-845cfc7fb9\" has successfully progressed."}]}}
+// {"metadata":{"name":"deploymentexample","namespace":"testservice--asdfasdfdasf","selfLink":"/apis/apps/v1beta1/namespaces/testservice--asdfasdfdasf/deployments/deploymentexample","uid":"c30cd8ea-f34e-11e7-8d1c-0894ef37b2d2","resourceVersion":"3433025","generation":1,"creationTimestamp":"2019-01-07T02:02:06Z","labels":{"release-version":"0","space":"testservice--asdfasdfdasf","uuid":"7e22a9b7fc32748be8527f6e2592ea67","zcloud-app":"testservice--asdfasdfdasf"},"annotations":{"deployment.kubernetes.io/revision":"1"}},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"nginx"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"nginx"}},"spec":{"containers":[{"name":"nginx","image":"nginx:1.10","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"IfNotPresent"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":2,"progressDeadlineSeconds":600},"status":{"observedGeneration":1,"replicas":3,"updatedReplicas":3,"readyReplicas":3,"availableReplicas":3,"conditions":[{"type":"Available","status":"True","lastUpdateTime":"2019-01-07T02:02:09Z","lastTransitionTime":"2019-01-07T02:02:09Z","reason":"MinimumReplicasAvailable","message":"Deployment has minimum availability."},{"type":"Progressing","status":"True","lastUpdateTime":"2019-01-07T02:02:09Z","lastTransitionTime":"2019-01-07T02:02:06Z","reason":"NewReplicaSetAvailable","message":"ReplicaSet \"deploymentexample-845cfc7fb9\" has successfully progressed."}]}}
 func GetDeployments(namespace string, clientset kubernetes.Clientset) []v1beta12.Deployment {
 	opt := metav1.ListOptions{}
 	deployments, err := clientset.AppsV1beta1().Deployments(namespace).List(opt)
@@ -28,7 +28,7 @@ func GetDeployments(namespace string, clientset kubernetes.Clientset) []v1beta12
 	return deployments.Items
 }
 
-// 2018-02-19 15:08
+// 2019-01-19 15:08
 // 获取Deployment信息
 func GetDeployment(namespace string, clientset kubernetes.Clientset, name string) v1beta12.Deployment {
 	deployment, err := clientset.AppsV1beta1().Deployments(namespace).Get(name, metav1.GetOptions{})
@@ -39,7 +39,7 @@ func GetDeployment(namespace string, clientset kubernetes.Clientset, name string
 	return v1beta12.Deployment{}
 }
 
-// 2018-02-04 17:36
+// 2019-01-04 17:36
 // 获取deploy更新前版本
 func GetDeploymentsVersion(namespace string, name string, client kubernetes.Clientset) string {
 	deploy, err := client.AppsV1beta1().Deployments(namespace).Get(name, metav1.GetOptions{})
@@ -50,7 +50,7 @@ func GetDeploymentsVersion(namespace string, name string, client kubernetes.Clie
 }
 
 
-// 2018-02-04 19:55
+// 2019-01-04 19:55
 // 更新镜像
 func UpdateDeploymentImage(param RollingParam) (bool, error) {
 	deploy, err := param.Client.AppsV1beta1().Deployments(param.Namespace).Get(param.Name, metav1.GetOptions{})
@@ -95,7 +95,7 @@ func UpdateDeploymentImage(param RollingParam) (bool, error) {
 	return true, nil
 }
 
-// 2018-02-04 18:14
+// 2019-01-04 18:14
 // 获取是否可以更新deployment
 func GetDeploymentStatus(namespace string, name string, client kubernetes.Clientset) (bool, string) {
 	deploy, err := client.AppsV1beta1().Deployments(namespace).Get(name, metav1.GetOptions{})
@@ -115,7 +115,7 @@ func GetDeploymentStatus(namespace string, name string, client kubernetes.Client
 }
 
 // 获取某个服务的信息
-// 2018-01-18 10:02
+// 2019-01-18 10:02
 func GetDeploymentsService(namespace string, clientset kubernetes.Clientset, service string) []v1beta12.Deployment {
 	opt := metav1.ListOptions{}
 	opt.LabelSelector = "name=" + service
@@ -253,8 +253,8 @@ func DeletelDeployment(namespace string, isService bool, name string, clusterNam
 	return err
 }
 
-// svc {"metadata":{"name":"auto-nginx-3","namespace":"auto-nginx-3--dfsad","selfLink":"/api/v1/namespaces/auto-nginx-3--dfsad/services/auto-nginx-3","uid":"2c62631d-f773-11e7-8d1c-0894ef37b2d2","resourceVersion":"4030027","creationTimestamp":"2018-01-12T08:32:49Z","labels":{"app":"auto-nginx-3"}},"spec":{"ports":[{"name":"auto-nginx-3-0","protocol":"TCP","port":49873,"targetPort":80,"nodePort":49873}],"selector":{"name":"auto-nginx-3"},"clusterIP":"172.16.1.62","type":"NodePort","sessionAffinity":"None","externalTrafficPolicy":"Cluster"},"status":{"loadBalancer":{}}}
-// deploy {"metadata":{"name":"auto-3","namespace":"auto-3--dfsad","selfLink":"/apis/apps/v1beta1/namespaces/auto-3--dfsad/deployments/auto-3","uid":"ee1a2658-f780-11e7-8d1c-0894ef37b2d2","resourceVersion":"4037873","generation":1,"creationTimestamp":"2018-01-12T10:11:18Z","labels":{"name":"auto-3"},"annotations":{"deployment.kubernetes.io/revision":"1"}},"spec":{"replicas":1,"selector":{"matchLabels":{"name":"auto-3"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"name":"auto-3"}},"spec":{"containers":[{"name":"auto-3","image":"nginx:1.10","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{"limits":{"cpu":"1","memory":"2Gi"},"requests":{"cpu":"1","memory":"2Gi"}},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"IfNotPresent"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":2,"progressDeadlineSeconds":600},"status":{"observedGeneration":1,"replicas":1,"updatedReplicas":1,"readyReplicas":1,"availableReplicas":1,"conditions":[{"type":"Available","status":"True","lastUpdateTime":"2018-01-12T10:11:20Z","lastTransitionTime":"2018-01-12T10:11:20Z","reason":"MinimumReplicasAvailable","message":"Deployment has minimum availability."},{"type":"Progressing","status":"True","lastUpdateTime":"2018-01-12T10:11:20Z","lastTransitionTime":"2018-01-12T10:11:18Z","reason":"NewReplicaSetAvailable","message":"ReplicaSet \"auto-3-8548fd9d57\" has successfully progressed."}]}}
+// svc {"metadata":{"name":"auto-nginx-3","namespace":"auto-nginx-3--dfsad","selfLink":"/api/v1/namespaces/auto-nginx-3--dfsad/services/auto-nginx-3","uid":"2c62631d-f773-11e7-8d1c-0894ef37b2d2","resourceVersion":"4030027","creationTimestamp":"2019-01-12T08:32:49Z","labels":{"app":"auto-nginx-3"}},"spec":{"ports":[{"name":"auto-nginx-3-0","protocol":"TCP","port":49873,"targetPort":80,"nodePort":49873}],"selector":{"name":"auto-nginx-3"},"clusterIP":"172.16.1.62","type":"NodePort","sessionAffinity":"None","externalTrafficPolicy":"Cluster"},"status":{"loadBalancer":{}}}
+// deploy {"metadata":{"name":"auto-3","namespace":"auto-3--dfsad","selfLink":"/apis/apps/v1beta1/namespaces/auto-3--dfsad/deployments/auto-3","uid":"ee1a2658-f780-11e7-8d1c-0894ef37b2d2","resourceVersion":"4037873","generation":1,"creationTimestamp":"2019-01-12T10:11:18Z","labels":{"name":"auto-3"},"annotations":{"deployment.kubernetes.io/revision":"1"}},"spec":{"replicas":1,"selector":{"matchLabels":{"name":"auto-3"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"name":"auto-3"}},"spec":{"containers":[{"name":"auto-3","image":"nginx:1.10","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{"limits":{"cpu":"1","memory":"2Gi"},"requests":{"cpu":"1","memory":"2Gi"}},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"IfNotPresent"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":2,"progressDeadlineSeconds":600},"status":{"observedGeneration":1,"replicas":1,"updatedReplicas":1,"readyReplicas":1,"availableReplicas":1,"conditions":[{"type":"Available","status":"True","lastUpdateTime":"2019-01-12T10:11:20Z","lastTransitionTime":"2019-01-12T10:11:20Z","reason":"MinimumReplicasAvailable","message":"Deployment has minimum availability."},{"type":"Progressing","status":"True","lastUpdateTime":"2019-01-12T10:11:20Z","lastTransitionTime":"2019-01-12T10:11:18Z","reason":"NewReplicaSetAvailable","message":"ReplicaSet \"auto-3-8548fd9d57\" has successfully progressed."}]}}
 // 获取自己创建的namespace应用, 规则是app名加资源名区分
 func GetDeploymentApp(clientSet kubernetes.Clientset, namespace string, service string) map[string]CloudApp {
 	result := map[string]CloudApp{}
@@ -328,7 +328,7 @@ func GetDeploymentApp(clientSet kubernetes.Clientset, namespace string, service 
 
 // 加工容器端口数据
 // 获取容器端口数据
-// 2018-01-11 13:47
+// 2019-01-11 13:47
 func getPorts(port string, hostport string) []map[string]interface{} {
 	ports := make([]map[string]interface{}, 0)
 	hostsports := strings.Split(hostport, ",")
@@ -354,7 +354,7 @@ func getPorts(port string, hostport string) []map[string]interface{} {
 }
 
 // 获取服务和pod的映射端口数据
-// 2018-01-12 15:36
+// 2019-01-12 15:36
 func getServicePorts(param ServiceParam) []map[string]interface{} {
 	var all []int
 	if param.Namespace == util.Namespace("registryv2", "registryv2") {
@@ -420,7 +420,7 @@ func getServicePorts(param ServiceParam) []map[string]interface{} {
 }
 
 // 制作亲和性数据
-// 2018-01-11 14:55
+// 2019-01-11 14:55
 func getAffinity(affinityData string) []map[string]interface{} {
 	data := make([]Affinity, 0)
 	err := json.Unmarshal([]byte(affinityData), &data)
@@ -483,7 +483,7 @@ func get() {
 }
 
 // 选择指定的node节点,只IP地址选择
-// 2018-01-11 16:10
+// 2019-01-11 16:10
 // "kubernetes.io/hostname"
 func getNodeSelectorNode(selector string) map[string]interface{} {
 	d := NodeSelector{}
@@ -498,7 +498,7 @@ func getNodeSelectorNode(selector string) map[string]interface{} {
 
 // 获取健康检查数据
 // cmd http tcp 3种类型的
-// 2018-01-12 8:15
+// 2019-01-12 8:15
 // periodSeconds 执行平率（秒）
 // initialDelaySeconds 在容器开启之前的时间，就是等待容器启动完成后检查
 func getHealthData(healthData string) (interface{}, bool) {
@@ -567,7 +567,7 @@ func getHealthData(healthData string) (interface{}, bool) {
 }
 
 // 自动创建服务
-// 2018-01-12 15:57
+// 2019-01-12 15:57
 func createService(ports []map[string]interface{}, param ServiceParam) (interface{}, error) {
 
 	conf := map[string]interface{}{
@@ -628,7 +628,7 @@ func createService(ports []map[string]interface{}, param ServiceParam) (interfac
 	return conf, err
 }
 
-// 2018-02-02 12:40
+// 2019-01-02 12:40
 func setContainerCommand(param ServiceParam, v map[string]interface{}) map[string]interface{} {
 	command := make([]string, 0)
 	err := json.Unmarshal([]byte(param.Command), &command)
@@ -641,7 +641,7 @@ func setContainerCommand(param ServiceParam, v map[string]interface{}) map[strin
 	return v
 }
 
-// 2018-02-02 15:35
+// 2019-01-02 15:35
 // 设置特权模式
 func setPrivileged(param ServiceParam, v map[string]interface{}) map[string]interface{} {
 	// 有特权的操作
@@ -657,7 +657,7 @@ func setPrivileged(param ServiceParam, v map[string]interface{}) map[string]inte
 	return v
 }
 
-// 2018-02-09 21:43
+// 2019-01-09 21:43
 // 镜像下载策略配置
 func setImagePullPolice(param ServiceParam, v map[string]interface{}) map[string]interface{} {
 	// 添加下载镜像secret
@@ -678,7 +678,7 @@ func setImagePullPolice(param ServiceParam, v map[string]interface{}) map[string
 //lables := `{"Value":"10.16.55.102","Lables":"kubernetes.io/hostname"}`
 //affinityData := `[{"Type":"zone","Value":"node103"}]`
 //k8s.CreateServicePod(c1,"default","test1",0.1,"1024","80",storageData,"nginx:1.11",affinityData, lables)
-// 2018-01-11 15:02
+// 2019-01-11 15:02
 //c1,_ := k8s.GetYamlClient("10.16.55.6","8080","apps","v1beta1","/apis")
 func CreateServicePod(param ServiceParam) (string, error) {
 	status, result := GetDeploymentStatus(param.Namespace, param.Name, param.Cl3)

@@ -1,6 +1,6 @@
 package perm
 
-//2018-02-06 08:22:35.6731915 +0800 CST
+//2019-01-06 08:22:35.6731915 +0800 CST
 type CloudPermRole struct {
     //创建时间
     CreateTime string
@@ -22,7 +22,7 @@ type CloudPermRole struct {
     IsDel int64
 }
 
-//2018-02-06 08:22:40.5954731 +0800 CST
+//2019-01-06 08:22:40.5954731 +0800 CST
 type CloudPerm struct {
     //最近修改时间
     LastModifyTime string
@@ -44,7 +44,7 @@ type CloudPerm struct {
     PermId int64
 }
 
-//2018-02-06 08:22:46.2597971 +0800 CST
+//2019-01-06 08:22:46.2597971 +0800 CST
 type CloudApiResource struct {
     //创建时间
     CreateTime string

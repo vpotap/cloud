@@ -41,7 +41,7 @@ type CloudLb struct {
     HostLogPath string
 }
 
-// 2018-02-14 13:26
+// 2019-01-14 13:26
 type LbServiceVersion struct {
     // 域名
     Domain string

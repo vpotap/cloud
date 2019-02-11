@@ -6,7 +6,7 @@ import (
 	"github.com/astaxie/beego/logs"
 )
 
-// 2018-02-11
+// 2019-01-11
 // 创建默认serviceAccount
 func CreateServiceAccount(client kubernetes.Clientset, namespace string, name string) {
 	account := v1.ServiceAccount{}

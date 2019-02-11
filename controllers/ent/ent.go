@@ -19,7 +19,7 @@ func (this *EntController) EntList() {
 	this.TplName = "ent/list.html"
 }
 
-// 2018-02-05 21:02
+// 2019-01-05 21:02
 // 环境管理添加页面
 // @router /ent/add [get]
 func (this *EntController) EntAdd() {
@@ -44,7 +44,7 @@ func (this *EntController) EntAdd() {
 }
 
 // 获取环境数据
-// 2018-01-20 12:56
+// 2019-01-20 12:56
 // router /api/ent [get]
 func (this *EntController) EntData() {
 	// 环境数据
@@ -102,12 +102,12 @@ func GetEntnameSelectData(isLog bool)  string {
 }
 
 // 获取select选项
-// 2018-02-06 15:32
+// 2019-01-06 15:32
 func GetEntnameSelect() string {
 	return GetEntnameSelectData(false)
 }
 
-// 2018-02-06 15:30
+// 2019-01-06 15:30
 // 获取环境信息
 func getEntdata() []ent.CloudEnt {
 	// 环境数据
@@ -118,7 +118,7 @@ func getEntdata() []ent.CloudEnt {
 }
 
 // 获取环境数据
-// 2018-01-20 17:45
+// 2019-01-20 17:45
 // router /api/ent/name [get]
 func (this *EntController) EntDataName() {
 	setEntJson(this, getEntdata())
@@ -157,7 +157,7 @@ func (this *EntController) EntDatas() {
 
 // json
 // 删除环境
-// 2018-02-05 18:05
+// 2019-01-05 18:05
 // @router /api/ent/:id:int [delete]
 func (this *EntController) EntDelete() {
 	searchMap := sql.SearchMap{}

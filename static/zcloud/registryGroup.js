@@ -11,7 +11,7 @@ function addRegistryGroup(serverId) {
 
 /**
  * 删除镜像弹出框
- * 2018-01-29 9:11
+ * 2019-01-29 9:11
  */
 function deleteRegistryGroupImageSwal(id) {
     Swal("删除该镜像", "warning", "确认操作", "不操作", "成功", "失败", " deleteRegistryImage(" + id + ")", "loadRegistryImageData()");
@@ -30,7 +30,7 @@ function deleteRegistryImage(id) {
 
 /**
  * 查看镜像tag
- * 2018-01-29 10:55
+ * 2019-01-29 10:55
  * @param id
  */
 function showTags(id) {
@@ -44,7 +44,7 @@ function showTags(id) {
 
 /**
  * 删除仓库组弹出框
- * 2018-01-26 18:09
+ * 2019-01-26 18:09
  */
 function deleteRegistryGroupSwal(id) {
     Swal("删除该仓库", "warning", "确认操作", "不操作", "成功", "失败", " deleteRegistryGroup(" + id + ")", "loadRegistryGroupData()");

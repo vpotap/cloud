@@ -160,7 +160,7 @@ func getCiBatchJobName(searchMap sql.SearchMap, clusterName string,html []string
 }
 
 // 获取环境数据
-// 2018-01-20 17:45
+// 2019-01-20 17:45
 // router /api/resource/name [get]
 func (this *ControllerResource) GetResourceSelect() {
 	html := make([]string, 0)

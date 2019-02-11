@@ -33,7 +33,7 @@ func (this *ResourceController) ResourceAdd() {
 }
 
 // 获取api资源数据
-// 2018-02-06 8:56
+// 2019-01-06 8:56
 // router /api/perm/resource [get]
 func (this *ResourceController) ResourceData() {
 	// api资源数据
@@ -69,7 +69,7 @@ func (this *ResourceController) ResourceSave() {
 }
 
 // 获取api资源数据
-// 2018-02-06 08:36
+// 2019-01-06 08:36
 // router /api/perm/resource/name [get]
 func (this *ResourceController) ResourceDataName() {
 	// api资源数据
@@ -187,7 +187,7 @@ func (this *ResourceController) ResourceDatas() {
 
 // json
 // 删除api资源
-// 2018-02-06 08:36
+// 2019-01-06 08:36
 // @router /api/perm/resource/:id:int [delete]
 func (this *ResourceController) ResourceDelete() {
 	searchMap := sql.GetSearchMap("ResourceId", *this.Ctx)

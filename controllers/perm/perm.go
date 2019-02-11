@@ -32,7 +32,7 @@ func (this *PermController) PermAdd() {
 }
 
 // 获取权限数据
-// 2018-02-06 8:56
+// 2019-01-06 8:56
 // router /api/perms [get]
 func (this *PermController) PermData() {
 	// 权限数据
@@ -69,7 +69,7 @@ func (this *PermController) PermSave() {
 
 
 // 获取权限数据
-// 2018-02-06 08:30
+// 2019-01-06 08:30
 // router /api/perms/name [get]
 func (this *PermController) PermDataName() {
 	// 权限数据
@@ -101,7 +101,7 @@ func (this *PermController) PermDatas() {
 
 // json
 // 删除权限
-// 2018-02-06 08:29
+// 2019-01-06 08:29
 // @router /api/perm/:id:int [delete]
 func (this *PermController) PermDelete() {
 	searchMap := sql.GetSearchMap("PermId", *this.Ctx)

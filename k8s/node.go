@@ -57,7 +57,7 @@ func UpdateNodeStatus(client kubernetes.Clientset, ip string, unschdulable bool)
 	return err
 }
 
-// 2018-02-12 16:26
+// 2019-01-12 16:26
 // 获取node
 func getNodes(clientset kubernetes.Clientset, ip string) *v1.Node {
 	opt := metav1.GetOptions{}
@@ -68,7 +68,7 @@ func getNodes(clientset kubernetes.Clientset, ip string) *v1.Node {
 	return &v1.Node{}
 }
 
-// 2018-02-13 09:54
+// 2019-01-13 09:54
 // 获取某个节点的镜像
 func GetNodeImage(clustername string, ip string) []HostImages {
 	cl, err := GetClient(clustername)
@@ -96,7 +96,7 @@ func GetNodeImage(clustername string, ip string) []HostImages {
 }
 
 // 更新某个node的标签
-// 2018-01-11 18:00
+// 2019-01-11 18:00
 // k8s.UpdateNodeLabels("10.16.55.6","8080","10.16.55.102","sshd","sshd","")
 func UpdateNodeLabels(clustername string, ip string, labelsData string) error {
 	clientset, err := GetClient(clustername)

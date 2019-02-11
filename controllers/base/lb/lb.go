@@ -115,7 +115,7 @@ func (this *LbController) LbSave() {
 	setLbJson(this, data)
 }
 
-// 2018-02-12 09:45
+// 2019-01-12 09:45
 // 检查镜像仓库配额
 // 检查资源配额是否够用
 func checkLbQuota(username string) (bool,string) {
@@ -150,7 +150,7 @@ func (this *LbController) LbData() {
 	setLbJson(this, r)
 }
 
-// 2018-02-01 17:27
+// 2019-01-01 17:27
 func GetLbData(id interface{}) k8s.CloudLb {
 	searchMap := sql.SearchMap{}
 	searchMap.Put("LbId", id)

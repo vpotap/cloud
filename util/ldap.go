@@ -10,7 +10,7 @@ import (
 )
 
 // ldap登录验证
-// 2018-01-19 09:59
+// 2019-01-19 09:59
 func LdapLoginAuth(username string, passowrd string) (bool,error) {
 	server := beego.AppConfig.String("ldap.server")
 	port, err := beego.AppConfig.Int("ldap.port")

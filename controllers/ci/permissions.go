@@ -162,7 +162,7 @@ func setPermCache() {
 	}
 }
 
-// 2018-02-18 21:24
+// 2019-01-18 21:24
 // 检查权限是否存在
 func checkPermExists(r interface{}, domain string) bool {
 	redisR, err := redis.String(r, nil)
@@ -174,7 +174,7 @@ func checkPermExists(r interface{}, domain string) bool {
 	return false
 }
 
-// 2018-02-18
+// 2019-01-18
 // 缓存和获取用户部门数据
 func getUserDept(username string) []string {
 	var depts []string
@@ -190,7 +190,7 @@ func getUserDept(username string) []string {
 	return depts
 }
 
-// 2018-02-18 21:13
+// 2019-01-18 21:13
 // 检查用户权限
 // 发布项目权限检查使用
 func CheckUserPerms(username string, domain string) bool {

@@ -22,7 +22,7 @@ func (this *StorageController) StorageList() {
 }
 
 // 存储卷添加页面
-// 2018-01-31 08:28
+// 2019-01-31 08:28
 // @router /base/storage/add [get]
 func (this *StorageController) StorageAdd() {
 	id := this.GetString("StorageId")
@@ -129,7 +129,7 @@ func (this *StorageController) StorageData() {
 }
 
 // 获取单个存储的信息
-// 2018-01-29 21:11
+// 2019-01-29 21:11
 func getStorageData(id interface{}) k8s.CloudStorage {
 	searchMap := sql.SearchMap{}
 	searchMap.Put("StorageId", id)
@@ -138,7 +138,7 @@ func getStorageData(id interface{}) k8s.CloudStorage {
 	return storageData
 }
 
-// 2018-01-31 14:47
+// 2019-01-31 14:47
 // 获取存储所有数据
 func GetStorageName(username string, clustername string) []k8s.CloudStorage {
 	data := []k8s.CloudStorage{}

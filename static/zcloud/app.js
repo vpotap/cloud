@@ -22,7 +22,7 @@ function showTemplate() {
 
 /**
  * 删除应用
- * 2018-01-17 08:47
+ * 2019-01-17 08:47
  * @return {*}
  */
 function deleteApp(id,force) {
@@ -120,7 +120,7 @@ function saveApp(appId) {
 
 /**
  * 启动
- * 2018-01-13 15:37
+ * 2019-01-13 15:37
  * @return {*}
  */
 function startApp() {
@@ -138,7 +138,7 @@ function startApp() {
 
 /**
  * 停止拥有
- * 2018-01-16 21:17
+ * 2019-01-16 21:17
  * @return {*}
  */
 function stopApp() {
@@ -153,13 +153,13 @@ function stopApp() {
 
 
 // 停止应用
-// 2018-01-16 21:19
+// 2019-01-16 21:19
 function stopAppSwal() {
     Swal("将停止该应用", "warning", "确认操作", "不操作", "成功", "失败", "stopApp()", "loadAppData()");
 }
 
 // 重启应用
-// 2018-01-16 21:21
+// 2019-01-16 21:21
 function restartApp() {
     stopApp();
    return startApp();
@@ -169,7 +169,7 @@ function restartApp() {
  * 重建应用
  * 新集群重建
  * 或者应用重新部署
- * 2018-02-26 09;17
+ * 2019-01-26 09;17
  */
 function redeploymentApp() {
         var value = getCheckInput("all");
@@ -183,7 +183,7 @@ function redeploymentApp() {
 }
 
 // 重启应用
-// 2018-01-16 21:20
+// 2019-01-16 21:20
 function restartAppSwal() {
     Swal("将重启该应用", "warning", "确认操作", "不操作", "成功", "失败", "restartApp()", "loadAppData()");
 }
@@ -209,7 +209,7 @@ function deleteAppSwal(id,force) {
 
 
 /**
- * 2018-02-06 14:34
+ * 2019-01-06 14:34
  * 获取仓库组
  * @param registryName
  */

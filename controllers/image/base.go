@@ -20,7 +20,7 @@ func (this *BaseController) BaseList() {
 }
 
 // 生成 基础镜像服务 html
-// 2018-02-09 17:54
+// 2019-01-09 17:54
 func GetBaseImageSelect() string {
 	data := make([]registry.CloudImageBase, 0)
 	searchSql := sql.SearchSql(registry.CloudImageBase{}, registry.SelectCloudImageBase, sql.SearchMap{})
@@ -60,7 +60,7 @@ func (this *BaseController) BaseAdd() {
 	this.TplName = "image/base/add.html"
 }
 
-// 2018-02-09 17:10
+// 2019-01-09 17:10
 // 检查镜像是否存在
 func checkImageExists(d registry.CloudImageBase) (interface{}, bool) {
 	server := GetRegistryServer(d.RegistryServer)

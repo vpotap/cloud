@@ -70,7 +70,7 @@ func (this *GroupsController) GroupsSave() {
 	setGroupsJson(this, data)
 }
 
-// 2018-01-22 11:04
+// 2019-01-22 11:04
 // 获取组的map数据,关系id和组名
 func GetGroupsMap() util.Lock {
 	data := getGroupsData()
@@ -82,7 +82,7 @@ func GetGroupsMap() util.Lock {
 }
 
 // 获取组数据
-// 2018-02-11 11;11
+// 2019-01-11 11;11
 func GetGroupsSelect() string {
 	html := make([]string, 0)
 	html = append(html, "<option>--请选择--</option>")
@@ -95,7 +95,7 @@ func GetGroupsSelect() string {
 
 
 // 获取组的名称和id数据
-// 2018-01-22 11:02
+// 2019-01-22 11:02
 func getGroupsData()  []groups.CloudUserGroupsName {
 	data := make([]groups.CloudUserGroupsName, 0)
 	searchSql := sql.SearchSql(
@@ -151,7 +151,7 @@ func (this *GroupsController) GroupsData() {
 
 // json
 // 删除部门团队
-// 2018-01-20 10:46
+// 2019-01-20 10:46
 // @router /api/groups/:id:int [delete]
 func (this *GroupsController) GroupsDelete() {
 	searchMap := sql.SearchMap{}
@@ -181,7 +181,7 @@ func setGroupsJson(this *GroupsController, data interface{})  {
 	this.ServeJSON(false)
 }
 
-// 2018-02-11 14:59
+// 2019-01-11 14:59
 // 获取用户部门
 func GetUserDept(username string) []string {
 	username = sql.Replace(username)

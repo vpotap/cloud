@@ -219,7 +219,7 @@ func SearchSql(obj interface{}, sql string, data SearchMap) string {
 	return getSearchSql(obj, sql, data)
 }
 
-// 2018-02-01 09:36
+// 2019-01-01 09:36
 func getCount(table string, searchMap SearchMap) int {
 	maps := []orm.Params{}
 	countSql := "select count(1) as cnt from " + table
@@ -259,7 +259,7 @@ func CountSqlTotal(query string) int64  {
 	return total.Total
 }
 
-// 2018-01-17 12:40
+// 2019-01-17 12:40
 // 获取表的行数
 func Count(table string, count int, search string) int {
 	if search != "" {
@@ -269,7 +269,7 @@ func Count(table string, count int, search string) int {
 }
 
 // 获取有条件的计算
-// 2018-02-01 9:38
+// 2019-01-01 9:38
 func CountSearchMap(table string, searchMap SearchMap, num int, search string) int {
 	if search != "" {
 		return num
@@ -278,7 +278,7 @@ func CountSearchMap(table string, searchMap SearchMap, num int, search string) i
 }
 
 // 带分页的sql语句
-// 2018-01-15
+// 2019-01-15
 func SearchSqlPages(sql string, request http.Request) string {
 	length := getParam(&request, "length")
 	start := getParam(&request, "start")
@@ -306,13 +306,13 @@ func SearchSqlPages(sql string, request http.Request) string {
 }
 
 // 添加排序
-// 2018-01-13 07:08
+// 2019-01-13 07:08
 func SearchOrder(sql string, columnt ...string) string {
 	sql += " order by " + strings.Join(columnt, ",") + " desc"
 	return sql
 }
 
-// 2018-01-20 9:30
+// 2019-01-20 9:30
 // 将对象转成字符串
 func ObjToString(v interface{}) string {
 	t, _ := json.Marshal(v)
@@ -320,7 +320,7 @@ func ObjToString(v interface{}) string {
 }
 
 // 获取某个对象的类型
-// 2018-02-05 10;38
+// 2019-01-05 10;38
 func getObjStructMap(structObj interface{}) map[string]string {
 	var result = make(map[string]string)
 	var v = reflect.ValueOf(structObj)
@@ -334,7 +334,7 @@ func getObjStructMap(structObj interface{}) map[string]string {
 	return result
 }
 
-// 2018-02-05 09:09
+// 2019-01-05 09:09
 // 公共查询方法，包含orderby和分页sql
 func OrderByPagingSql(searchSql string, column string, request http.Request, obj interface{}, structObj interface{}) (int, error) {
 	searchSql = SearchOrder(searchSql, column)
@@ -490,13 +490,13 @@ func getParam(req *http.Request, key string) string {
 	return id
 }
 
-// 2018-02-09 06:40
+// 2019-01-09 06:40
 // 将要获取的参数都写到一起
 func MKeyV(key ...string) []string {
 	return key
 }
 
-// 2018-02-09 07:57
+// 2019-01-09 07:57
 // 将参数值写到SearchMap
 func GetSearchMapValue(key []string, ctx context.Context, searchMap SearchMap) SearchMap {
 	for _, paramKey := range key {
@@ -526,7 +526,7 @@ func GetSearchMap(key string, ctx context.Context) SearchMap {
 }
 
 // 获取默认带数据的searchmap
-// 2018-01-12 14:05
+// 2019-01-12 14:05
 func GetSearchMapV(key ...string) SearchMap {
 	searchMap := SearchMap{}
 	counter := 0
@@ -547,7 +547,7 @@ func GetSearchMapV(key ...string) SearchMap {
 }
 
 // 获取参数并写入到map里面
-// 2018-01-13 19:36
+// 2019-01-13 19:36
 func GetString(ctx context.Context, key ...string) map[string]string {
 	data := make(map[string]string)
 	for _, k := range key {

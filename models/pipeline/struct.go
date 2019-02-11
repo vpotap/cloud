@@ -1,6 +1,6 @@
 package pipeline
 
-//2018-02-03 17:08:23.9574221 +0800 CST
+//2019-01-03 17:08:23.9574221 +0800 CST
 type CloudPipeline struct {
     //创建时间
     CreateTime string
@@ -36,7 +36,7 @@ type CloudPipeline struct {
     Status string
 }
 
-//2018-02-05 12:53:22.6536907 +0800 CST
+//2019-01-05 12:53:22.6536907 +0800 CST
 type CloudPipelineLog struct {
     //应用名称
     AppName string

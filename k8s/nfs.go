@@ -15,7 +15,7 @@ func CreateNfsStorageServer(param StorageParam) {
 	createNfsStatefulSet(param)
 }
 
-// 2018-02-22 12:28
+// 2019-01-22 12:28
 // 创建nfs服务提供者
 func createNfsService(param StorageParam) {
 	service := map[string]interface{}{
@@ -59,7 +59,7 @@ func createNfsService(param StorageParam) {
 	}
 }
 
-// 2018-01-20 15:12
+// 2019-01-20 15:12
 // 创建nfs服务
 func createNfsStatefulSet(param StorageParam) {
 	statefulset := map[string]interface{}{
@@ -170,7 +170,7 @@ func createNfsStatefulSet(param StorageParam) {
 	}
 }
 
-// 2018-01-29 14:38
+// 2019-01-29 14:38
 //  创建pvc
 func createNfsPvc(param StorageParam) error {
 	pvc := map[string]interface{}{
@@ -195,7 +195,7 @@ func createNfsPvc(param StorageParam) error {
 }
 
 // 创建StorageClass
-// 2018-01-29 15:09
+// 2019-01-29 15:09
 func createNfsStorageClass(param StorageParam) error {
 
 	class := map[string]interface{}{

@@ -13,7 +13,7 @@ function addCiPerm(permissionsId) {
 
 /**
  * 删除权限
- * 2018-02-18 18:50
+ * 2019-01-18 18:50
  */
 function deleteCiPermSwal(id) {
     Swal("删除该权限", "warning", "确认操作", "不操作", "成功", "失败", " deleteCiPerm("+id+")", "loadCiPermData()");
@@ -112,7 +112,7 @@ function deleteCiPerm(id) {
 
 
 /**
- * 2018-02-18 18:55
+ * 2019-01-18 18:55
  * 保存权限
  */
 function saveCiPerm(permissionsId) {

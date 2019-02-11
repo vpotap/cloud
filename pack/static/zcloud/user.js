@@ -28,7 +28,7 @@ function showToken(userId) {
 
 /**
  * 删除用户弹出框
- * 2018-01-20 18:09
+ * 2019-01-20 18:09
  */
 function deleteUserSwal(id) {
     Swal("删除用户", "warning", "确认操作", "不操作", "成功", "失败", " deleteUser("+id+")", "loadUserData()");

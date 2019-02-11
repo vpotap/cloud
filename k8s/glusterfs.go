@@ -14,14 +14,14 @@ var (
 	glusterStorageClass = "zcloud-gluster-vol"
 )
 
-// 2018-02-21 13:50
+// 2019-01-21 13:50
 // 创建heketi的serviceaccout
 func createHeketiServiceAcction(client kubernetes.Clientset) {
 	name := "heketi-service-account"
 	CreateServiceAccount(client, glusterNamespace, name)
 }
 
-// 2018-02-21 14:00
+// 2019-01-21 14:00
 // 创建heketi服务
 func createHeketiService(clusterName string) {
 	client, _ := GetYamlClient(clusterName, "", "v1", "api")
@@ -46,7 +46,7 @@ func createHeketiService(clusterName string) {
 	createService(ports, param)
 }
 
-// 2018-02-21 14:13
+// 2019-01-21 14:13
 // 创建rbac
 func createHeketiRbac(clustername string) {
 	conf := map[string]interface{}{
@@ -77,7 +77,7 @@ func createHeketiRbac(clustername string) {
 	client.Resource(resource, glusterNamespace).Create(&obj)
 }
 
-// 2018-02-21 14:40
+// 2019-01-21 14:40
 // 创建私密文件
 func createHeketiSecret(clustername string) {
 	conf := map[string]interface{}{
@@ -101,7 +101,7 @@ func createHeketiSecret(clustername string) {
 	client.Resource(resource, glusterNamespace).Update(&obj)
 }
 
-// 2018-02-21 14:30
+// 2019-01-21 14:30
 // 创建deployment
 func createHeketiDeployment(clustername string) error {
 	conf := map[string]interface{}{
@@ -214,7 +214,7 @@ func createHeketiDeployment(clustername string) error {
 	return err
 }
 
-// 2018-02-21 14:51
+// 2019-01-21 14:51
 // 创建glusterfs部署
 func createGlusterDeployment(clustername string) error{
 	conf := map[string]interface{}{
@@ -385,7 +385,7 @@ func createGlusterDeployment(clustername string) error{
 	return err
 }
 
-// 2018-02-21 16:12
+// 2019-01-21 16:12
 // 更新glusterfs集群信息
 func UpdateGlusterfsTopology(clustername string, client kubernetes.Clientset) {
 	nodes := GetNodes(client, "storagenode=glusterfs")
@@ -426,7 +426,7 @@ Brick server 数量是条带数的倍数，兼具 distribute 和 stripe 卷的�
 兼顾分布式和条带式的功能。每个文件分布在四台共享服务器上，
 通常用于大文件访问处理，最少需要 4 台服务器才能创建分布条带卷。
  */
-// 2018-02-22 10:07
+// 2019-01-22 10:07
 // 创建glusterfs提供者
 func createGlusterfsStorageClass(clustername string) {
 	class := map[string]interface{}{
@@ -447,7 +447,7 @@ func createGlusterfsStorageClass(clustername string) {
 	createStorageClass(clustername, class)
 }
 
-// 2018-02-21 15:03
+// 2019-01-21 15:03
 // 需要物理硬件支持,每个机器有一块单独的硬盘
 // 创建glusterfs集群
 // 节点需要添加标签 storagenode=glusterfs
@@ -466,7 +466,7 @@ func CreateGlusterfs(param StorageParam) {
 }
 
 
-// 2018-02-22 10:38
+// 2019-01-22 10:38
 // 创建glusterfs pvc
 func createGlusterfsPvc(param StorageParam) {
 	pvc := map[string]interface{}{

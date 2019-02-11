@@ -6,7 +6,7 @@ import (
 )
 
 // base64 加密
-// 2018-01-21 18:39
+// 2019-01-21 18:39
 func Base64Encoding(str string)  string {
 	input := []byte(str)
 	// 演示base64编码
@@ -15,7 +15,7 @@ func Base64Encoding(str string)  string {
 }
 
 // base64 解密
-// 2018-01-21 18:40
+// 2019-01-21 18:40
 func Base64Decoding(encodeString string) string {
 	decodeBytes, err := base64.StdEncoding.DecodeString(encodeString)
 	if err != nil {

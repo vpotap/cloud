@@ -21,14 +21,14 @@ const dockerPullJson = `{
         }
 }`
 
-// 2018-02-04 21:06
+// 2019-01-04 21:06
 func GetDockerImagePullName(name string) string {
 	name = strings.Replace(name, ".", "-", -1)
 	name = strings.Replace(name, ":", "", -1)
 	return name
 }
 
-// 2018-02-04 20:51
+// 2019-01-04 20:51
 // 为私有镜像仓库拉取镜像添加拉取权限
 func CreateImagePullSecret(param ServiceParam) {
 	logs.Info("CreateImagePullSecret", util.ObjToString(param))
@@ -64,7 +64,7 @@ func CreateImagePullSecret(param ServiceParam) {
 }
 
 
-// 2018-02-04 21:32
+// 2019-01-04 21:32
 // 获取安全密码是否存在
 func SecretIsExists(client kubernetes.Clientset, namespace string, name string) bool {
 	_, err := client.CoreV1().Secrets(namespace).Get(name, v12.GetOptions{})
@@ -74,7 +74,7 @@ func SecretIsExists(client kubernetes.Clientset, namespace string, name string) 
 	return false
 }
 
-// 2018-02-09 15:22
+// 2019-01-09 15:22
 // 删除secret
 func DeleteSecret(client kubernetes.Clientset, namespace string)  {
 	secrets,err := client.CoreV1().Secrets(namespace).List(v12.ListOptions{})

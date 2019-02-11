@@ -1,7 +1,7 @@
 package permdata
 
 
-//2018-01-15 15:20:35.5687711 +0800 CST
+//2019-01-15 15:20:35.5687711 +0800 CST
 type CloudContainer struct {
 	//容器名称
 	ContainerName string

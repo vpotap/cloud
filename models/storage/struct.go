@@ -1,6 +1,6 @@
 package storage
 
-//2018-01-18 16:22:58.0616688 +0800 CST
+//2019-01-18 16:22:58.0616688 +0800 CST
 type CloudStorageServer struct {
     //
     ServerAddress string

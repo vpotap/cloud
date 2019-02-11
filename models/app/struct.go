@@ -1,6 +1,6 @@
 package app
 
-// 2018-01-22 14:41
+// 2019-01-22 14:41
 // 获取应用名称
 type CloudAppName struct {
 	//应用名称
@@ -178,7 +178,7 @@ type CloudAppServiceInfo struct {
 	Namespace string
 	ServiceName string
 }
-//2018-01-11 11:40:10.8610181 +0800 CST
+//2019-01-11 11:40:10.8610181 +0800 CST
 type CloudAppService struct {
     //部署模式, deployment daemonset statefulset
     DeployType string
@@ -284,7 +284,7 @@ type CloudContainerName struct {
 }
 
 
-//2018-01-15 15:20:35.5687711 +0800 CST
+//2019-01-15 15:20:35.5687711 +0800 CST
 type CloudContainer struct {
     //
     ContainerId int64

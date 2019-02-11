@@ -9,7 +9,7 @@ import (
 	"cloud/sql"
 )
 
-// 2018-02-22 10:37
+// 2019-01-22 10:37
 // 创建pvc
 func createPvc(clustername string, pvc map[string]interface{}, namespace string) error {
 	pvcClient, err := GetYamlClient(clustername, "", "v1", "/api")
@@ -22,7 +22,7 @@ func createPvc(clustername string, pvc map[string]interface{}, namespace string)
 	return err
 }
 
-// 2018-01-30 17:37
+// 2019-01-30 17:37
 // 获取serviceaccount信息
 func GetServiceAccount(name string, param StorageParam) string {
 	cl, err := GetClient(param.ClusterName)
@@ -41,7 +41,7 @@ func GetServiceAccount(name string, param StorageParam) string {
 }
 
 // 创建ServiceAccount
-// 2018-01-30 17:28
+// 2019-01-30 17:28
 func createServiceAccount(param StorageParam) {
 	conf := map[string]interface{}{
 		"apiVersion": "v1",
@@ -61,7 +61,7 @@ func createServiceAccount(param StorageParam) {
 }
 
 
-// 2018-02-22 09:59
+// 2019-01-22 09:59
 // 创建StorageClass
 func createStorageClass(clustername string , class map[string]interface{}) error {
 	classClient, err := GetYamlClient(clustername, "storage.k8s.io", "v1beta1", "/apis")
@@ -75,7 +75,7 @@ func createStorageClass(clustername string , class map[string]interface{}) error
 }
 
 
-// 2018-01-30 21:07
+// 2019-01-30 21:07
 // 创建pvc
 func CreateServicePvc(param ServiceParam, pvcName string, containerPath string) error {
 	orm := sql.GetOrm()
@@ -119,7 +119,7 @@ func CreateServicePvc(param ServiceParam, pvcName string, containerPath string) 
 	return err
 }
 
-// 2018-02-22 13:32
+// 2019-01-22 13:32
 // 创建pvc
 func pvcCreate(param StorageParam) error {
 	logs.Info("创建pvc", util.ObjToString(param))
@@ -146,7 +146,7 @@ func pvcCreate(param StorageParam) error {
 	return nil
 }
 
-// 2018-01-31 10:35
+// 2019-01-31 10:35
 // 删除存储卷
 func DeletePvc(param StorageParam) error {
 	pvcClient, err := GetYamlClient(param.ClusterName, "", "v1", "/api")

@@ -43,7 +43,7 @@ function jobLog(jobId, history) {
 }
 
 /**
- * 2018-01-29 8:01
+ * 2019-01-29 8:01
  * 获取构建的dockerfile
  * @param historyId
  */
@@ -57,7 +57,7 @@ function showBuildDockerfile(historyId, job) {
 
 /**
  * 删除job弹出框
- * 2018-01-25 10:24
+ * 2019-01-25 10:24
  */
 function deleteJobSwal(id, detail) {
     if (detail) {
@@ -69,7 +69,7 @@ function deleteJobSwal(id, detail) {
 
 /**
  * 执行构建弹出框
- * 2018-01-27 5:44
+ * 2019-01-27 5:44
  * @param id
  */
 function startExecJob(id) {
@@ -331,7 +331,7 @@ function toCreateApp(histroyId) {
 
 /**
  * 转到镜像仓库组
- * 2018-01-31 22:14
+ * 2019-01-31 22:14
  */
 function toRegistryGroup(name) {
     window.open( "/image/registry/group/detail/" + name, "_blank");

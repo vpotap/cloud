@@ -45,7 +45,7 @@ func ResponseMap(listResult interface{}, total interface{}, draw interface{}) ma
 	return maps.Data
 }
 
-// 2018-01-15
+// 2019-01-15
 //  获取表的行数
 func GetTableRows(table string)  {
 

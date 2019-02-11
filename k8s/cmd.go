@@ -17,7 +17,7 @@ import (
 
 var restclientLock = util.Lock{}
 
-// 2018-02-27 17:35
+// 2019-01-27 17:35
 // 执行命令
 func Exec(clustername string, podname string, namespace string, containername string, cmd []string) string {
 	key := clustername

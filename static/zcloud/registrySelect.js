@@ -1,5 +1,5 @@
 /**
- * 2018-02-06 14:34
+ * 2019-01-06 14:34
  * 获取仓库组
  * @param registryName
  */
@@ -39,7 +39,7 @@ function setEntname() {
 }
 
 /**
- * 2018-01-27 18:18
+ * 2019-01-27 18:18
  * @param cluster
  */
 function setRegistryServer(cluster, target) {
@@ -60,7 +60,7 @@ function setRegistryServer(cluster, target) {
 
 
 /**
- * 2018-02-06 15:40
+ * 2019-01-06 15:40
  * 获取集群名称
  * */
 function getEntClusterData(entname, target) {
@@ -91,7 +91,7 @@ function getEntClusterData(entname, target) {
 }
 
 /**
- * 2018-02-06 14:34
+ * 2019-01-06 14:34
  * 获取仓库组
  * @param registryName
  */
@@ -113,7 +113,7 @@ function selectImageGroup(registryName, target) {
 
 /**
  * 获取镜像
- * 2018-02-06 14:51
+ * 2019-01-06 14:51
  * @param id
  */
 function getImageTags(id) {
@@ -158,7 +158,7 @@ function getImageName(groupName) {
 }
 
 /**
- * 2018-02-03 21:02
+ * 2019-01-03 21:02
  * 选择应用
  * @param clustername
  */
@@ -180,7 +180,7 @@ function getResouceData(clustername, id, url, name, appname) {
 
 
 /**
- * 2018-02-03 21:02
+ * 2019-01-03 21:02
  * 选择应用
  * @param clustername
  */

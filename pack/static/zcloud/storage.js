@@ -12,7 +12,7 @@ function addStorage(storageId) {
 
 /**
  * 删除存储组弹出框
- * 2018-01-26 18:09
+ * 2019-01-26 18:09
  */
 function deleteStorageSwal(id, force) {
     var msg = "删除该存储";
@@ -129,7 +129,7 @@ function deleteStorage(id, force) {
 
 
 /**
- * 2018-01-31 09:19
+ * 2019-01-31 09:19
  * 保存存储卷
  */
 function saveStorage(storageId) {

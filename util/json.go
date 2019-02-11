@@ -63,7 +63,7 @@ func Yaml2Json(input []byte) (map[string]interface{}, error) {
 }
 
 // 将json转换成yaml格式
-// 2018-01-11 22:10
+// 2019-01-11 22:10
 func Json2Yaml(jsondata string) string {
 	data, err := yaml.JSONToYAML([]byte(jsondata))
 	if err == nil {
@@ -74,7 +74,7 @@ func Json2Yaml(jsondata string) string {
 	return err.Error()
 }
 
-// 2018-02-04
+// 2019-01-04
 // 将一些公共数据写好
 func SetPublicData(src interface{}, username string, obj interface{})  {
 	data := Lock{}
@@ -92,7 +92,7 @@ func SetPublicData(src interface{}, username string, obj interface{})  {
 	json.Unmarshal(temp, &obj)
 }
 
-// 2018-02-14 10:22
+// 2019-01-14 10:22
 // 将2个struct数据合并
 func MergerStruct(a interface{}, b interface{}) {
 	data := Lock{}

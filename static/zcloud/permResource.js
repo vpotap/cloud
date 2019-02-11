@@ -12,7 +12,7 @@ function addResource(userId) {
 
 /**
  * 删除资源管理弹出框
- * 2018-01-20 18:09
+ * 2019-01-20 18:09
  */
 function deleteResourceSwal(id) {
     Swal("删除资源管理", "warning", "确认操作", "不操作", "成功", "失败", " deleteResource("+id+")", "loadResourceData()");

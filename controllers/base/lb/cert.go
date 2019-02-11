@@ -9,7 +9,7 @@ import (
 	"cloud/k8s"
 )
 
-// 2018-02-02 10:32
+// 2019-01-02 10:32
 // 持续集成
 type CertController struct {
 	beego.Controller
@@ -23,7 +23,7 @@ func (this *CertController) CertList() {
 
 
 // 生成 镜像服务 html
-// 2018-01-26 10:41
+// 2019-01-26 10:41
 func GetCertSelect() string {
 	html := make([]string, 0)
 	data := GetCertfileData("")
@@ -51,7 +51,7 @@ func (this *CertController) CertAdd() {
 }
 
 // 获取docker数据
-// 2018-01-26 11:17
+// 2019-01-26 11:17
 func GetCertfileData(name string)[]k8s.CloudLbCert {
 	searchMap := sql.SearchMap{}
 	if name != "" {
@@ -117,7 +117,7 @@ func (this *CertController) CertData() {
 
 // json
 // 删除cert
-// 2018-02-02 21:46
+// 2019-01-02 21:46
 // @router /api/network/cert/:id:int [delete]
 func (this *CertController) CertDelete() {
 	searchMap := sql.SearchMap{}

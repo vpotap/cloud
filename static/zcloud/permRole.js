@@ -35,7 +35,7 @@ function addRolePermUser(roleId) {
 
 /**
  * 删除角色管理弹出框
- * 2018-01-20 18:09
+ * 2019-01-20 18:09
  */
 function deleteRoleSwal(id) {
     Swal("删除角色管理", "warning", "确认操作", "不操作", "成功", "失败", " deleteRole("+id+")", "loadRoleData()");

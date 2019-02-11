@@ -9,12 +9,12 @@ import (
 	"encoding/json"
 )
 
-// 2018-01-20 redis写入数据
+// 2019-01-20 redis写入数据
 func RedisCacheClient(key string) (cache.Cache,error) {
 	return cache.NewCache("redis", `{"conn":"`+beego.AppConfig.String("redis")+`", "key":"`+key+`_"}`)
 }
 
-// 2018-02-19 08:51
+// 2019-01-19 08:51
 // redis数据转换到对象中
 func RedisObj2Obj(r interface{}, o interface{}) bool {
 	if r != nil {

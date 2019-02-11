@@ -918,7 +918,7 @@ func init() {
 			),
 		)
 
-	// 2018-02-19 18:30
+	// 2019-01-19 18:30
 	// 监控中心
 	monitorNs :=
 		beego.NewNamespace("/monitor",
@@ -932,7 +932,7 @@ func init() {
 			),
 		)
 
-	// 2018-02-19 18:32
+	// 2019-01-19 18:32
 	// 监控中心api
 	monitorApi :=
 		beego.NewNamespace("/api/",

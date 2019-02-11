@@ -139,7 +139,7 @@ func (this *PermRoleController) PermRoleAdd() {
 }
 
 // 获取角色数据
-// 2018-02-06 8:56
+// 2019-01-06 8:56
 // router /api/perm/role [get]
 func (this *PermRoleController) PermRoleData() {
 	// 角色数据
@@ -283,7 +283,7 @@ func (this *PermRoleController) PermRoleSaveUser() {
 }
 
 // 获取角色数据
-// 2018-02-06 08:36
+// 2019-01-06 08:36
 // router /api/perm/role/name [get]
 func (this *PermRoleController) PermRoleDataName() {
 	// 角色数据
@@ -315,7 +315,7 @@ func (this *PermRoleController) PermRoleDatas() {
 
 // json
 // 删除角色
-// 2018-02-06 08:36
+// 2019-01-06 08:36
 // @router /api/perm/role/:id:int [delete]
 func (this *PermRoleController) PermRoleDelete() {
 	searchMap := sql.GetSearchMap("RoleId", *this.Ctx)

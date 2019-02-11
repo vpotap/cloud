@@ -17,7 +17,7 @@ type ClusterHealth struct {
 	Message string
 }
 
-// 2018-02-28 11:16
+// 2019-01-28 11:16
 // 每次读取
 // 获取集群组件监控状态
 func GetClusterStatus(clusterName string) string {

@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-// 2018-02-10 18:14
+// 2019-01-10 18:14
 // 持续集成
 type ServiceController struct {
 	beego.Controller
@@ -39,7 +39,7 @@ func (this *ServiceController) ServiceTop() {
 	this.TplName = "ci/service/top.html"
 }
 
-// 2018-02-16 11:00
+// 2019-01-16 11:00
 // 切入流量页面
 // @router /ci/service/flow/:id:int [get]
 func (this *ServiceController) StartFlow() {
@@ -57,7 +57,7 @@ func (this *ServiceController) HistoryList() {
 	this.TplName = "ci/service/history.html"
 }
 
-// 2018-02-17 11:14
+// 2019-01-17 11:14
 // 服务发布日志入口页面
 // @router /ci/service/release/logs [get]
 func (this *ServiceController) ServiceLog() {
@@ -65,7 +65,7 @@ func (this *ServiceController) ServiceLog() {
 	this.TplName = "ci/service/logs.html"
 }
 
-// 2018-02-16 17:32
+// 2019-01-16 17:32
 // 滚动更新页面
 // @router /ci/service/rolling/:id:int [get]
 func (this *ServiceController) RollingUpdate() {
@@ -148,7 +148,7 @@ func (this *ServiceController) ServiceAdd() {
 }
 
 // 获取服务发布数据
-// 2018-02-17 11:20
+// 2019-01-17 11:20
 // router /api/ci/service/logs [get]
 func (this *ServiceController) ServiceLogs() {
 	data := make([]ci.CloudCiReleaseLog, 0)
@@ -212,7 +212,7 @@ func (this *ServiceController) ServiceSave() {
 }
 
 // 获取服务发布数据
-// 2018-02-10 19:45
+// 2019-01-10 19:45
 // router /api/ci/service/name [get]
 func (this *ServiceController) ServiceDataName() {
 	// 服务发布数据
@@ -225,7 +225,7 @@ func (this *ServiceController) ServiceDataName() {
 	setServiceJson(this, data)
 }
 
-// 2018-02-14 16:40
+// 2019-01-14 16:40
 // 服务发布历史数据
 // @router /api/ci/service/history [get]
 func (this *ServiceController) ReleaseHistory() {
@@ -302,7 +302,7 @@ func (this *ServiceController) ServiceDatas() {
 
 // json
 // 删除服务发布
-// 2018-02-10 18:27
+// 2019-01-10 18:27
 // @router /api/ci/service/:id:int [delete]
 func (this *ServiceController) ServiceDelete() {
 	searchMap := sql.GetSearchMap("ServiceId", *this.Ctx)
@@ -319,7 +319,7 @@ func (this *ServiceController) ServiceDelete() {
 	saveServiceLog(this, serviceData, "删除了服务发布")
 }
 
-// 2018-02-16 18:57
+// 2019-01-16 18:57
 // 滚动镜像
 // @param version
 // @router /api/ci/service/rolling/:id:int [post]
@@ -361,7 +361,7 @@ func (this *ServiceController) RollingUpdateExec() {
 	saveServiceLog(this, serviceCiData, "滚动更新服务"+d.Images)
 }
 
-// 2018-02-15 10:49
+// 2019-01-15 10:49
 // 将篮板更新镜像
 // @router /api/ci/service/blue/:id:int [post]
 func (this *ServiceController) UpdateBlueService() {
@@ -393,7 +393,7 @@ func (this *ServiceController) UpdateBlueService() {
 }
 
 // 服务发布入口
-// 2018-02-10 18:27
+// 2019-01-10 18:27
 // @param ServiceVersion  [ 1 | 2 ]
 // @router /api/ci/service/release/:id:int [post]
 func (this *ServiceController) ServiceReleaseExec() {
@@ -452,7 +452,7 @@ func (this *ServiceController) ServiceReleaseExec() {
 	}
 }
 
-// 2018-02-14 21:10
+// 2019-01-14 21:10
 // 上线服务,将新版本替换到线上
 // 蓝绿发布切换
 // @param ServerVersion
@@ -503,7 +503,7 @@ func (this *ServiceController) ServiceOnline() {
 	saveServiceLog(this, serviceCiData, "蓝绿版本切换,切入版本为"+version)
 }
 
-// 2018-02-14 18:20
+// 2019-01-14 18:20
 // 下线服务,删除不要的服务
 // @router /api/ci/service/release/:id:int [delete]
 func (this *ServiceController) ServiceOffline() {
@@ -546,7 +546,7 @@ func (this *ServiceController) ServiceOffline() {
 	saveServiceLog(this, serviceCiData, "删除服务")
 }
 
-// 2018-02-15 06:40
+// 2019-01-15 06:40
 // 将所有配置都回归到蓝版本, svc和lb
 // 服务回滚
 // @router /api/ci/service/rollback/:id:int [post]
@@ -599,7 +599,7 @@ func (this *ServiceController) ServiceRollback() {
 	setServiceJson(this, util.ApiResponse(false, "正在操作中,请稍后重试验证!"))
 }
 
-// 2018-02-16 12:57
+// 2019-01-16 12:57
 // 流量切入,按百分比切入
 // 主要是修改lb的upstream配置
 // @param Percent
@@ -643,7 +643,7 @@ func (this *ServiceController) StartFlowExec() {
 	}
 }
 
-// 2018-02-18 17:30
+// 2019-01-18 17:30
 // 更新发布历史中的描述信息
 // @router /api/ci/service/history/:id:int [post]
 func (this *ServiceController) UpdateHistory()  {

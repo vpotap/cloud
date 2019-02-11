@@ -9,7 +9,7 @@ import (
 )
 
 // 镜像推送使用的参数
-// 2018-02-06 08:13
+// 2019-01-06 08:13
 type ImagePushParam struct {
 	// 仓库IP
 	Registry1Ip string
@@ -41,7 +41,7 @@ type ImagePushParam struct {
 	ServerAddress string
 }
 
-// 2018-02-06 09:21
+// 2019-01-06 09:21
 // 替换命令
 func replacePushCmd(cmd string, param ImagePushParam) string {
 	cmd = strings.Replace(cmd, "REGISTRY-1", param.Registry1Domain+":"+param.Registry1Port, -1)
@@ -96,7 +96,7 @@ echo "完成提交... $d"
 return replacePushCmd(cmd, param)
 }
 
-// 2018-02-06 09:06
+// 2019-01-06 09:06
 // 在docker中执行镜像提交
 func getPushCmd(param ImagePushParam) string {
 	cmd := `mkdir /root/.docker -p
@@ -152,7 +152,7 @@ echo "完成提交... $d"
 	return cmd
 }
 
-// 2018-02-06 09;37
+// 2019-01-06 09;37
 // 将操作命令挂载到容器中
 func getImagePushConfig(param ImagePushParam) []ConfigureData {
 	configureData := make([]ConfigureData, 0)
@@ -170,7 +170,7 @@ func getImagePushConfig(param ImagePushParam) []ConfigureData {
 	return configureData
 }
 
-// 2018-02-06 08:57
+// 2019-01-06 08:57
 // 获取镜像推送的job参数
 func imagePushJobParam(clusterName string, pushParam ImagePushParam) JobParam {
 	//name := "registryv2"
@@ -188,7 +188,7 @@ func imagePushJobParam(clusterName string, pushParam ImagePushParam) JobParam {
 	return param
 }
 
-// 2018-02-06 10:45
+// 2019-01-06 10:45
 // 镜像提交完成后写入日志
 const InsertCloudImageSyncLog = "insert into cloud_image_sync_log"
 const UpdateCloudImageSyncLog = "update cloud_image_sync_log"

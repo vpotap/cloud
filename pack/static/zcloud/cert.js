@@ -13,7 +13,7 @@ function addCert(fileId) {
 
 /**
  * 删除证书弹出框
- * 2018-02-02 16:46
+ * 2019-01-02 16:46
  */
 function deleteCertSwal(id) {
     Swal("删除该证书", "warning", "确认操作", "不操作", "成功", "失败", " deleteCert("+id+")", "loadCertData()");
@@ -73,7 +73,7 @@ function loadCertData(key) {
 
 /**
  * 删除证书方法
- * 2018-02-02 17;00
+ * 2019-01-02 17;00
  * @param id
  * @return {*}
  */
@@ -88,7 +88,7 @@ function deleteCert(id) {
 
 /**
  * 保存证书
- * 2018-02-02 17:05
+ * 2019-01-02 17:05
  */
 function saveCert(fileId) {
     if(!fileId){

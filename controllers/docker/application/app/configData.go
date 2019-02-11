@@ -123,7 +123,7 @@ func (this *DataController) ConfigDataDelete() {
 }
 
 // 从数据库查询组名称
-// 2018-01-17 16:24
+// 2019-01-17 16:24
 func GetConfgData(configureName string, cluster string) (map[string]interface{}) {
 	configData := app.CloudAppConfigure{}
 	searchMap := sql.GetSearchMapV("ConfigureName", configureName, "ClusterName", cluster)
@@ -144,7 +144,7 @@ func GetConfgData(configureName string, cluster string) (map[string]interface{})
 }
 
 // 查询配置挂载的数据
-// 2018-01-18 10:50
+// 2019-01-18 10:50
 func getMountData(configname string, cluster string, dataName string) []k8s.CloudConfigureMount {
 	// 首先查询已经mount的数据
 	mountData := []k8s.CloudConfigureMount{}
@@ -158,7 +158,7 @@ func getMountData(configname string, cluster string, dataName string) []k8s.Clou
 }
 
 // 获取主配置文件
-// 2018-01-18 11:12
+// 2019-01-18 11:12
 func getMasterConfigure(configId int64) app.CloudAppConfigure {
 	searchMap := sql.SearchMap{}
 	searchMap.Put("ConfigureId", configId)
@@ -166,7 +166,7 @@ func getMasterConfigure(configId int64) app.CloudAppConfigure {
 	return configureData
 }
 
-// 2018-01-18 10:39
+// 2019-01-18 10:39
 // 保存后更新 k8s configmap
 func updateK8sConfigMap(d app.CloudConfigData) {
 	configureData := getMasterConfigure(d.ConfigureId)

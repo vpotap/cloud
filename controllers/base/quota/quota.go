@@ -59,7 +59,7 @@ func (this *ControllerQuota) QuotaDetailPage() {
 	this.TplName = "base/quota/detail.html"
 }
 
-// 2018-02-11 10:04
+// 2019-01-11 10:04
 // 配额管理添加页面
 // @router /base/quota/add [get]
 func (this *ControllerQuota) QuotaAdd() {
@@ -181,7 +181,7 @@ func (this *ControllerQuota) GetQuotaName() {
 	this.ServeJSON(false)
 }
 
-// 2018-02-11 18:30
+// 2019-01-11 18:30
 func getQuotaData(searchMap sql.SearchMap) []quota.CloudQuota {
 	template := make([]quota.CloudQuota, 0)
 	q := sql.SearchSql(quota.CloudQuota{}, quota.SelectCloudQuota, searchMap)
@@ -223,7 +223,7 @@ func (this *ControllerQuota) QuotaDelete() {
 	setQuotaJson(this, data)
 }
 
-// 2018-02-11 21:53
+// 2019-01-11 21:53
 // 获取用户的配额数据
 func GetUserQuotaData(username string, quotaName string) []quota.QuotaUsed {
 	freeQuotas := make([]quota.QuotaUsed, 0)
@@ -268,7 +268,7 @@ func GetUserQuotaData(username string, quotaName string) []quota.QuotaUsed {
 	return freeQuotas
 }
 
-// 2018-02-11 21:30
+// 2019-01-11 21:30
 // 获取用户可用配额
 func GetUserQuota(username string, quotaType string) string {
 	freeQuotas := make([]string, 0)
@@ -319,7 +319,7 @@ func GetUserQuota(username string, quotaType string) string {
 	return option
 }
 
-// 2018-02-11 18:57
+// 2019-01-11 18:57
 // 获取是否有可用配额
 func getFreeQuota(quotaType string, result quota.QuotaUsed, freeQuotas []string) []string {
 	var free bool
@@ -363,7 +363,7 @@ func getFreeQuota(quotaType string, result quota.QuotaUsed, freeQuotas []string)
 	return freeQuotas
 }
 
-// 2018-02-12 06:24
+// 2019-01-12 06:24
 // 查询是否有应用使用资源配额
 func queryAppQuotaUsed(quotaName string) util.Lock {
 	var qname string

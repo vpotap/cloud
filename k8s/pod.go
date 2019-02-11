@@ -68,7 +68,7 @@ func GetPodsNumber(namespace string, clientSet kubernetes.Clientset) int {
 	return len(pods.Items)
 }
 
-// 2018-01-16 12:25
+// 2019-01-16 12:25
 // 删除某个pod后自动重建
 func DeletePod(namespace string, name string, clientSet kubernetes.Clientset) error {
 	err := clientSet.CoreV1().Pods(namespace).Delete(name, &metav1.DeleteOptions{})
@@ -118,7 +118,7 @@ func GetPodsFromNode(node string, clientSet kubernetes.Clientset) v1.PodList {
 // 获取某个服务的pods
 // @param namespace
 // @param serviceName
-// 2018-01-18 9:53
+// 2019-01-18 9:53
 func GetPodsService(namespace string, serviceName string, clientSet kubernetes.Clientset) []v1.Pod {
 	opt := metav1.ListOptions{}
 	opt.LabelSelector = "name=" + serviceName
@@ -176,7 +176,7 @@ func GetPodStatus(namespace string, clientSet kubernetes.Clientset) []AppPodStat
 }
 
 // 获取容器挂载的目录信息
-// 2018-01-16 11:18
+// 2019-01-16 11:18
 func getMountPath(d v1.Pod) string {
 	volumn := d.Spec.Containers[0].VolumeMounts
 	result := make([]StorageData, 0)
@@ -205,7 +205,7 @@ func getMountPath(d v1.Pod) string {
 	return string(t)
 }
 
-// 2018-02-09 08:34
+// 2019-01-09 08:34
 // pod状态数据
 func podStatus(app app.CloudContainer, obj v1.ContainerStatus) app.CloudContainer {
 	app.WaitingMessages = "0"

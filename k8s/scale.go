@@ -25,7 +25,7 @@ func getServiceReplicas(param QueryParam) AutoScaleParam {
 	return data
 }
 
-// 2018-01-13 10:32
+// 2019-01-13 10:32
 // 将应用扩展或停止
 // k8s.ScalePod("10.16.55.6","8080","auto-3--dfsad","auto-3",4)
 func ScalePod(clustername string, namespace string, name string, replicas int32) error {
@@ -44,23 +44,23 @@ func ScalePod(clustername string, namespace string, name string, replicas int32)
 	return err
 }
 
-// 2018-01-13 17:54
+// 2019-01-13 17:54
 // 获取扩展信息
-// {"metadata":{"name":"auto-3","namespace":"auto-3--dfsad","selfLink":"/apis/autoscaling/v2beta1/namespaces/auto-3--dfsad/horizontalpodautoscalers/auto-3","uid":"3a4ec944-f83e-11e7-8d1c-0894ef37b2d2","resourceVersion":"4149862","creationTimestamp":"2018-01-13T08:46:20Z"},"spec":{"scaleTargetRef":{"kind":"Deployment","name":"auto-3","apiVersion":"extensions/v1beta1"},"minReplicas":1,"maxReplicas":2,"metrics":[{"type":"Resource","resource":{"name":"cpu","targetAverageUtilization":80}}]},"status":{"lastScaleTime":"2018-01-13T09:45:51Z","currentReplicas":2,"desiredReplicas":2,"currentMetrics":null,"conditions":[{"type":"AbleToScale","status":"True","lastTransitionTime":"2018-01-13T08:46:50Z","reason":"SucceededGetScale","message":"the HPA controller was able to get the target's current scale"},{"type":"ScalingActive","status":"False","lastTransitionTime":"2018-01-13T08:46:50Z","reason":"FailedGetResourceMetric","message":"the HPA was unable to compute the replica count: unable to get metrics for resource cpu: failed to get pod resource metrics: the server could not find the requested resource (get services http:heapster:)"}]}} <nil>
+// {"metadata":{"name":"auto-3","namespace":"auto-3--dfsad","selfLink":"/apis/autoscaling/v2beta1/namespaces/auto-3--dfsad/horizontalpodautoscalers/auto-3","uid":"3a4ec944-f83e-11e7-8d1c-0894ef37b2d2","resourceVersion":"4149862","creationTimestamp":"2019-01-13T08:46:20Z"},"spec":{"scaleTargetRef":{"kind":"Deployment","name":"auto-3","apiVersion":"extensions/v1beta1"},"minReplicas":1,"maxReplicas":2,"metrics":[{"type":"Resource","resource":{"name":"cpu","targetAverageUtilization":80}}]},"status":{"lastScaleTime":"2019-01-13T09:45:51Z","currentReplicas":2,"desiredReplicas":2,"currentMetrics":null,"conditions":[{"type":"AbleToScale","status":"True","lastTransitionTime":"2019-01-13T08:46:50Z","reason":"SucceededGetScale","message":"the HPA controller was able to get the target's current scale"},{"type":"ScalingActive","status":"False","lastTransitionTime":"2019-01-13T08:46:50Z","reason":"FailedGetResourceMetric","message":"the HPA was unable to compute the replica count: unable to get metrics for resource cpu: failed to get pod resource metrics: the server could not find the requested resource (get services http:heapster:)"}]}} <nil>
 func GetAutoScale(clustername string, namespace string, name string) (v2beta1.HorizontalPodAutoscaler, error) {
 	cl, _ := GetClient(clustername)
 	v, err := cl.AutoscalingV2beta1().HorizontalPodAutoscalers(namespace).Get(name, metav1.GetOptions{})
 	return *v, err
 }
 
-// 2018-02-20 18:59
+// 2019-01-20 18:59
 // 添加锁
 func setLock(lockKey string, interval time.Duration)  {
 	logs.Info(lockKey, interval)
 	cache.AutoScaleCache.Put(lockKey, time.Now().Unix(), interval)
 }
 
-// 2018-02-19 15:14
+// 2019-01-19 15:14
 // 扩容pod
 func increasePod(param QueryParam) {
 	lockKey := param.Namespace + param.ClusterName + param.ServiceName + param.ServiceVersion + param.AppName + "increase"
@@ -109,7 +109,7 @@ func increasePod(param QueryParam) {
 	}
 }
 
-// 2018-02-19 16:23
+// 2019-01-19 16:23
 // 检查自动扩容是否锁定
 func checkAutoScaleLock(key string) bool {
 	r := cache.AutoScaleCache.Get(key)
@@ -121,7 +121,7 @@ func checkAutoScaleLock(key string) bool {
 	return true
 }
 
-// 2018-02-19 15:20
+// 2019-01-19 15:20
 // 缩小pod
 func reducePod(param QueryParam) {
 	lockKey := param.Namespace + param.ClusterName + param.ServiceName + param.ServiceVersion + param.AppName + "reduce"
@@ -167,7 +167,7 @@ func reducePod(param QueryParam) {
 	}
 }
 
-// 2018-02-19 14:36
+// 2019-01-19 14:36
 // 分析监控数据,并做出扩容和缩容操作
 func ParseMonitorData(param QueryParam) {
 	for i := 1; i < 3; i ++ {
@@ -190,7 +190,7 @@ func ParseMonitorData(param QueryParam) {
 	}
 }
 
-// 2018-02-20 17:10
+// 2019-01-20 17:10
 // 记录扩容操作日志
 const InsertCloudAutoScaleLog = "insert into cloud_auto_scale_log"
 func writeScaleLog(param QueryParam,scaleParam AutoScaleParam, replicas int32, status string)  {

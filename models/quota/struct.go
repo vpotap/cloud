@@ -14,7 +14,7 @@ type QuotaAppUsed struct {
 	Cnt int64
 }
 
-//2018-02-11 09:31:19.5279645 +0800 CST
+//2019-01-11 09:31:19.5279645 +0800 CST
 type CloudQuota struct {
 	//配额描述信息
 	Description string
@@ -60,7 +60,7 @@ type CloudQuota struct {
 	DockerFileNumber int64
 }
 
-// 2018-02-11 16:21
+// 2019-01-11 16:21
 // 配额使用情况
 type QuotaUsed struct {
 	CloudQuota
@@ -97,7 +97,7 @@ type QuotaUsed struct {
 	RegistryGroupFree int64
 }
 
-// 2018-02-11 10:02
+// 2019-01-11 10:02
 // 获取配置默认数据
 func GetDefaultQuota() CloudQuota {
 	cloudQuota := CloudQuota{

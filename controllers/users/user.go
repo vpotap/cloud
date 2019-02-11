@@ -43,7 +43,7 @@ func (this *UserController) UserAdd() {
 }
 
 // 获取用户数据
-// 2018-02-11 11;02
+// 2019-01-11 11;02
 func GetUserSelect() string {
 	html := make([]string, 0)
 	html = append(html, "<option>--请选择--</option>")
@@ -54,7 +54,7 @@ func GetUserSelect() string {
 	return strings.Join(html, "\n")
 }
 
-// 2018-02-11 11;03
+// 2019-01-11 11;03
 func getUserData() []index.CloudAuthorityUser {
 	// 用户数据
 	data := make([]index.CloudAuthorityUser, 0)
@@ -67,7 +67,7 @@ func getUserData() []index.CloudAuthorityUser {
 }
 
 // 获取用户数据
-// 2018-01-20 12:56
+// 2019-01-20 12:56
 // router /api/users [get]
 func (this *UserController) UserData() {
 	data := getUserData()
@@ -114,7 +114,7 @@ func (this *UserController) UserSave() {
 }
 
 // 获取用户数据
-// 2018-01-20 17:45
+// 2019-01-20 17:45
 // router /api/users/name [get]
 func (this *UserController) UserDataName() {
 	// 用户数据
@@ -189,7 +189,7 @@ func (this *UserController) UserToken() {
 
 // json
 // 删除用户
-// 2018-01-20 17:46
+// 2019-01-20 17:46
 // @router /api/user/:id:int [delete]
 func (this *UserController) UserDelete() {
 	searchMap := sql.GetSearchMap("UserId", *this.Ctx)

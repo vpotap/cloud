@@ -15,7 +15,7 @@ type ProjectMetadata struct {
 	Value        string    `json:"value"`
 	CreationTime time.Time `json:"creation_time"`
 	UpdateTime   time.Time `json:"update_time"`
-	Deleted      int       `json:"deleted"`
+	Deleted      bool      `json:"deleted"`
 }
 
 // Project holds the details of a project.
@@ -25,7 +25,7 @@ type Project struct {
 	Name         string            `json:"name"`
 	CreationTime time.Time         `json:"creation_time"`
 	UpdateTime   time.Time         `json:"update_time"`
-	Deleted      int               `json:"deleted"`
+	Deleted      bool              `json:"deleted"`
 	OwnerName    string            `json:"owner_name"`
 	Togglable    bool              `json:"togglable"`
 	Role         int               `json:"current_user_role_id"`

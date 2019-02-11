@@ -69,7 +69,7 @@ type DockerCloudCiEnv struct {
     Approve string
 }
 
-// 2018-01-20 12:53
+// 2019-01-20 12:53
 // 存储用户
 type CloudAuthorityUser struct {
     UserName string

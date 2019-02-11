@@ -94,7 +94,7 @@ func SaveResponse(err error, errmsg string) (map[string]interface{}, string) {
 }
 
 // 将字符串转成int类型
-// 2018-01-12 10:19
+// 2019-01-12 10:19
 func StringToInt(v string) interface{} {
 	r, err := strconv.Atoi(v)
 	if err != nil {
@@ -104,13 +104,13 @@ func StringToInt(v string) interface{} {
 }
 
 // 获取namespace
-// 2018-01-13 07:02
+// 2019-01-13 07:02
 func Namespace(appname string, resource string) string {
 	return appname + "--" + resource
 }
 
 // 检查某个slice有某个数据
-// 2018-01-14 14:26
+// 2019-01-14 14:26
 func ListExistsInt(arr []int, value int) bool {
 	for _, v := range arr {
 		if v == value {
@@ -121,7 +121,7 @@ func ListExistsInt(arr []int, value int) bool {
 }
 
 // 检查某个slice有某个数据
-// 2018-02-05 21:06
+// 2019-01-05 21:06
 func ListExistsString(arr []string, value string) bool {
 	for _, v := range arr {
 		if v == value {
@@ -132,7 +132,7 @@ func ListExistsString(arr []string, value string) bool {
 }
 
 
-// 2018-01-21 07:39
+// 2019-01-21 07:39
 // 读取文件内容
 func ReadFile(filename string) string {
 	r, err := ioutil.ReadFile(filename)
@@ -143,7 +143,7 @@ func ReadFile(filename string) string {
 }
 
 // 获取认证服务器的配置文件路径
-// 2018-01-21 10:29
+// 2019-01-21 10:29
 func AuthServerConfigFile() string {
 	pwd,_ := os.Getwd()
 	cf := filepath.Join(pwd,"conf", "simple.yaml")
@@ -153,18 +153,18 @@ func AuthServerConfigFile() string {
 
 
 // 生成htmlselect的内容
-// 2018-01-26 10:57
+// 2019-01-26 10:57
 func GetSelectOption(name string, value string, title string) string {
 	return"<option title='"+title+"' value='"+value+"'>"+name+"</option>"
 }
 
 // 生成htmlselect的内容
-// 2018-02-07
+// 2019-01-07
 func GetSelectOptionName(name string) string {
 	return"<option title='"+name+"' value='"+name+"'>"+name+"</option>"
 }
 
-// 2018-01-31 09:30
+// 2019-01-31 09:30
 // 获取响应数据
 func GetResponseResult(err error,draw interface{}, returnData interface{}, totle interface{}) map[string]interface{} {
 	var r map[string]interface{}

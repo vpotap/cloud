@@ -143,7 +143,7 @@ func (this *ImageController) RegistryServerSave() {
 }
 
 // 获取仓库服务器信息
-// 2018-01-27 21:17
+// 2019-01-27 21:17
 func GetRegistryServerCluster(serverDomain string, clustername string) registry.CloudRegistryServer {
 	data := registry.CloudRegistryServer{}
 	searchMap := sql.GetSearchMapV("ServerDomain", serverDomain, "ClusterName", clustername)
@@ -155,7 +155,7 @@ func GetRegistryServerCluster(serverDomain string, clustername string) registry.
 	return data
 }
 
-// 2018-02-06 21:01
+// 2019-01-06 21:01
 func GetRegistryServerMap() util.Lock {
 	lock := util.Lock{}
 	data := GetRegistryServer("1")
@@ -166,7 +166,7 @@ func GetRegistryServerMap() util.Lock {
 }
 
 // 获取镜像服务器信息
-// 2018-01-26 10:37
+// 2019-01-26 10:37
 func GetRegistryServer(name string) []registry.CloudRegistryServer {
 	searchMap := sql.SearchMap{}
 	data := make([]registry.CloudRegistryServer, 0)
@@ -191,7 +191,7 @@ func GetRegistryServer(name string) []registry.CloudRegistryServer {
 }
 
 // 生成 镜像服务 html
-// 2018-01-26 10:41
+// 2019-01-26 10:41
 func GetRegistrySelect() string {
 	html := make([]string, 0)
 	data := GetRegistryServer("")

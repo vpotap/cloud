@@ -14,7 +14,7 @@ import (
 	"cloud/userperm"
 )
 
-// 2018-02-19 10:40
+// 2019-01-19 10:40
 // 获取应用数据
 func getApp(this *AppController) (app.CloudApp, sql.SearchMap) {
 	searchMap := sql.GetSearchMap("AppId", *this.Ctx)
@@ -25,7 +25,7 @@ func getApp(this *AppController) (app.CloudApp, sql.SearchMap) {
 }
 
 // 将数据写入到应用表中
-// 2018-01-16 17:23
+// 2019-01-16 17:23
 func saveAppData(service app.CloudAppService) {
 	v, _ := json.Marshal(service)
 	data := app.CloudApp{}
@@ -34,7 +34,7 @@ func saveAppData(service app.CloudAppService) {
 	sql.Raw(insert).Exec()
 }
 
-// 2018-02-11 08:40
+// 2019-01-11 08:40
 // 从缓存中读取应用状态数据
 func getCacheAppData(data []app.CloudApp) []k8s.CloudApp {
 	var cloudApps []k8s.CloudApp
@@ -53,7 +53,7 @@ func getCacheAppData(data []app.CloudApp) []k8s.CloudApp {
 	return cloudApps
 }
 
-// 2018-02-22 18:18
+// 2019-01-22 18:18
 // 任务计划app数据缓存
 func CacheAppData() {
 	data := make([]app.CloudApp, 0)
@@ -61,7 +61,7 @@ func CacheAppData() {
 	getK8sAppData(data)
 }
 
-// 2018-02-27 11:21
+// 2019-01-27 11:21
 // 将应用数据写入到redis
 func putAppDataToRedis(id int64, app interface{}) {
 	key := strconv.FormatInt(id, 10)
@@ -99,7 +99,7 @@ func getUser(this *AppController) string {
 	return util.GetUser(this.GetSession("username"))
 }
 
-// 2018-02-09 15:55
+// 2019-01-09 15:55
 // 获取所有应用和服务的名称,在流水线判断应用服务是否存在
 func GetAppServiceDataMap() util.Lock {
 	lock := util.Lock{}
@@ -118,7 +118,7 @@ func GetAppServiceDataMap() util.Lock {
 }
 
 // 生成镜像tag
-// 2018-02-01 08:25
+// 2019-01-01 08:25
 func makeImageTags(tag string) string {
 	var html string
 	tags := strings.Split(tag, ",")
@@ -128,7 +128,7 @@ func makeImageTags(tag string) string {
 	return html
 }
 
-// 2018-02-26 09:32
+// 2019-01-26 09:32
 // 获取重建的应用信息
 func getRedeployApp(v string, user string) ([]app.CloudAppName, bool) {
 	searchMap := sql.SearchMap{}
@@ -141,7 +141,7 @@ func getRedeployApp(v string, user string) ([]app.CloudAppName, bool) {
 	return r, true
 }
 
-// 2018-02-26 09:54
+// 2019-01-26 09:54
 // 获取重建应用的服务信息
 func getRedeployService(v string, user string) ([]app.CloudAppService, bool) {
 	logs.Info("开始重建服务", util.ObjToString(v))
@@ -187,7 +187,7 @@ func getAppDataQ(searchMap sql.SearchMap) []app.CloudAppName {
 	return data
 }
 
-// 2018-02-03 21:44
+// 2019-01-03 21:44
 // 获取选项卡
 func GetAppHtml(cluster string, username string) string {
 	data := getAppData("", cluster, username)
@@ -198,7 +198,7 @@ func GetAppHtml(cluster string, username string) string {
 	return html
 }
 
-// 2018-02-27 11:45
+// 2019-01-27 11:45
 // 加载应用数据
 func selectAppData(searchMap sql.SearchMap) []app.CloudApp {
 	data := make([]app.CloudApp, 0)
@@ -217,7 +217,7 @@ func getAppData(name string, cluster string, username string) []app.CloudApp {
 	return selectAppData(searchMap)
 }
 
-// 2018-02-13 15:46
+// 2019-01-13 15:46
 // 获取应用选择项
 func GetAppSelect(searchMap sql.SearchMap) string {
 	data := getAppDataQ(searchMap)

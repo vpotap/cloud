@@ -1,6 +1,6 @@
 package ent
 
-//2018-02-05 18:01:19.0774817 +0800 CST
+//2019-01-05 18:01:19.0774817 +0800 CST
 type CloudEnt struct {
     //创建时间
     CreateTime string

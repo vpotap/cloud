@@ -23,7 +23,7 @@ func GetServices(clientset kubernetes.Clientset, namespace string) ([]v1.Service
 	return data.Items, err
 }
 
-// 2018-02-13 19:27
+// 2019-01-13 19:27
 // 获取服务信息
 func GetAppService(clientset kubernetes.Clientset, namespace string, serviceName string) *v1.Service  {
 	data, err := clientset.CoreV1().Services(namespace).Get(serviceName, metav1.GetOptions{})
@@ -66,7 +66,7 @@ func GetCusomService(clientset kubernetes.Clientset, namespace string) []string 
 	return servers
 }
 
-// 2018-02-20 11:29
+// 2019-01-20 11:29
 // 获取服务端口
 func GetServerPort(clientset kubernetes.Clientset, namespace string, name string)  util.Lock{
 	data, _ := clientset.CoreV1().Services(namespace).Get(name, metav1.GetOptions{})
@@ -82,7 +82,7 @@ func GetServerPort(clientset kubernetes.Clientset, namespace string, name string
 	return temp
 }
 
-// 2018-01-14 17:52
+// 2019-01-14 17:52
 // 获取当前服务使用的端口,和集群地址
 // 在更新service的时候使用
 func GetCurrentPort(clientset kubernetes.Clientset, namespace string, name string) util.Lock {
@@ -108,7 +108,7 @@ func GetCurrentPort(clientset kubernetes.Clientset, namespace string, name strin
 }
 
 // 获取某个服务使用的端口
-// 2018-01-21 18:03
+// 2019-01-21 18:03
 func GetServicePort(clientset kubernetes.Clientset, namespace string, name string) *v1.Service {
 	opt := metav1.GetOptions{}
 	data, err := clientset.CoreV1().Services(namespace).Get(name, opt)
@@ -154,7 +154,7 @@ func GetServiceFreePort(clientset kubernetes.Clientset)int32 {
 
 
 // 获取可用的端口,一次获取多个
-// 2018-01-14 14:29
+// 2019-01-14 14:29
 func GetServicePorts(clientset kubernetes.Clientset, size int, start int, end int) []int {
 	ports := GetServiceUsedPort(clientset)
 	logs.Info("获取到服务器已经使用的端口", ports)

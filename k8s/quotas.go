@@ -62,7 +62,7 @@ func SetLimts(clustername string, namespace string, mem string ,cpu interface{},
 	return err
 }
 
-// 2018-02-11 21:59
+// 2019-01-11 21:59
 // 检查配置服务时配额是否够用
 // 检查资源配额是否够用
 func CheckQuota(username string, podNumber int64, cpu int64, memory int64, resourceName string) (bool, string) {

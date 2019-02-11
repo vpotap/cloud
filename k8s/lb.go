@@ -73,7 +73,7 @@ done
 )
 
 // 获取配置了lb的数据
-// 2018-02-01 11:43
+// 2019-01-01 11:43
 func getLbServiceData() []CloudLbService {
 	data := make([]CloudLbService, 0)
 	q := sql.SearchSql(CloudLbService{}, SelectCloudLbService, sql.SearchMap{})
@@ -82,7 +82,7 @@ func getLbServiceData() []CloudLbService {
 }
 
 // 创建nginx配置信息
-// 2018-02-03 07:48
+// 2019-01-03 07:48
 func makeNgxinConfMap(clusterName string, nginxConfigMap []ConfigureData) {
 	logs.Info("开始更新configmap", clusterName)
 	serviceParam := ServiceParam{}
@@ -96,7 +96,7 @@ func makeNgxinConfMap(clusterName string, nginxConfigMap []ConfigureData) {
 	logs.Info("结束更新configmap", clusterName, util.ObjToString(nginxConfigMap))
 }
 
-// 2018-02-03 07:51
+// 2019-01-03 07:51
 // 创建用于测试的nginx配置
 func MakeTestNginxConfMap(confdata map[string]interface{}, sslData map[string]interface{}, clusterName string) {
 	nginxConfigMap := make([]ConfigureData, 0)
@@ -114,7 +114,7 @@ func MakeTestNginxConfMap(confdata map[string]interface{}, sslData map[string]in
 	makeNgxinConfMap(clusterName, nginxConfigMap)
 }
 
-// 2018-02-01 14:28
+// 2019-01-01 14:28
 // 创建nginx配置
 func makeNginxConfigMap(confdata map[string]interface{}, upstreamData map[string]interface{}, sslData map[string]interface{}, clusterName string, confType string) {
 	nginxConfigMap := make([]ConfigureData, 0)
@@ -138,7 +138,7 @@ func makeNginxConfigMap(confdata map[string]interface{}, upstreamData map[string
 	makeNgxinConfMap(clusterName, nginxConfigMap)
 }
 
-// 2018-02-02 09:03
+// 2019-01-02 09:03
 // 获取pod类型的upstream
 func makePodUpstream(client kubernetes.Clientset, serviceName string, namespace string) []string {
 	endpoint, err := client.CoreV1().Endpoints(namespace).Get(serviceName, v1.GetOptions{})
@@ -161,7 +161,7 @@ func makePodUpstream(client kubernetes.Clientset, serviceName string, namespace 
 
 var NGINX_NODES = util.Lock{}
 
-// 2018-02-02 08:22
+// 2019-01-02 08:22
 // 生成node节点方式的upstream
 func makeNodeUpstream(clientset kubernetes.Clientset, svcPort string, ips []string, cluster string) []string {
 	if _, ok := NGINX_NODES.Get(cluster) ; !ok {
@@ -200,7 +200,7 @@ func GetCertConfigData(keyFile string, sslDbName map[string]interface{}) map[str
 	return sslDbName
 }
 
-// 2018-02-16 14:36
+// 2019-01-16 14:36
 // 获取服务名字
 func getServiceName(v CloudLbService) string {
 	// 通过pod模式负载
@@ -213,7 +213,7 @@ func getServiceName(v CloudLbService) string {
 	return serviceName
 }
 
-// 2018-02-16 14:43
+// 2019-01-16 14:43
 // 获取服务的ip地址和端口
 func getServiceIps(client kubernetes.Clientset, svc v12.Service, ips []string, cluster string) []string {
 	if len(svc.Spec.Ports) > 0 {
@@ -223,7 +223,7 @@ func getServiceIps(client kubernetes.Clientset, svc v12.Service, ips []string, c
 	return ips
 }
 
-// 2018-02-17 07:27
+// 2019-01-17 07:27
 // 按百分比计算
 // 计算切入流量的服务器
 func getFlowTempIps(tempIps []string, percent int, ips []string) []string {
@@ -245,7 +245,7 @@ func getFlowTempIps(tempIps []string, percent int, ips []string) []string {
 	return ips
 }
 
-// 2018-02-16 14:61
+// 2019-01-16 14:61
 // 获取流量切入服务ip和端口
 func getFlowServicePort(v CloudLbService, client kubernetes.Clientset, ips []string, cluster string) []string {
 	percent := v.Percent
@@ -260,7 +260,7 @@ func getFlowServicePort(v CloudLbService, client kubernetes.Clientset, ips []str
 	return ips
 }
 
-// 2018-02-17 20:58
+// 2019-01-17 20:58
 // 更新nginx的upstream
 func getLbNginxUpstream(client kubernetes.Clientset) (bool, map[string]string) {
 	cm, err := client.CoreV1().ConfigMaps(nginxLbNamespace).Get("lb-nginx-upstream", v1.GetOptions{})
@@ -270,7 +270,7 @@ func getLbNginxUpstream(client kubernetes.Clientset) (bool, map[string]string) {
 	return false, make(map[string]string)
 }
 
-// 2018-02-17 21:10
+// 2019-01-17 21:10
 // 更新nginx的upstream
 func UpdateNginxLbUpstream(param UpdateLbNginxUpstream) error{
 	cluster := param.ClusterName
@@ -407,7 +407,7 @@ func CreateNginxConf(confType string) {
 }
 
 // 将生成的nginx配置数据写入到数据中，方便用户修改
-// 2018-02-01 13:33
+// 2019-01-01 13:33
 func writeNginxConfToDb(lb CloudLbService, nginxMap util.Lock, vhost string) {
 	if _, ok := nginxMap.Get(lb.ClusterName + lb.Domain); ok {
 		return
@@ -433,7 +433,7 @@ func writeNginxConfToDb(lb CloudLbService, nginxMap util.Lock, vhost string) {
 
 // 查询nginx配置数据到map
 // 用来做插入判断,不用每次都查
-// 2018-02-01 13:41
+// 2019-01-01 13:41
 func selectNginxConfFromDb() util.Lock {
 	result := util.Lock{}
 	data := make([]CloudLbNginxConf, 0)
@@ -445,7 +445,7 @@ func selectNginxConfFromDb() util.Lock {
 	return result
 }
 
-// 2018-02-01 14:25
+// 2019-01-01 14:25
 // 创建nginx配置,按不同集群创建
 func getClusters(data []CloudLbService) []string {
 	result := make([]string, 0)
@@ -457,7 +457,7 @@ func getClusters(data []CloudLbService) []string {
 	return result
 }
 
-// 2018-02-01 17:47
+// 2019-01-01 17:47
 // 查询负载机器的域名后缀
 func getLbDetail(lbname string, clusterName string) CloudLbService {
 	data := CloudLbService{}
@@ -467,7 +467,7 @@ func getLbDetail(lbname string, clusterName string) CloudLbService {
 	return data
 }
 
-// 2018-02-02 16:00
+// 2019-01-02 16:00
 // 查询证书配置
 func selectCertfile(name string) CloudLbCert {
 	data := CloudLbCert{}

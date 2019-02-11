@@ -1,6 +1,6 @@
 package util
 
-// 2018-01-13 07:15
+// 2019-01-13 07:15
 // 使用map的时候加锁
 
 import (
@@ -22,14 +22,14 @@ func (m *Lock) GetData() map[string]interface{} {
 }
 
 // 获取数据
-// 2018-01-14 18:09
+// 2019-01-14 18:09
 func (m *Lock) GetV(key string) (interface{}) {
 	v, _ := m.Get(key)
 	return v
 }
 
 // 获取数据
-// 2018-01-26 14:57
+// 2019-01-26 14:57
 func (m *Lock) GetVString(key string) string {
 	v, ok := m.Get(key)
 	if ok {
@@ -68,7 +68,7 @@ func (m *Lock) Put(k string, v interface{}) {
 }
 
 // 将对象转字符串
-// 2018-01-13 7:33
+// 2019-01-13 7:33
 func (m *Lock) String() string {
 	v, err := json.Marshal(m.GetData())
 	if err == nil {
@@ -77,7 +77,7 @@ func (m *Lock) String() string {
 	return err.Error()
 }
 
-// 2018-02-12 21:01
+// 2019-01-12 21:01
 // 避免频繁更新,加锁n秒后可操作
 func WriteLock(key string, lock *Lock, timeout int64) bool {
 	if len(lock.GetData()) > 0 {

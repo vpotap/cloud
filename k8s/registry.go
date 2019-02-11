@@ -54,7 +54,7 @@ auth:
 )
 
 // 在k8s集群中创建仓库使用的配置信息
-// 2018-01-20 21;01
+// 2019-01-20 21;01
 // 量REGISTRY_STORAGE_DELETE_ENABLED=true
 func getParam(registryParam RegistryParam) ServiceParam {
 	param := ServiceParam{}
@@ -158,7 +158,7 @@ func (m *RegistryLock) Put(k string, v *registry.Registry) {
 	defer m.Lock.Unlock()
 }
 
-// 2018-01-20 20:56
+// 2019-01-20 20:56
 // 创建镜像仓库
 func CreateRegistry(param RegistryParam) (error) {
 	if !strings.Contains(param.AuthServer, "https://") || !strings.Contains(param.AuthServer, "/auth") {
@@ -183,7 +183,7 @@ func CreateRegistry(param RegistryParam) (error) {
 
 
 var HubLockCache = RegistryLock{}
-// 2018-01-28 13:36
+// 2019-01-28 13:36
 // 获取访问连接
 func getHubClient(host string, username string, password string) *registry.Registry {
 	var url = "https://" + host + "/"
@@ -213,7 +213,7 @@ func getHubClient(host string, username string, password string) *registry.Regis
 	return &hub
 }
 
-// 2018-01-27 21:06
+// 2019-01-27 21:06
 // 获取仓库中不同组的镜像数量和tag数量
 func GetRegistryInfo(host string, username string, password string, registryName string) (util.Lock, util.Lock, util.Lock) {
 	hub := getHubClient(host, username, password)
@@ -275,7 +275,7 @@ func GetRegistryInfo(host string, username string, password string, registryName
 	return lock, tagLock, imagesLock
 }
 
-// 2018-01-29 08:44
+// 2019-01-29 08:44
 // 删除镜像
 func deleteImage(hub *registry.Registry, imageName string, tag string) (bool, error) {
 	digest, err := hub.ManifestDigest(imageName, tag)
@@ -289,7 +289,7 @@ func deleteImage(hub *registry.Registry, imageName string, tag string) (bool, er
 	return true, nil
 }
 
-// 2018-01-29 8:27
+// 2019-01-29 8:27
 // 删除镜像
 func DeleteRegistryImage(host string, username string, password string, imageName string, tag string) (bool, error) {
 	hub := getHubClient(host, username, password)
@@ -317,7 +317,7 @@ func DeleteRegistryImage(host string, username string, password string, imageNam
 	return r, err
 }
 
-// 2018-02-09 17:01
+// 2019-01-09 17:01
 // 检查镜像是否存在
 func CheckImageExists(host string, username string, password string, imageName string, tag string) (bool) {
 	hub := getHubClient(host, username, password)

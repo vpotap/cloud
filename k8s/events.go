@@ -8,7 +8,7 @@ import (
 	"k8s.io/api/core/v1"
 )
 
-// 2018-02-27 21:01
+// 2019-01-27 21:01
 // 分析事件信息
 func parseEvents(items []v1.Event) []EventData {
 	data := make([]EventData, 0)
@@ -24,7 +24,7 @@ func parseEvents(items []v1.Event) []EventData {
 	return data
 }
 
-// 2018-02-27 20:54
+// 2019-01-27 20:54
 // 获取容器事件信息
 func GetEvents(namespace string, podName string, clientSet kubernetes.Clientset) []EventData {
 	opt := metav1.ListOptions{}

@@ -21,7 +21,7 @@ function showServiceTop(serviceId) {
 }
 
 /**
- * 2018-02-14 09;50
+ * 2019-01-14 09;50
  * 发布服务弹出窗口
  * @param serviceId
  */
@@ -33,7 +33,7 @@ function releaseService(serviceId) {
 }
 
 /**
- * 2018-02-18 17;20
+ * 2019-01-18 17;20
  * 修改服务弹出窗口
  * @param serviceId
  */
@@ -46,7 +46,7 @@ function modifyHistory(historyId) {
 
 
 /**
- * 2018-02-16 17:34
+ * 2019-01-16 17:34
  * 滚动更新服务弹出页面
  * @param serviceId
  */
@@ -63,7 +63,7 @@ function rollingService(serviceId, version) {
 
 /**
  * 修改发布历史数据
- * 2018-02-18 17:21
+ * 2019-01-18 17:21
  * @param historyId
  */
 function saveReleaseHistory(historyId) {
@@ -104,7 +104,7 @@ function saveReleaseHistory(historyId) {
 
 /**
  * 执行发布操作
- * 2018-02-14 11:36
+ * 2019-01-14 11:36
  * @param serviceId
  */
 function saveReleaseService(serviceId) {
@@ -151,7 +151,7 @@ function saveReleaseService(serviceId) {
 
 /**
  * 删除发布服务弹出框
- * 2018-02-10 19:09
+ * 2019-01-10 19:09
  */
 function deleteServiceSwal(id) {
     Swal("删除发布服务", "warning", "确认操作", "不操作", "成功", "失败", " deleteService(" + id + ")", "loadCiServiceData()");
@@ -159,14 +159,14 @@ function deleteServiceSwal(id) {
 
 /**
  * 下线服务弹出框
- * 2018-02-14 18.21
+ * 2019-01-14 18.21
  */
 function offlineServiceSwal(id, version) {
     Swal("删除并下线服务,操作不可回滚<br>请确定服务稳定并不需要回滚", "warning", "确认操作", "不操作", "成功", "失败", " serviceOffline(" + id + "," + version + ")", "loadCiServiceData()");
 }
 
 /**
- * 2018-02-16 7:32
+ * 2019-01-16 7:32
  * 回滚服务弹出框
  * @param id
  */
@@ -175,7 +175,7 @@ function rollbackServiceSwal(id) {
 }
 
 /**
- * 2018-02-18 15:45
+ * 2019-01-18 15:45
  * 从历史页面回滚弹出
  * @param id
  */
@@ -184,7 +184,7 @@ function rollbackServiceHistorySwal(id, images) {
 }
 
 /**
- * 2018-02-14 21:26
+ * 2019-01-14 21:26
  *  上线服务
  * @param id
  * @param version
@@ -195,7 +195,7 @@ function onServiceSwal(id, version) {
 
 
 /**
- * 2018-02-16 15:07
+ * 2019-01-16 15:07
  * 切入流量，将绿版的部分服务
  * @param id
  * @param version
@@ -217,7 +217,7 @@ function startFlowExecSwal(id, percent) {
 
 
 /**
- * 2018-02-15 10:52
+ * 2019-01-15 10:52
  * 更新篮版本弹出框
  * @param id
  * @param version
@@ -463,7 +463,7 @@ function loadCiServiceData(key) {
 }
 
 /**
- * 2018-02-15 18:36
+ * 2019-01-15 18:36
  * 跳转到历史页面
  * @param id
  */
@@ -473,7 +473,7 @@ function toHistory(id) {
 }
 
 /**
- * 2018-02-17 11:46
+ * 2019-01-17 11:46
  * 跳转到操作日志页面
  * @param id
  */
@@ -483,7 +483,7 @@ function toLogs(id) {
 }
 
 /**
- * 2018-02-16 10:57
+ * 2019-01-16 10:57
  * 灰度金丝雀切入流量
  * @param id
  */
@@ -495,7 +495,7 @@ function startFlow(id, version) {
 }
 
 /**
- * 2018-02-14 18:23
+ * 2019-01-14 18:23
  * 删除并下线服务方法
  * @param id
  * @return {*}
@@ -508,7 +508,7 @@ function serviceOffline(id, version) {
 }
 
 /**
- * 2018-02-14 21:25
+ * 2019-01-14 21:25
  * 上线服务,新服务上线
  * @param id
  * @return {string}
@@ -521,7 +521,7 @@ function serviceOnline(id, version) {
 }
 
 /**
- * 2018-02-16 10:51
+ * 2019-01-16 10:51
  * 更新服务,将蓝版更新和绿版一致
  * @param id
  * @return {string}
@@ -546,7 +546,7 @@ function deleteService(id) {
 }
 
 /**
- * 2018-02-15 07:29
+ * 2019-01-15 07:29
  * 回滚服务
  * @param id
  * @return {string}
@@ -559,7 +559,7 @@ function rollbackService(id) {
 }
 
 /**
- * 2018-02-18 15:48
+ * 2019-01-18 15:48
  * 回滚服务从历史页面
  * @param id
  * @return {string}
@@ -589,7 +589,7 @@ function startFlowExec(id, percent) {
 }
 
 /**
- * 2018-02-16 19;04
+ * 2019-01-16 19;04
  * 滚动更新蓝色服务
  * @param id
  * @return {string}

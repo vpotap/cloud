@@ -23,7 +23,7 @@ type StorageData struct {
 
 // 亲和性配置结构
 // 必须在服务器进行标签配置
-// 2018-01-11
+// 2019-01-11
 type Affinity struct {
 	// 类型 disk service server
 	Type string
@@ -32,7 +32,7 @@ type Affinity struct {
 }
 
 // 选择节点配置
-// 2018-01-11 15;57
+// 2019-01-11 15;57
 // 只能选择一个机器
 // kubernetes.io/hostname=
 type NodeSelector struct {
@@ -43,7 +43,7 @@ type NodeSelector struct {
 }
 
 // 获取服务和pod的映射端口数据
-// 2018-01-12 15:36
+// 2019-01-12 15:36
 type PortData struct {
 	// 标签名称,主要是主机名称
 	NodePort string
@@ -57,7 +57,7 @@ type PortData struct {
 
 
 // 创建服务参数文件
-// 2018-01-11 21:02
+// 2019-01-11 21:02
 type ServiceParam struct {
 	// 客户端
 	C1 *dynamic.Client
@@ -180,7 +180,7 @@ type HealthData struct {
 }
 
 // 配置文件信息
-// 2018-01-17 21:34
+// 2019-01-17 21:34
 type ConfigureData struct {
 	ContainerPath string
 	DataName string
@@ -198,7 +198,7 @@ const SelectCloudLb = "select service_number,entname,cpu,memory,host_log_path,lb
 
 
 
-//2018-01-18 10:45:25.5832512 +0800 CST
+//2019-01-18 10:45:25.5832512 +0800 CST
 type CloudConfigureMount struct {
 	//首次挂载时间
 	CreateTime string
@@ -221,7 +221,7 @@ type CloudConfigureMount struct {
 }
 
 // 仓库创建使用参数
-// 2018-01-21 15:55
+// 2019-01-21 15:55
 type RegistryParam struct {
 	Name        string
 	ClusterName string
@@ -233,9 +233,9 @@ type RegistryParam struct {
 }
 
 // 镜像信息获取
-// 2018-01-28 13:23
+// 2019-01-28 13:23
 
-//2018-01-27 15:08:36.2055048 +0800 CST
+//2019-01-27 15:08:36.2055048 +0800 CST
 type CloudImage struct {
 	//创建用户
 	CreateUser string
@@ -265,7 +265,7 @@ type CloudImage struct {
 	Download int64
 }
 
-//2018-01-18 16:23:05.0430682 +0800 CST
+//2019-01-18 16:23:05.0430682 +0800 CST
 type CloudStorage struct {
 	//
 	StorageId int64
@@ -299,7 +299,7 @@ type CloudStorage struct {
 	SharedType string
 }
 
-//2018-01-31 10:10:22.9723601 +0800 CST
+//2019-01-31 10:10:22.9723601 +0800 CST
 type CloudStorageMountInfo struct {
 	//服务名称
 	ServiceName string
@@ -400,7 +400,7 @@ type CloudClusterHosts struct {
 }
 
 
-//2018-02-01 13:32:07.5158035 +0800 CST
+//2019-01-01 13:32:07.5158035 +0800 CST
 type CloudLbNginxConf struct {
 	//
 	ConfId int64
@@ -473,7 +473,7 @@ type CloudLb struct {
 	HostLogPath string
 }
 
-//2018-02-02 10:01:17.2337629 +0800 CST
+//2019-01-02 10:01:17.2337629 +0800 CST
 type CloudLbCert struct {
 	//描述信息
 	Description string
@@ -496,7 +496,7 @@ type CloudLbCert struct {
 }
 
 
-//2018-02-06 10:40:26.9362807 +0800 CST
+//2019-01-06 10:40:26.9362807 +0800 CST
 type CloudImageSyncLog struct {
 	//镜像仓库组
 	RegistryGroup string
@@ -522,7 +522,7 @@ type CloudImageSyncLog struct {
 	Status string
 }
 
-// 2018-02-13 09:46
+// 2019-01-13 09:46
 // 镜像数据,
 type HostImages struct {
 	Id int
@@ -531,7 +531,7 @@ type HostImages struct {
 	Size string
 }
 
-// 2018-02-16 18:36
+// 2019-01-16 18:36
 // 服务滚动更新参数
 type RollingParam struct {
 	MinReadySeconds int32
@@ -544,7 +544,7 @@ type RollingParam struct {
 	Images string
 }
 
-// 2018-02-17 21:09
+// 2019-01-17 21:09
 // 更新upstream，参数
 type UpdateLbNginxUpstream struct {
 	Master string
@@ -556,7 +556,7 @@ type UpdateLbNginxUpstream struct {
 	ClusterName string
 }
 
-// 2018-02-19 14:50
+// 2019-01-19 14:50
 // 获取自动扩容的扩容数量参数
 type AutoScaleParam struct {
 	ReplicasMax int32
@@ -567,7 +567,7 @@ type AutoScaleParam struct {
 	ResourceName string
 }
 
-//2018-02-20 09:39:59.7024273 +0800 CST
+//2019-01-20 09:39:59.7024273 +0800 CST
 type CloudAutoScaleLog struct {
 	//
 	LogId int64
@@ -613,7 +613,7 @@ type CloudAutoScaleLog struct {
 	Entname string
 }
 
-// 2018-01-29 14:28
+// 2019-01-29 14:28
 // 创建nfs存储
 type StorageParam struct {
 	// 存储名称
@@ -638,7 +638,7 @@ type StorageParam struct {
 	ClusterName string
 }
 
-// 2018-02-27 20:51
+// 2019-01-27 20:51
 type EventData struct {
 	// 事件事件
 	EventTime string

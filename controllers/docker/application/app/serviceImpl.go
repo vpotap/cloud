@@ -19,7 +19,7 @@ import (
 	"cloud/models/ent"
 )
 
-// 2018-02-13 16:36
+// 2019-01-13 16:36
 func getServiceData(searchMap sql.SearchMap, q string) []app.CloudAppService {
 	if q == "" {
 		q = app.SelectCloudAppService
@@ -33,7 +33,7 @@ func getServiceData(searchMap sql.SearchMap, q string) []app.CloudAppService {
 	return data
 }
 
-// 2018-02-13 15:53 getServiceData
+// 2019-01-13 15:53 getServiceData
 // service选择查询
 func GetServiceHtml(searchMap sql.SearchMap) string {
 	data := getServiceData(searchMap, app.SelectServiceName)
@@ -44,7 +44,7 @@ func GetServiceHtml(searchMap sql.SearchMap) string {
 	return opt
 }
 
-// 2018-02-03 21:30
+// 2019-01-03 21:30
 // 获取服务名称数据
 func GetSelectHtml(username string, cluster string) string {
 	data := GetUserLbService(username, cluster, "")
@@ -55,7 +55,7 @@ func GetSelectHtml(username string, cluster string) string {
 	return html
 }
 
-// 2018-02-04 16:08
+// 2019-01-04 16:08
 // 更新服务
 func ExecUpdate(service app.CloudAppService, updateType string, username string) error {
 	param := getParam(service, username)
@@ -89,7 +89,7 @@ func ExecUpdate(service app.CloudAppService, updateType string, username string)
 	return err
 }
 
-// 2018-02-15 15:39
+// 2019-01-15 15:39
 // 更新完成后,更新容器数据
 func updateContainerData(service app.CloudAppService) {
 	for i := 0; i <= 5; i++ {
@@ -99,7 +99,7 @@ func updateContainerData(service app.CloudAppService) {
 }
 
 // 更新服务数据
-// 2018-01-14 07:54
+// 2019-01-14 07:54
 func updateServiceData(service app.CloudAppService, username string) {
 	// 操作成功后更新数据库数
 	searchMap := sql.SearchMap{}
@@ -114,7 +114,7 @@ func updateServiceData(service app.CloudAppService, username string) {
 }
 
 // 检查服务参数是否正确
-// 2018-01-14 07:53
+// 2019-01-14 07:53
 func checkParam(service app.CloudAppService, cpuerr error, memerr error, this *ServiceController) bool {
 
 	// 检查内存和cpu的数据准确性
@@ -136,7 +136,7 @@ func checkParam(service app.CloudAppService, cpuerr error, memerr error, this *S
 	return true
 }
 
-// 2018-02-12 21:57
+// 2019-01-12 21:57
 // 通过任务计划写入服务缓存
 func CronServiceCache() {
 	logs.Info("写入服务缓存")
@@ -146,7 +146,7 @@ func CronServiceCache() {
 	go GoServerThread(data)
 }
 
-// 2018-02-04
+// 2019-01-04
 // 从redis里获取应用服务运行状态数据
 func GetServiceRunData(data []app.CloudAppService, user string) []k8s.CloudApp {
 	//result := make([]interface{}, 0)
@@ -190,7 +190,7 @@ func GetServiceRunData(data []app.CloudAppService, user string) []k8s.CloudApp {
 }
 
 // 修改数据时公共数据
-// 2018-01-14 13:35
+// 2019-01-14 13:35
 func setChangeData(this *ServiceController) app.CloudAppService {
 	service := getService(this)
 	this.Data["data"] = service
@@ -235,7 +235,7 @@ func setFilebeatParam(param k8s.ServiceParam, d app.CloudAppService)   k8s.Servi
 }
 
 // 获取创建服务的配置参数
-// 2018-01-12 8:56
+// 2019-01-12 8:56
 func getParam(d app.CloudAppService, user string) k8s.ServiceParam {
 	param := k8s.ServiceParam{}
 	param.Name = d.ServiceName
@@ -305,7 +305,7 @@ func responseData(err error, this *ServiceController, serviceName string, info s
 	setServiceJson(this, data)
 }
 
-// 2018-02-09 21:32
+// 2019-01-09 21:32
 // 创建secret文件
 func CreateSecretFile(param k8s.ServiceParam) k8s.ServiceParam {
 	// 创建私有仓库镜像获取私密文件
@@ -334,7 +334,7 @@ func GetServiceData(name string, cluster string, appname string) app.CloudAppSer
 	return data
 }
 
-// 2018-02-01 15:15
+// 2019-01-01 15:15
 // 获取某个用户的所有服务
 func GetUserLbService(user string, clusterName string, id string) []app.CloudAppService {
 	data := make([]app.CloudAppService, 0)
@@ -365,7 +365,7 @@ func serviceToRedis(namespace string, id int64, sv k8s.CloudApp) {
 		time.Minute * 10)
 }
 
-// 2018-01-31 16:04
+// 2019-01-31 16:04
 // 后台执行服务状态,更新到缓存里
 func GoServerThread(data []app.CloudAppService) {
 	appDatas := util.Lock{}
@@ -416,7 +416,7 @@ func GoServerThread(data []app.CloudAppService) {
 }
 
 // 通过多线程去跑
-// 2018-01-13 08-07
+// 2019-01-13 08-07
 func goServiceData(d app.CloudAppService, appDatas *util.Lock) {
 
 	namespace := util.Namespace(d.AppName, d.ResourceName)
@@ -448,7 +448,7 @@ func goServiceData(d app.CloudAppService, appDatas *util.Lock) {
 }
 
 // 获取某个服务的数据
-// 2018-01-13 11:26
+// 2019-01-13 11:26
 func getService(this *ServiceController) app.CloudAppService {
 	searchMap := sql.SearchMap{}
 	id := this.Ctx.Input.Param(":id")
@@ -497,7 +497,7 @@ func saveServiceDeploy(d app.CloudAppService) {
 	sql.Raw(q).Exec()
 }
 
-// 2018-02-13 16:49
+// 2019-01-13 16:49
 // 获取蓝是否存在
 func getBlueExists(greenData app.CloudAppService, version string) bool {
 	searchMap := sql.GetSearchMapV("ServiceVersion", version,
@@ -513,7 +513,7 @@ func getBlueExists(greenData app.CloudAppService, version string) bool {
 	return false
 }
 
-// 2018-02-14 07:20
+// 2019-01-14 07:20
 // 获取蓝绿部署的服务信息
 func GetServices(ciData ci.CloudCiService, q string) []app.CloudAppService {
 	searchMap := sql.GetSearchMapV(
@@ -525,7 +525,7 @@ func GetServices(ciData ci.CloudCiService, q string) []app.CloudAppService {
 	return services
 }
 
-// 2018-02-14 07;30
+// 2019-01-14 07;30
 // 获取当前版本
 func GetCurrentVersion(ciData ci.CloudCiService, services []app.CloudAppService) util.Lock {
 
@@ -575,7 +575,7 @@ func CreateGreenService(ciData ci.CloudCiService, username string) (string, bool
 	return "", true, serviceData
 }
 
-// 2018-02-18 11:04
+// 2019-01-18 11:04
 // 获取需要刷新redis缓存的数据
 func getServices(d app.CloudAppService) []app.CloudAppService {
 	data := make([]app.CloudAppService, 0)
@@ -589,7 +589,7 @@ func getServices(d app.CloudAppService) []app.CloudAppService {
 	return data
 }
 
-// 2018-02-18 11:00
+// 2019-01-18 11:00
 // 服务创建后持续更新redis换成
 func updateServiceRedisCache(d app.CloudAppService) {
 	services := getServices(d)

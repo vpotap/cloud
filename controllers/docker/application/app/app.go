@@ -32,7 +32,7 @@ func (this *AppController) AppList() {
 }
 
 // 响应错误数据
-// 2018-01-16 21:13
+// 2019-01-16 21:13
 func responseAppData(err error, this *AppController, appName string, info string) {
 	data, msg := util.SaveResponse(err, info)
 	util.SaveOperLog(this.GetSession("username"), *this.Ctx, info+": "+msg, appName)
@@ -40,7 +40,7 @@ func responseAppData(err error, this *AppController, appName string, info string
 	this.ServeJSON(false)
 }
 
-// 2018-01-16 20:33
+// 2019-01-16 20:33
 // 应用扩缩容接口
 // @router /api/app/scale/:id:int
 func (this *AppController) AppScale() {
@@ -87,7 +87,7 @@ func (this *AppController) AppScale() {
 	responseAppData(nil, this, d.AppName, "操作失败")
 }
 
-// 2018-02-03 19:03
+// 2019-01-03 19:03
 // 应用 名称数据
 // @param ClusterName
 // @router /api/app/name [get]
@@ -116,7 +116,7 @@ func (this *AppController) GetAppName() {
 
 
 // 容器列表入口
-// 2018-01-15 14:57
+// 2019-01-15 14:57
 // @router /application/container/list
 func (this *AppController) ContainerList() {
 	serviceId, err := this.GetInt("serviceId")
@@ -223,7 +223,7 @@ func (this *AppController) AppAdd() {
 	this.TplName = "application/app/add.html"
 }
 
-// 2018-02-26 09:24
+// 2019-01-26 09:24
 // 重新部署应用
 // @router /api/app/redeploy [post]
 func (this *AppController) RedeployApp() {

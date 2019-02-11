@@ -8,7 +8,7 @@ import (
 	"cloud/controllers/base/cluster"
 )
 
-// 2018-01-24 21:32
+// 2019-01-24 21:32
 // 持续集成
 type BatchController struct {
 	beego.Controller
@@ -109,7 +109,7 @@ func (this *BatchController) BatchData() {
 
 // json
 // 删除batch
-// 2018-01-24 21:46
+// 2019-01-24 21:46
 // @router /api/ci/batch/:id:int [delete]
 func (this *BatchController) BatchDelete() {
 	searchMap := sql.SearchMap{}
@@ -130,7 +130,7 @@ func (this *BatchController) BatchDelete() {
 	setBatchJson(this, data)
 }
 
-// 2018-02-12 9:40
+// 2019-01-12 9:40
 // 获取登录用户
 func getBatchUser(this *BatchController) string {
 	return util.GetUser(this.GetSession("username"))

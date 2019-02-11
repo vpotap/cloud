@@ -26,7 +26,7 @@ type ControllerPipeline struct {
 	beego.Controller
 }
 
-// 2018-02-03 17:30
+// 2019-01-03 17:30
 // 流水线入口页面
 // @router /pipeline/list [get]
 func (this *ControllerPipeline) PipelineList() {
@@ -158,7 +158,7 @@ func (this *ControllerPipeline) PipelineSave() {
 	setPipelineJson(this, data)
 }
 
-// 2018-02-12 11:22
+// 2019-01-12 11:22
 // 检查流水线配额
 // 检查资源配额是否够用
 func checkPipelineQuota(username string) (bool, string) {
@@ -171,7 +171,7 @@ func checkPipelineQuota(username string) (bool, string) {
 	return true, ""
 }
 
-// 2018-02-04 13:29
+// 2019-01-04 13:29
 // 流水线运行历史
 // @router /api/pipeline/history [get]
 func (this *ControllerPipeline) PipelineHistoryData() {
@@ -241,7 +241,7 @@ func (this *ControllerPipeline) PipelineData() {
 	setPipelineJson(this, r)
 }
 
-// 2018-02-03 22:03
+// 2019-01-03 22:03
 // 获取流水线数据
 func getPipeData(this *ControllerPipeline) (pipeline.CloudPipeline, sql.SearchMap) {
 	searchMap := sql.SearchMap{}
@@ -268,7 +268,7 @@ func getPipeData(this *ControllerPipeline) (pipeline.CloudPipeline, sql.SearchMa
 	return data, searchMap
 }
 
-// 2018-02-05 12:56
+// 2019-01-05 12:56
 // 获取用户名
 func getUser(this *ControllerPipeline) string {
 	return util.GetUser(this.GetSession("username"))
@@ -297,7 +297,7 @@ func setPipelineJson(this *ControllerPipeline, data interface{}) {
 	this.ServeJSON(false)
 }
 
-// 2018-02-04 21:22
+// 2019-01-04 21:22
 // 创建镜像安全数据
 func createImagePullSecret(jobHistoryData ci2.CloudBuildJobHistory, start int64, jobName string, pipelog pipeline.CloudPipelineLog, serviceData app2.CloudAppService) bool {
 	registryServer := strings.Split(jobHistoryData.RegistryServer, ":")
@@ -333,7 +333,7 @@ func createImagePullSecret(jobHistoryData ci2.CloudBuildJobHistory, start int64,
 	return true
 }
 
-// 2018-02-04 08:32
+// 2019-01-04 08:32
 // 后台执行流水线程序
 func startPipeline(user string, pipeData pipeline.CloudPipeline) {
 	jobData := ci.GetJobName(user, "", pipeData.JobName)
@@ -479,7 +479,7 @@ func updateServiceErrorStatus(serviceData app2.CloudAppService, jobName string) 
 	return true
 }
 
-// 2018-02-05 14:42
+// 2019-01-05 14:42
 // 更新服务启动
 func updateServiceStart(jobName string, user string, serviceData app2.CloudAppService, jobHistoryData ci2.CloudBuildJobHistory) (bool, app2.CloudAppService) {
 	serviceData.ImageTag = getImageTag(jobHistoryData)
@@ -505,7 +505,7 @@ func updateServiceStart(jobName string, user string, serviceData app2.CloudAppSe
 	return true, serviceData
 }
 
-// 2018-02-05 14:51
+// 2019-01-05 14:51
 // 更新构建失败状态
 func updateBuildFaild(jobName string, status string, msg string) {
 	updatePipeLogStatus(
@@ -518,7 +518,7 @@ func updateBuildFaild(jobName string, status string, msg string) {
 	updatePipeLogTime("end_time", jobName)
 }
 
-// 2018-02-05 14;39
+// 2019-01-05 14;39
 // 获取构建任务数据,和更新流水线状态
 func getHistoryDataStatus(jobName string) (bool, ci2.CloudBuildJobHistory) {
 	jobHistoryData := ci.GetHistoryData(jobName)
@@ -531,7 +531,7 @@ func getHistoryDataStatus(jobName string) (bool, ci2.CloudBuildJobHistory) {
 	return true, jobHistoryData
 }
 
-// 2018-02-06 13:04
+// 2019-01-06 13:04
 // 获取镜像tag
 func getImageTag(jobHistoryData ci2.CloudBuildJobHistory) string {
 	imageTag := strings.Join([]string{
@@ -542,14 +542,14 @@ func getImageTag(jobHistoryData ci2.CloudBuildJobHistory) string {
 	return imageTag
 }
 
-// 2018-02-05 12:59
+// 2019-01-05 12:59
 // 更新日志各个表的时间点
 func updatePipeLogTime(column string, jobName string) {
 	q := "update cloud_pipeline_log set " + column + `="` + util.GetDate() + `" where job_name="` + jobName + `"`
 	sql.Raw(q).Exec()
 }
 
-// 2018-02-05 14:09
+// 2019-01-05 14:09
 // 更新日志状态数据
 func updatePipeLogStatus(timeColumn string, statusColumn string, status string, statusMsgColumn string, statusMsg string, jobName string) {
 	q := "update cloud_pipeline_log set " +
@@ -574,7 +574,7 @@ func updatePipelineLog(pipelog pipeline.CloudPipelineLog, start int64, jobName s
 }
 
 // 执行流水线任务
-// 2018-02-03 22;01
+// 2019-01-03 22;01
 // @router /api/pipeline/exec/:id:int [get]
 func (this *ControllerPipeline) PipelineExec() {
 	pipeData, _ := getPipeData(this)

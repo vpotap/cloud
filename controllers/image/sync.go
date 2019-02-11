@@ -21,14 +21,14 @@ func (this *SyncController) HistoryList() {
 	this.TplName = "image/sync/history.html"
 }
 
-// 2018-02-05 14:02
+// 2019-01-05 14:02
 // 镜像同步页面
 // @router /image/sync/list [get]
 func (this *SyncController) SyncList() {
 	this.TplName = "image/sync/list.html"
 }
 
-// 2018-02-06 17:08
+// 2019-01-06 17:08
 // 审批镜像同步
 // @router /api/image/sync/approved/:id:int [post]
 func (this *SyncController) ApprovedSave() {
@@ -72,7 +72,7 @@ func (this *SyncController) SyncSave() {
 	setSyncJson(this, data)
 }
 
-// 2018-02-07 08:03
+// 2019-01-07 08:03
 // 获取镜像同步页面编辑渲染数据
 func getEditData(this *SyncController, data registry.CloudImageSync) {
 	copy := this.GetString("copy")
@@ -105,7 +105,7 @@ func getEditData(this *SyncController, data registry.CloudImageSync) {
 	}
 }
 
-// 2018-02-05 14:02
+// 2019-01-05 14:02
 // 镜像同步页面
 // @router /image/sync/add [get]
 func (this *SyncController) SyncAdd() {
@@ -114,7 +114,7 @@ func (this *SyncController) SyncAdd() {
 	this.TplName = "image/sync/add.html"
 }
 
-// 2018-02-06 17:29
+// 2019-01-06 17:29
 // 获取镜像数据
 // @router /api/image/sync [get]
 func (this *SyncController) SyncDatas() {
@@ -192,13 +192,13 @@ func setSyncJson(this *SyncController, data interface{}) {
 	this.ServeJSON(false)
 }
 
-// 2018-02-06 20:39
+// 2019-01-06 20:39
 // 获取用户
 func getUsesr(this *SyncController) string {
 	return util.GetUser(this.GetSession("username"))
 }
 
-// 2018-02-06 20:38
+// 2019-01-06 20:38
 // 删除镜像同步
 // @router /api/image/sync/:id:int [delete]
 func (this *SyncController) SyncDelete() {
@@ -215,7 +215,7 @@ func (this *SyncController) SyncDelete() {
 	setSyncJson(this, data)
 }
 
-// 2018-02-06 22:01
+// 2019-01-06 22:01
 // 获取镜像同步参数
 func getImagePushParam(this *SyncController, d registry.CloudImageSync) k8s.ImagePushParam {
 	registryData := GetRegistryServerMap()
@@ -253,7 +253,7 @@ func getImagePushParam(this *SyncController, d registry.CloudImageSync) k8s.Imag
 	return imagePushParam
 }
 
-// 2018-02-07 08:04
+// 2019-01-07 08:04
 // 获取数据
 func getSyncData(this *SyncController, approved string) registry.CloudImageSync {
 	data := registry.CloudImageSync{}
@@ -267,7 +267,7 @@ func getSyncData(this *SyncController, approved string) registry.CloudImageSync 
 	return data
 }
 
-// 2018-02-06 21:50
+// 2019-01-06 21:50
 // 镜像同步启动
 // @router /api/image/sync/:id:int [get]
 func (this *SyncController) SyncExec() {

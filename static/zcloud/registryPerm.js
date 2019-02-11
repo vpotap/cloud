@@ -13,7 +13,7 @@ function addRegistryPerm(permissionsId) {
 
 /**
  * 删除权限
- * 2018-01-20 21:02
+ * 2019-01-20 21:02
  */
 function deleteRegistryPermSwal(id) {
     Swal("删除该权限", "warning", "确认操作", "不操作", "成功", "失败", " deleteRegistryPerm("+id+")", "loadRegistryPermData()");

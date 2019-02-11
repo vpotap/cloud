@@ -16,7 +16,7 @@ function addDockerFile(fileId,copy) {
 
 /**
  * 删除dockerfile弹出框
- * 2018-01-25 10:24
+ * 2019-01-25 10:24
  */
 function deleteDockerFileSwal(id,detail) {
     if(detail){

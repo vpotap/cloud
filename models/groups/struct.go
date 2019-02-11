@@ -1,6 +1,6 @@
 package groups
 
-//2018-01-20 06:33:32.8534847 +0800 CST
+//2019-01-20 06:33:32.8534847 +0800 CST
 type CloudUserGroups struct {
     //创建用户
     CreateUser string

@@ -153,7 +153,7 @@ function checkClusterName(str) {
 }
 
 /**
- * 2018-01-22 10:14
+ * 2019-01-22 10:14
  * 检查设置仓库权限时项目是否正确,不能已 / 开头和结尾
  * @param str
  * @return {boolean}
@@ -445,7 +445,7 @@ function getClusterName(alias) {
 
 /**
  * 加载集群在页面的集群选择信息
- * 2018-01-04
+ * 2019-01-04
  */
 function loadClusterSelect(id,nil, select) {
     var url = "/api/cluster/name";
@@ -475,7 +475,7 @@ function loadClusterSelect(id,nil, select) {
 
 /**
  * 获取集群的别名
- * 2018-01-22 11:44
+ * 2019-01-22 11:44
  * @param clusterName
  * @return {string}
  */
@@ -573,7 +573,7 @@ function setQuotaName(quotaId, htmlId, isLock) {
 
 /**
  * 设置模板数据
- * 2018-01-05
+ * 2019-01-05
  * @param htmlId
  */
 function setTemplateData(htmlId) {
@@ -629,7 +629,7 @@ function checkBoxChange(obj) {
 
 /**
  * 弹出选择框
- * 2018-01-13 15:03
+ * 2019-01-13 15:03
  * @param title
  * @param type
  * @param yes
@@ -716,7 +716,7 @@ function Swal(title,type,yes,no,okmsg, failmsg, func, reload, timer) {
 /**
  * 选择checkbox的值
  * @return {string}
- * 2018-01-13 15:11
+ * 2019-01-13 15:11
  */
 function getCheckInput(selector) {
     var all = [];
@@ -731,7 +731,7 @@ function getCheckInput(selector) {
 
 /**
  * 保存后提示信息
- * 2018-01-13 19:02
+ * 2019-01-13 19:02
  * @param result
  */
 function saveMsg(result) {
@@ -759,7 +759,7 @@ function checkSignValue() {
 
 
 // 将选择好的用户设置好
-// 2018-01-20 13:53
+// 2019-01-20 13:53
 function setSelectUser(users, id) {
     var html = "";
     var users = users.split(",");
@@ -777,7 +777,7 @@ function setSelectUser(users, id) {
 }
 
 // 搜索用户
-// 2018-01-20 13:24
+// 2019-01-20 13:24
 function searchUser(val, id, dataId) {
     var temp = "";
     if(!dataId) {
@@ -803,7 +803,7 @@ function searchUser(val, id, dataId) {
 }
 
 /**
- * 2018-01-20 13:21
+ * 2019-01-20 13:21
  * 设置用户数据
  */
 function setUserData(id) {
@@ -833,7 +833,7 @@ function changeStatus(obj) {
 
 
 // 将选择好的组设置好
-// 2018-01-21 9:53
+// 2019-01-21 9:53
 function setSelectGroups(groups,id) {
     var url = "/api/groups/map";
     var gmap = get({}, url);
@@ -856,7 +856,7 @@ function setSelectGroups(groups,id) {
 }
 
 // 搜索组
-// 2018-01-21 9:24
+// 2019-01-21 9:24
 function searchGroups(val, id) {
     var temp = "";
     var data = $('#select_groups_id').val();
@@ -878,7 +878,7 @@ function searchGroups(val, id) {
 }
 
 /**
- * 2018-01-21 9:21
+ * 2019-01-21 9:21
  * 设置组数据
  */
 function setGroupsData(id, key) {

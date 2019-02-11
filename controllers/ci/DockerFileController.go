@@ -11,7 +11,7 @@ import (
 	"github.com/astaxie/beego/logs"
 )
 
-// 2018-01-24 21:32
+// 2019-01-24 21:32
 // 持续集成
 type DockerFileController struct {
 	beego.Controller
@@ -23,7 +23,7 @@ func (this *DockerFileController) DockerFileList() {
 	this.TplName = "ci/dockerfile/list.html"
 }
 
-// 2018-01-25 10:05
+// 2019-01-25 10:05
 // dockerfile 详情入口页面
 // @router /ci/dockerfile/detail/:hi(.*) [get]
 func (this *DockerFileController) DockerFileDetail() {
@@ -39,7 +39,7 @@ func (this *DockerFileController) DockerFileDetail() {
 
 
 // 生成 镜像服务 html
-// 2018-01-26 10:41
+// 2019-01-26 10:41
 func GetDockerFileSelect() string {
 	html := make([]string, 0)
 	data := GetDockerfileData("")
@@ -75,7 +75,7 @@ func (this *DockerFileController) DockerFileAdd() {
 }
 
 // 获取docker数据
-// 2018-01-26 11:17
+// 2019-01-26 11:17
 func GetDockerfileData(name string)[]ci.CloudCiDockerfile {
 	searchMap := sql.SearchMap{}
 	if name != "" {
@@ -91,7 +91,7 @@ func GetDockerfileData(name string)[]ci.CloudCiDockerfile {
 }
 
 // 获取dockerfile数据
-// 2018-01-24 21:33
+// 2019-01-24 21:33
 // router /api/ci/dockerfile [get]
 func (this *DockerFileController) DockerFileData()  {
 	setDockerfileJson(this, GetDockerfileData(""))
@@ -137,7 +137,7 @@ func (this *DockerFileController) DockerFileSave() {
 	setDockerfileJson(this, data)
 }
 
-// 2018-02-12 08:40
+// 2019-01-12 08:40
 // 检查镜像仓库配额
 // 检查资源配额是否够用
 func checkDockerfileQuota(username string) (bool,string) {
@@ -152,7 +152,7 @@ func checkDockerfileQuota(username string) (bool,string) {
 
 
 // 获取dockerfile数据
-// 2018-01-24 21:45
+// 2019-01-24 21:45
 // router /api/ci/dockerfile/name [get]
 func (this *DockerFileController) DockerFileDataName()  {
 	// dockerfile数据
@@ -216,7 +216,7 @@ func (this *DockerFileController) DockerFileDatas() {
 
 // json
 // 删除dockerfile
-// 2018-01-24 21:46
+// 2019-01-24 21:46
 // @router /api/ci/dockerfile/:id:int [delete]
 func (this *DockerFileController) DockerFileDelete() {
 	searchMap := sql.SearchMap{}
@@ -237,7 +237,7 @@ func (this *DockerFileController) DockerFileDelete() {
 	setDockerfileJson(this, data)
 }
 
-// 2018-02-12 9:40
+// 2019-01-12 9:40
 // 获取登录用户
 func getDockerfileUser(this *DockerFileController) string {
 	return util.GetUser(this.GetSession("username"))

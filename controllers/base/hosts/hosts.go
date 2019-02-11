@@ -20,7 +20,7 @@ func (this *HostsController) List() {
 }
 
 // 添加主机标签
-// 2018-01-18 21:15
+// 2019-01-18 21:15
 func (this *HostsController) LabelAdd() {
 	cloudCluster := getHostData(this.GetString("hostId"))
 	this.Data["data"] = cloudCluster
@@ -153,7 +153,7 @@ func (this *HostsController) Delete() {
 	setHostJson(this, data)
 }
 
-// 2018-02-12 19:04
+// 2019-01-12 19:04
 // node节点调度操作
 // @router /api/cluster/hosts/:id:int [post]
 func (this *HostsController) Schedulable() {
@@ -181,7 +181,7 @@ func (this *HostsController) Schedulable() {
 }
 
 // 保存标签
-// 2018-01-18 21:25
+// 2019-01-18 21:25
 // @router /api/cluster/label [post]
 func (this *HostsController) LabelSave() {
 	d := hosts.CloudClusterHosts{}

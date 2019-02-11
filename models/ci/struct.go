@@ -1,6 +1,6 @@
 package ci
 
-//2018-01-24 16:54:53.7454432 +0800 CST
+//2019-01-24 16:54:53.7454432 +0800 CST
 type CloudCodeRepostitory struct {
     //
     RepostitoryId int64
@@ -32,7 +32,7 @@ type CloudCodeRepostitory struct {
     Branch string
 }
 
-//2018-01-24 21:30:36.1428558 +0800 CST
+//2019-01-24 21:30:36.1428558 +0800 CST
 type CloudCiDockerfile struct {
     //文件名称
     Name string
@@ -57,7 +57,7 @@ type CloudCiDockerfile struct {
 }
 
 
-//2018-01-25 17:50:32.6516446 +0800 CST
+//2019-01-25 17:50:32.6516446 +0800 CST
 type CloudBuildJob struct {
     //项目名称
     ItemName string
@@ -105,7 +105,7 @@ type CloudBuildJob struct {
     Env string
 }
 
-//2018-01-26 15:22:01.3732277 +0800 CST
+//2019-01-26 15:22:01.3732277 +0800 CST
 type CloudBuildJobHistory struct {
     //注册服务器
     RegistryServer string
@@ -143,7 +143,7 @@ type CloudBuildJobHistory struct {
     Env string
 }
 
-//2018-02-10 18:22:04.0393696 +0800 CST
+//2019-01-10 18:22:04.0393696 +0800 CST
 type CloudCiService struct {
     //应用名称
     AppName string
@@ -197,7 +197,7 @@ type CloudCiService struct {
     NewVersion string
 }
 
-//2018-02-14 09:30:07.7331635 +0800 CST
+//2019-01-14 09:30:07.7331635 +0800 CST
 type CloudCiReleaseHistory struct {
     //集群名称
     ClusterName string
@@ -253,7 +253,7 @@ type CloudCiReleaseHistory struct {
     OldImages string
 }
 
-//2018-02-17 11:11:53.4396702 +0800 CST
+//2019-01-17 11:11:53.4396702 +0800 CST
 type CloudCiReleaseLog struct {
     //
     LogId int64
@@ -279,7 +279,7 @@ type CloudCiReleaseLog struct {
     Ip string
 }
 
-//2018-02-18 12:02:14.5230327 +0800 CST
+//2019-01-18 12:02:14.5230327 +0800 CST
 type CloudCiPerm struct {
     //拥有权限
     Datas string

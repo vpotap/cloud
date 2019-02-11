@@ -54,7 +54,7 @@ function toServiceDetail(name) {
 
 /**
  * 到容器详情页面
- * 2018-01-16 08:59
+ * 2019-01-16 08:59
  * @param name
  */
 function toContainerDetail(name) {
@@ -366,7 +366,7 @@ function addHealth() {
 
 /**
  * 添加修改端口弹出框
- * 2018-01-14 13:29
+ * 2019-01-14 13:29
  */
 function addPort() {
     if (!checkSignValue()) {
@@ -397,7 +397,7 @@ function addScale() {
 
 /**
  * 服务修改健康检查弹出页面
- * 2018-01-14 12:29
+ * 2019-01-14 12:29
  */
 function changeHealth() {
     if (!checkSignValue()) {
@@ -427,7 +427,7 @@ function changeLogPath() {
 
 /**
  * 弹出服务修改cpu，内存实例
- * 2018-01-13 18:41
+ * 2019-01-13 18:41
  */
 function addCpuMemory() {
     if (!checkSignValue()) {
@@ -442,7 +442,7 @@ function addCpuMemory() {
 
 /**
  * 弹出服务灰度升级的页面
- * 2018-01-14 09:28
+ * 2019-01-14 09:28
  */
 function addServiceImage() {
     if (!checkSignValue()) {
@@ -458,7 +458,7 @@ function addServiceImage() {
 
 /**
  * 弹出环境变量修改页面
- * 2018-01-14 11:15
+ * 2019-01-14 11:15
  */
 function addChangeEnv() {
     if (!checkSignValue()) {
@@ -585,7 +585,7 @@ function checkUniqueData(id, value) {
  * @param port
  * @param cmd
  * @return {boolean}
- * 2018-01-14 17:02
+ * 2019-01-14 17:02
  */
 function checkHealthData(type, port, cmd, path) {
     var data = {}
@@ -793,7 +793,7 @@ function addLabels() {
 
 /**
  * 加载集群在页面的集群选择信息
- * 2018-01-04
+ * 2019-01-04
  */
 function loadConfigureSelect() {
     var url = "/api/configure/name";
@@ -865,7 +865,7 @@ function stopServiceSwal() {
 
 /**
  * 停止服务
- * 2018-01-13 15:18
+ * 2019-01-13 15:18
  * @return {*}
  */
 function stopService() {
@@ -887,7 +887,7 @@ function restartServiceSwal() {
 
 /**
  * 启动
- * 2018-01-13 15:37
+ * 2019-01-13 15:37
  * @return {*}
  */
 function startService() {
@@ -901,7 +901,7 @@ function startService() {
 }
 
 /**
- * 2018-01-13 17:43
+ * 2019-01-13 17:43
  * 水平扩展保存
  */
 function serviceScale() {
@@ -918,7 +918,7 @@ function serviceScale() {
 }
 
 /**
- * 2018-01-13 15:58
+ * 2019-01-13 15:58
  * 重启服务
  */
 function restartService() {
@@ -931,7 +931,7 @@ function restartService() {
 
 /**
  * 服务配置修改
- * 2018-01-13 19:23
+ * 2019-01-13 19:23
  */
 function serviceCpuSave() {
     var cpu = $("input[name='Cpu']").val();
@@ -944,7 +944,7 @@ function serviceCpuSave() {
 
 /**
  * 升级镜像
- * 2018-01-14 08:39
+ * 2019-01-14 08:39
  */
 function updateServiceImage() {
     var id = $("#update_image_service_id").val();
@@ -967,7 +967,7 @@ function updateServiceImage() {
 
 /**
  * 服务环境变量修改
- * 2018-01-14 11:26
+ * 2019-01-14 11:26
  */
 function envSave() {
     var env = $("#env_change_id").val();
@@ -979,7 +979,7 @@ function envSave() {
 
 /**
  * 日志路径修改
- * 2018-01-14 11:26
+ * 2019-01-14 11:26
  */
 function logPathSave() {
     var logPath = $("#LogPath").val();
@@ -991,7 +991,7 @@ function logPathSave() {
 
 /**
  * 保存健康检查数据
- * 2018-01-14 12:02
+ * 2019-01-14 12:02
  */
 function saveHealth() {
     var d = {};
@@ -1014,7 +1014,7 @@ function saveHealth() {
 
 /**
  * 保存端口数据
- * 2018-01-14 13:27
+ * 2019-01-14 13:27
  */
 function portSave() {
     var ports = $("#ports_change_id").val();
@@ -1024,7 +1024,7 @@ function portSave() {
     saveMsg(result);
 }
 
-// 2018-01-15 15:06
+// 2019-01-15 15:06
 // 连接到docker容器
 function toTty(id) {
     window.open("/webtty/" + id)
@@ -1032,7 +1032,7 @@ function toTty(id) {
 
 
 // 容器删除后跳到容器列表
-// 2018-01-16 12:47
+// 2019-01-16 12:47
 function toContainerList() {
     setTimeout(function () {
         window.location.href = "/application/container/list";
@@ -1056,7 +1056,7 @@ function deleteContainerSwal(id) {
 }
 
 // 删除容器
-// 2018-01-16 12:43
+// 2019-01-16 12:43
 function deleteContainer(id) {
 
     if (!id) {
@@ -1100,12 +1100,12 @@ function loadServiceData(key,name) {
         }
     }
     name = getValue(name);
-    // 应用详情页面使用 2018-01-18 08:02
+    // 应用详情页面使用 2019-01-18 08:02
     var app = $("#detail_add_app_name").val();
     if (!app) {
         app = ""
     }
-    // 应用详情页面使用 2018-01-18 08:02
+    // 应用详情页面使用 2019-01-18 08:02
     var cluster = $("#detail_add_cluster_name").val();
     if (!cluster) {
         cluster = ""
@@ -1211,7 +1211,7 @@ function loadServiceData(key,name) {
 }
 
 /**
- * 2018-02-07 13:58
+ * 2019-01-07 13:58
  * 镜像选择后设置镜像名称
  */
 function setImageName(name,obj) {
@@ -1229,7 +1229,7 @@ function setImageName(name,obj) {
 }
 
 /**
- * 2018-02-07 11:14
+ * 2019-01-07 11:14
  * 加载镜像部署数据
  * @param key
  * @param grouptype
@@ -1290,7 +1290,7 @@ function loadImageData(key, clusterName) {
 
 /**
  * 获取镜像
- * 2018-02-06 14:51
+ * 2019-01-06 14:51
  * @param id
  */
 function getImageTags(id) {

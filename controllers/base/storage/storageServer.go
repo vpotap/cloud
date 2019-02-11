@@ -21,7 +21,7 @@ func (this *StorageServerController) StorageServerList() {
 }
 
 // 存储服务添加页面
-// 2018-02-08 09:03
+// 2019-01-08 09:03
 // @router /base/storage/add [get]
 func (this *StorageServerController) StorageServerAdd() {
 	id := this.GetString("ServerId")
@@ -113,7 +113,7 @@ func setServerJson(this *StorageServerController, data interface{}) {
 	this.ServeJSON(false)
 }
 
-// 2018-02-07 20:54
+// 2019-01-07 20:54
 // 存储数据获取
 // @router /api/storage/server [get]
 func (this *StorageServerController) StorageServerData() {
@@ -137,7 +137,7 @@ func (this *StorageServerController) StorageServerData() {
 }
 
 // 获取单个存储的信息
-// 2018-01-31 11:132
+// 2019-01-31 11:132
 func getStorageServerData(id interface{}, clusterName string) storage.CloudStorageServer {
 	searchMap := sql.SearchMap{}
 	if id != "" {

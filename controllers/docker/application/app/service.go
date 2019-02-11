@@ -37,7 +37,7 @@ func (this *ServiceController) ConfigureAdd() {
 	this.TplName = "application/service/add_config.html"
 }
 
-// 2018-01-13 17:01
+// 2019-01-13 17:01
 // Service 服务管理扩容页面
 // @param
 // @router /application/service/scale/add/:id:int [get]
@@ -52,7 +52,7 @@ func (this *ServiceController) ScaleAdd() {
 	this.TplName = "application/service/scale.html"
 }
 
-// 2018-01-13 18:43
+// 2019-01-13 18:43
 // Service 服务管理修改配置
 // @param
 // @router /application/service/config/add/:id:int [get]
@@ -61,7 +61,7 @@ func (this *ServiceController) ConfigAdd() {
 	this.TplName = "application/service/change_cpu_mem.html"
 }
 
-// 2018-01-14 09:31
+// 2019-01-14 09:31
 // 应用Service 修改滚动升级页面
 // @router /application/service/image/add/:id:int [get]
 func (this *ServiceController) ImageAdd() {
@@ -75,7 +75,7 @@ func (this *ServiceController) ImageAdd() {
 	this.TplName = "application/service/image.html"
 }
 
-// 2018-01-14 11:13
+// 2019-01-14 11:13
 // 应用Service 修改环境变量
 // @router /application/service/env/add/:id:int [get]
 func (this *ServiceController) EnvAdd() {
@@ -83,7 +83,7 @@ func (this *ServiceController) EnvAdd() {
 	this.TplName = "application/service/env.html"
 }
 
-// 2018-01-14 13:31
+// 2019-01-14 13:31
 // 应用Service 修改端口数据
 // @router /application/service/port/add/:id:int [get]
 func (this *ServiceController) PortChange() {
@@ -324,7 +324,7 @@ func (this *ServiceController) ServiceData() {
 	go GoServerThread(data)
 }
 
-// 2018-02-14 18:06
+// 2019-01-14 18:06
 // 删除服务
 func DeleteK8sService(service app.CloudAppService, force string) interface{} {
 	namespace := util.Namespace(service.AppName, service.ResourceName)
@@ -464,7 +464,7 @@ func (this *ServiceController) ServiceScale() {
 }
 
 // @parame type 更新类型 image config port env health
-// 2018-01-13 19:37
+// 2019-01-13 19:37
 // @router /api/service/update/:id:int [post]
 func (this *ServiceController) ServiceUpdate() {
 
@@ -488,7 +488,7 @@ func (this *ServiceController) ServiceUpdate() {
 	}
 
 	// 健康检查升级
-	// 2018-01-14 13:23
+	// 2019-01-14 13:23
 	if updateType == "health" {
 		healthData := this.GetString("healthData")
 		if healthData == "" || len(healthData) < 20 {

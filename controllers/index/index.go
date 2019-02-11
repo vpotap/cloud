@@ -43,7 +43,7 @@ func (this *IndexController) LoginPage() {
 }
 
 // web 终端
-// 2018-01-15 10:00
+// 2019-01-15 10:00
 func (this *IndexController) WebTty() {
 	searchMap := sql.GetSearchMap("ContainerId", *this.Ctx)
 	data := app.CloudContainer{}
@@ -83,7 +83,7 @@ func (this *IndexController) GetUser() {
 }
 
 // 登录从数据库验证账号
-// 2018-01-19 17;08
+// 2019-01-19 17;08
 func DbAuth(user string, password string) bool {
 	searchMap := sql.SearchMap{}
 	searchMap.Put("UserName", user)
@@ -99,7 +99,7 @@ func DbAuth(user string, password string) bool {
 
 var LockUserAuth util.Lock
 
-// 2018-01-16 08:52
+// 2019-01-16 08:52
 // 避免频繁更新数据库,加锁60秒后可操作
 func writeLock(username string) bool {
 	key := username
@@ -116,7 +116,7 @@ func writeLock(username string) bool {
 	return true
 }
 
-// 2018-01-21 18:44
+// 2019-01-21 18:44
 // 验证登陆仓库的管理员用户名和密码
 func VerifyUser(user string, pass string, service string) bool {
 	// 查询对象和用户的权限
@@ -147,7 +147,7 @@ func VerifyUser(user string, pass string, service string) bool {
 }
 
 // 登录后用户记录到数据库
-// 2018-01-19 17:06
+// 2019-01-19 17:06
 func RecordLoginUser(username string, password string) (bool, error) {
 	cacheStr := util.Md5String(password + beego.AppConfig.String("ttyttysecurity"))
 	r := cache.RedisUserCache.Get(username)
@@ -188,7 +188,7 @@ func RecordLoginUser(username string, password string) (bool, error) {
 }
 
 // 获取用户是否禁用
-// 2018-01-22 09:18
+// 2019-01-22 09:18
 func getUserIsDel(username string) bool {
 	data := make([]index.DockerCloudAuthorityUser, 0)
 	searchMap := sql.SearchMap{}

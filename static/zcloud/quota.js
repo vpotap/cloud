@@ -87,7 +87,7 @@ function toQuotaList() {
 
 /**
  * 删除资源配额
- * 2018-02-12 06:55
+ * 2019-01-12 06:55
  */
 function deleteQuotaSwal(id) {
     Swal("删除资源配额", "warning", "确认操作", "不操作", "成功", "失败", " deleteQuota("+id+")", "topQuotaList()");

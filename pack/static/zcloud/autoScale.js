@@ -12,7 +12,7 @@ function addAutoScale(scaleId) {
 
 /**
  * 删除自动伸缩弹出框
- * 2018-02-19 19:09
+ * 2019-01-19 19:09
  */
 function deleteAutoScaleSwal(id) {
     Swal("删除自动伸缩", "warning", "确认操作", "不操作", "成功", "失败", " deleteAutoScale(" + id + ")", "loadAutoScale()");
@@ -31,7 +31,7 @@ function deleteAutoScale(id) {
 }
 
 /**
- * 2018-02-19 19:05
+ * 2019-01-19 19:05
  * 保存自动伸缩
  */
 function saveAutoScale(scaleId) {
@@ -78,7 +78,7 @@ function saveAutoScale(scaleId) {
 }
 
 /**
- * 2018-02-19 19:07
+ * 2019-01-19 19:07
  * 加载数据
  * @param key
  */
@@ -154,7 +154,7 @@ function loadAutoScale(key) {
 }
 
 /**
- * 2018-02-20 07:50
+ * 2019-01-20 07:50
  * 跳转到操作页面
  * @param id
  */
@@ -165,7 +165,7 @@ function toScaleHistory(id) {
 
 
 /**
- * 2018-02-19 19:05
+ * 2019-01-19 19:05
  * 保存自动伸缩
  */
 function saveAutoScale(scaleId) {
@@ -212,7 +212,7 @@ function saveAutoScale(scaleId) {
 }
 
 /**
- * 2018-02-20 17:33
+ * 2019-01-20 17:33
  * 加载日志数据
  * @param key
  */

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// 2018-01-24 16:36
+// 2019-01-24 16:36
 // 持续集成
 type CodeController struct {
 	beego.Controller
@@ -38,7 +38,7 @@ func (this *CodeController) CodeAdd() {
 }
 
 // 获取代码仓库数据
-// 2018-01-20 12:56
+// 2019-01-20 12:56
 // router /api/ci/code [get]
 func (this *CodeController) CodeData()  {
 	// 代码仓库数据
@@ -77,7 +77,7 @@ func (this *CodeController) CodeSave() {
 
 
 // 获取代码仓库数据
-// 2018-01-20 17:45
+// 2019-01-20 17:45
 // router /api/ci/code/name [get]
 func (this *CodeController) CodeDataName()  {
 	// 代码仓库数据
@@ -116,7 +116,7 @@ func (this *CodeController) CodeDatas() {
 
 // json
 // 删除代码仓库
-// 2018-01-20 17:46
+// 2019-01-20 17:46
 // @router /api/ci/code/:id:int [delete]
 func (this *CodeController) CodeDelete() {
 	searchMap := sql.SearchMap{}

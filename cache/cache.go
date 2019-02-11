@@ -9,10 +9,10 @@ var (
 	ServiceDataCache, _ = util.RedisCacheClient("cloud_cache_service_data_")
 	// 服务信息缓存
 	ServiceInfoCache, _ = util.RedisCacheClient("cloud_cache_service_info_")
-	// 2018-02-18 21:06
+	// 2019-01-18 21:06
 	// 设置权限缓存,所有权限查询都从缓存中读取
 	PermCache, _ = util.RedisCacheClient("cloud_ci_perm_")
-	// 2018-02-08 21:54
+	// 2019-01-08 21:54
 	AppCache, AppCacheErr = util.RedisCacheClient("cloud_k8s_app_")
 	// 集群数据缓存
 	ClusterCache, ClusterCacheErr = util.RedisCacheClient("cloud_cluster_cache_")

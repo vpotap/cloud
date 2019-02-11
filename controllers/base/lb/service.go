@@ -195,7 +195,7 @@ func setServiceJson(this *ServiceController, data interface{}) {
 }
 
 // 获取nginx配置文件信息
-// 2018-02-03 07:31
+// 2019-01-03 07:31
 func getNginxConf(this *ServiceController) k8s.CloudLbNginxConf {
 	searchMap := sql.GetSearchMap("ServiceId", *this.Ctx)
 	searchMap.Put("CreateUser", getServiceUser(this))
@@ -206,7 +206,7 @@ func getNginxConf(this *ServiceController) k8s.CloudLbNginxConf {
 }
 
 
-// 2018-02-01 21:39
+// 2019-01-01 21:39
 // 获取nginx配置文件信息
 // @router /api/network/lb/nginx/:id:int [get]
 func (this *ServiceController) GetNginxConf() {
@@ -222,7 +222,7 @@ func (this *ServiceController) GetLbDomain() {
 	setServiceJson(this, data)
 }
 
-// 2018-02-01 22:11
+// 2019-01-01 22:11
 // 保存nginx配置
 // @router /api/network/lb/nginx/:id:int [post]
 func (this *ServiceController) SaveNginxConf() {
@@ -281,7 +281,7 @@ func (this *ServiceController) SaveNginxConf() {
 
 
 
-// 2018-02-14 14:40
+// 2019-01-14 14:40
 // 获取域名选项卡
 func GetDomainSelect(entname string) string {
 	data := make([]lb.LbServiceVersion, 0)
@@ -299,7 +299,7 @@ func GetDomainSelect(entname string) string {
 	return html
 }
 
-// 2018-02-17 21:20
+// 2019-01-17 21:20
 // 按域名查找lb服务信息
 func GetLbDomainData(domain string) k8s.CloudLbService {
 	data := k8s.CloudLbService{}
@@ -308,7 +308,7 @@ func GetLbDomainData(domain string) k8s.CloudLbService {
 	return data
 }
 
-// 2018-02-17 21:17
+// 2019-01-17 21:17
 // 获取指定域名的服务
 func GetLbServiceData(domains []string) []lb.LbServiceVersion {
 	data := make([]lb.LbServiceVersion, 0)
@@ -321,7 +321,7 @@ func GetLbServiceData(domains []string) []lb.LbServiceVersion {
 	return data
 }
 
-// 2018-02-14 13:29
+// 2019-01-14 13:29
 // 获取指定域名在负载均衡的版本号
 func GetLbServiceMap(domains []string) util.Lock {
 	lock := util.Lock{}

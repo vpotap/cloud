@@ -15,13 +15,13 @@ import (
 	"github.com/astaxie/beego/logs"
 )
 
-// 2018-02-10 18:29
+// 2019-01-10 18:29
 func setServiceJson(this *ServiceController, data interface{}) {
 	this.Data["json"] = data
 	this.ServeJSON(false)
 }
 
-// 2018-02-14 07:08
+// 2019-01-14 07:08
 func getServiceData(searchMap sql.SearchMap) ci.CloudCiService {
 	serviceData := ci.CloudCiService{}
 	q := sql.SearchSql(serviceData, ci.SelectCloudCiService, searchMap)
@@ -29,7 +29,7 @@ func getServiceData(searchMap sql.SearchMap) ci.CloudCiService {
 	return serviceData
 }
 
-// 2018-02-18 20;26
+// 2019-01-18 20;26
 // 获取域名选择卡
 func getServiceDomainSelect(domain string) string {
 	domains := strings.Split(domain, ",")
@@ -49,14 +49,14 @@ func getServiceUser(this *ServiceController) string {
 	return util.GetUser(this.GetSession("username"))
 }
 
-// 2018-02-17 16:47
+// 2019-01-17 16:47
 // 获取负载均衡版本数据
 func getLbDomain(domain string) util.Lock {
 	domainMap := lb.GetLbServiceMap([]string{`"` + domain + `"`})
 	return domainMap
 }
 
-// 2018-02-14 21:15
+// 2019-01-14 21:15
 // 检查参数正确性
 func checkDeleteServiceParam(serviceCiData ci.CloudCiService, services []app.CloudAppService, service app.CloudAppService) string {
 	var msg string
@@ -95,7 +95,7 @@ func checkDeleteServiceParam(serviceCiData ci.CloudCiService, services []app.Clo
 	return msg
 }
 
-//// 2018-02-15 06:26
+//// 2019-01-15 06:26
 //// 所有服务一直指向蓝版本
 //// 新域名指向绿版本
 //func updateCiReleaseSvc(serviceData app.CloudAppService, version string) error {
@@ -130,7 +130,7 @@ func getCiService(this *ServiceController) ci.CloudCiService {
 	return serviceCiData
 }
 
-// 2018-02-15 06:36
+// 2019-01-15 06:36
 // 获取公共数据,服务信息和ci发布信息
 func getCiServiceData(this *ServiceController) ([]app.CloudAppService, ci.CloudCiService) {
 	serviceCiData := getCiService(this)
@@ -138,7 +138,7 @@ func getCiServiceData(this *ServiceController) ([]app.CloudAppService, ci.CloudC
 	return services, serviceCiData
 }
 
-// 2018-02-15 06:28
+// 2019-01-15 06:28
 // 在lb服务器将版本号更新
 func updateLbVersion(version string, serviceCiData ci.CloudCiService, serviceData app.CloudAppService, updateLb bool) error{
 	// 更新数据库版本号
@@ -162,14 +162,14 @@ func updateLbVersion(version string, serviceCiData ci.CloudCiService, serviceDat
 	return err
 }
 
-// 2018-02-15 09:03
+// 2019-01-15 09:03
 // 记录日志
 func saveOperLog(this *ServiceController, info string, ciData ci.CloudCiService, serviceData app.CloudAppService) {
 	util.SaveOperLog(getServiceUser(this), *this.Ctx, info+ciData.Domain+serviceData.ServiceVersion, serviceData.ClusterName)
 	setServiceJson(this, util.ApiResponse(true, info+"成功"))
 }
 
-// 2018-02-15 09:29
+// 2019-01-15 09:29
 // 保存发布历史
 func saveHistory(this *ServiceController, d ci.CloudCiReleaseHistory) {
 	d.CreateTime = util.GetDate()
@@ -178,7 +178,7 @@ func saveHistory(this *ServiceController, d ci.CloudCiReleaseHistory) {
 	sql.Raw(q).Exec()
 }
 
-// 2018-02-15 10:39
+// 2019-01-15 10:39
 // 获取服务信息
 func getImageServiceInfo(services []app.CloudAppService, version string) app.CloudAppService {
 	var serviceInfo app.CloudAppService
@@ -205,7 +205,7 @@ func getImageServiceInfo(services []app.CloudAppService, version string) app.Clo
 	return serviceInfo
 }
 
-// 2018-02-18 15:47
+// 2019-01-18 15:47
 // 获取历史数据
 func getHistory(searchMap sql.SearchMap) ci.CloudCiReleaseHistory {
 	data := ci.CloudCiReleaseHistory{}
@@ -217,7 +217,7 @@ func getHistory(searchMap sql.SearchMap) ci.CloudCiReleaseHistory {
 	return data
 }
 
-// 2018-02-15 10:45
+// 2019-01-15 10:45
 // 获取历史数据
 func getHistoryData(serviceCiData ci.CloudCiService) ci.CloudCiReleaseHistory {
 	searchMap := sql.GetSearchMapV("ServiceName", serviceCiData.ServiceName)
@@ -226,14 +226,14 @@ func getHistoryData(serviceCiData ci.CloudCiService) ci.CloudCiReleaseHistory {
 	return getHistory(searchMap)
 }
 
-// 2018-02-15 22:34
+// 2019-01-15 22:34
 // 获取镜像名称
 func getImageName(img1 string) string {
 	img := strings.Split(img1, ":")
 	return strings.Join(img[0:len(img)-1], ":")
 }
 
-// 2018-02-15 15:56
+// 2019-01-15 15:56
 // 获取蓝绿版本的镜像信息
 func getImageInfo(v ci.CloudCiService) ci.CloudCiService {
 	services := app2.GetServices(v, app.SelectCurrentVersion)
@@ -258,7 +258,7 @@ func getImageInfo(v ci.CloudCiService) ci.CloudCiService {
 	return v
 }
 
-// 2018-02-15 16:05
+// 2019-01-15 16:05
 // 获取镜像tag
 func getImageTag(image string) string {
 	imgs := strings.Split(image, ":")
@@ -268,7 +268,7 @@ func getImageTag(image string) string {
 	return "版本不存在"
 }
 
-// 2018-02-15 22:28
+// 2019-01-15 22:28
 // 获取服务访问信息
 func getServiceAccess(services []app.CloudAppService, SvcCi ci.CloudCiService) ci.CloudCiService {
 	if len(services) > 0 {
@@ -309,7 +309,7 @@ func getServiceAccess(services []app.CloudAppService, SvcCi ci.CloudCiService) c
 	return SvcCi
 }
 
-// 2018-02-16 15:00
+// 2019-01-16 15:00
 // 更新负载均衡服务数据
 func updateLbPercent(percent int, serviceCiData ci.CloudCiService, q string, version string) {
 	q = strings.Replace(q, "{0}", strconv.Itoa(percent), -1)
@@ -318,7 +318,7 @@ func updateLbPercent(percent int, serviceCiData ci.CloudCiService, q string, ver
 	sql.Raw(q).Exec()
 }
 
-// 2018-02-17 07:38
+// 2019-01-17 07:38
 // 执行滚动更新
 func execCiUpdate(serviceData app.CloudAppService, d k8s.RollingParam, username string) error {
 	serviceData.MaxUnavailable = int(d.MaxUnavailable)
@@ -332,7 +332,7 @@ func execCiUpdate(serviceData app.CloudAppService, d k8s.RollingParam, username 
 	return err
 }
 
-// 2018-02-17 07:52
+// 2019-01-17 07:52
 // 获取滚动更新数据,并坚持错误
 func getRollingData(err error, this *ServiceController) (app.CloudAppService, ci.CloudCiReleaseHistory, kubernetes.Clientset, ci.CloudCiService, string) {
 	version := this.GetString("version")
@@ -365,7 +365,7 @@ func getRollingData(err error, this *ServiceController) (app.CloudAppService, ci
 	return serviceData, history, cl, serviceCiData, msg
 }
 
-// 2018-02-17 11:50
+// 2019-01-17 11:50
 // 记录服务发布操作日志
 func saveServiceLog(this *ServiceController, ciData ci.CloudCiService, msg string) {
 	log := ci.CloudCiReleaseLog{}
@@ -382,7 +382,7 @@ func saveServiceLog(this *ServiceController, ciData ci.CloudCiService, msg strin
 	sql.Raw(q).Exec()
 }
 
-// 2018-02-18 13:29
+// 2019-01-18 13:29
 // 执行回滚操作
 func execUpdateRollbackService(serviceCiData ci.CloudCiService, history ci.CloudCiReleaseHistory,
 	serviceData app.CloudAppService, this *ServiceController,

@@ -172,7 +172,7 @@ func (this *ConfigureController) ConfigureDelete() {
 	setConfigJson(this, data)
 }
 
-// 2018-02-05 21:45
+// 2019-01-05 21:45
 func setConfigJson(this *ConfigureController, data interface{}) {
 	this.Data["json"] = data
 	this.ServeJSON(false)

@@ -19,7 +19,7 @@ const (
 )
 
 // 获取默认的配置
-// 2018-02-02 16:13
+// 2019-01-02 16:13
 func getNgxinDefaulgConfig(containerPath string, dataname string, configData map[string]interface{}, confType string) ConfigureData {
 	if configData == nil {
 		configData = map[string]interface{}{"default": ""}
@@ -31,7 +31,7 @@ func getNgxinDefaulgConfig(containerPath string, dataname string, configData map
 	}
 }
 
-// 2018-02-03 06:30
+// 2019-01-03 06:30
 // 获取nginx计划配置信息
 func nginxTestJobParam(master string, port string) JobParam {
 	param := JobParam{
@@ -50,7 +50,7 @@ func nginxTestJobParam(master string, port string) JobParam {
 	return param
 }
 
-// 2018-02-03 07:18
+// 2019-01-03 07:18
 // 分析日志,获取执行结果
 func getNginxJobLog(logstr string) string {
 	logStr := strings.Split(logstr, "\n")
@@ -65,7 +65,7 @@ func getNginxJobLog(logstr string) string {
 
 
 // 创建测试任务,检查nginx配置文件
-// 2018-02-02 20:30
+// 2019-01-02 20:30
 func MakeTestJob(master string, port string, clusterName string) (string, int64) {
 	start := time.Now().Unix()
 	param := nginxTestJobParam(master, port)
@@ -77,7 +77,7 @@ func MakeTestJob(master string, port string, clusterName string) (string, int64)
 	return logStr, times
 }
 
-// 2018-02-02 21:48
+// 2019-01-02 21:48
 // 获取默认需要挂载的配置
 func getNginxDefaultConf(confType string) []ConfigureData {
 	nginxConfigMap := make([]ConfigureData, 0)

@@ -15,7 +15,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
-// 2018-02-19 09:37
+// 2019-01-19 09:37
 // 获取集群数据
 func GetClusterDetailData(name string) cluster.CloudClusterDetail {
 	detail := cluster.CloudClusterDetail{}
@@ -29,7 +29,7 @@ func GetClusterDetailData(name string) cluster.CloudClusterDetail {
 	return detail
 }
 
-// 2018-02-19 09:13
+// 2019-01-19 09:13
 // 缓存集群详情到redis里
 // 获取集群资源使用详细情况
 func CacheClusterDetailData(name string) {
@@ -78,7 +78,7 @@ func CacheClusterDetailData(name string) {
 }
 
 // 获取cluster数据
-// 2018-01-26 13:38
+// 2019-01-26 13:38
 func GetClusterSelect() string {
 	html := make([]string, 0)
 	data := GetClusterName()
@@ -89,7 +89,7 @@ func GetClusterSelect() string {
 }
 
 // 设置公共数据
-// 2018-01-18 20:52
+// 2019-01-18 20:52
 func setClusterData(cStatus k8s.ClusterStatus, k cluster.CloudClusterDetail) k8s.ClusterStatus {
 	cStatus.ClusterId = k.ClusterId
 	cStatus.ClusterName = k.ClusterName
@@ -115,7 +115,7 @@ func GetClusterInfo(k cluster.CloudClusterDetail, cData *[]k8s.ClusterStatus) {
 }
 
 // 获取集群名称和别名的对应关系
-// 2018-01-21 17:46
+// 2019-01-21 17:46
 func GetClusterMap() util.Lock {
 	data := GetClusterName()
 	r := util.Lock{}
@@ -195,7 +195,7 @@ func getUsername(this *ClusterController) string {
 	return util.GetUser(this.GetSession("username"))
 }
 
-// 2018-02-20 08:46
+// 2019-01-20 08:46
 // 缓存集群信息到redis中,不用每次查库
 // 任务计划自动更新数据
 // 每一分钟一次
@@ -208,7 +208,7 @@ func CacheClusterHealthData() {
 	}
 }
 
-// 2018-02-19 08:46
+// 2019-01-19 08:46
 // 缓存集群信息到redis中,不用每次查库
 // 任务计划自动更新数据
 func CacheClusterData() {
@@ -241,7 +241,7 @@ func CacheClusterData() {
 
 }
 
-// 2018-02-19 08:53
+// 2019-01-19 08:53
 // 获取缓存的集群数据数据
 func getClusterCacheData() []k8s.ClusterStatus {
 	cData := make([]k8s.ClusterStatus, 0)

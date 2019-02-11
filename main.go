@@ -18,7 +18,7 @@ import (
 // http://yoyolive.com/2017/03/09/Kubernetes-Deploy-GlusterFS/
 // http://www.360doc.com/content/18/0105/18/17050303_719342191.shtml glusterfs http://yoyolive.com/2017/03/09/Kubernetes-Deploy-GlusterFS/
 // http://docs.tenxcloud.com/guide/coderepos
-// 2018-01-26 15:11
+// 2019-01-26 15:11
 
 func main() {
 	//beego.ErrorController(&index.ErrorController{})
