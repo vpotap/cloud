@@ -8,13 +8,13 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-//https://ant.design/docs/resource/download-cn
-//https://beego.me/docs/mvc/controller/session.md
-//https://www.kubernetes.org.cn/configmap
-//https://kubernetes.io/docs/concepts/api-extension/apiserver-aggregation/
-//http://blog.csdn.net/dream_broken/article/details/53130515
+// https://ant.design/docs/resource/download-cn
+// https://beego.me/docs/mvc/controller/session.md
+// https://www.kubernetes.org.cn/configmap
+// https://kubernetes.io/docs/concepts/api-extension/apiserver-aggregation/
+// http://blog.csdn.net/dream_broken/article/details/53130515
 // https://kubernetes.io/docs/reference/
-//http://developer.alauda.cn/usermanual/features/servicecreate.html
+// http://developer.alauda.cn/usermanual/features/servicecreate.html
 // http://yoyolive.com/2017/03/09/Kubernetes-Deploy-GlusterFS/
 // http://www.360doc.com/content/18/0105/18/17050303_719342191.shtml glusterfs http://yoyolive.com/2017/03/09/Kubernetes-Deploy-GlusterFS/
 // http://docs.tenxcloud.com/guide/coderepos

@@ -207,22 +207,36 @@ func (this *RegistryGroupController) RegistryGroupImages() {
 		k8s.CloudImage{})
 
 	if num < len(repos) {
-		//d := k8s.CloudImage{}
-		// imageSearchMap := sql.SearchMap{}
-		// imageSearchMap.Put("GroupId", d.GroupId)
-		// imageSearchMap.Put("CreateUser", getUser(this))
 
-		// masterData := make([]registry.CloudRegistryGroup, 0)
-		// q := sql.SearchSql(d, registry.SelectCloudRegistryGroup, searchMap)
-		// sql.Raw(q).QueryRows(&masterData)
-		// util.SetPublicData(d, getUser(this), &d)
+		for _, v := range repos {
+			d := k8s.CloudImage{}
+			isExist := false
+			d.Name = strings.Replace(v.Name, group+"/", "", -1)
+			d.Download = v.PullCount
+			d.RepositoriesGroup = group
+			for _, r := range data {
+				if v.Name == r.Name {
+					isExist = true
+				}
+			}
 
-		// q = sql.InsertSql(d, registry.InsertCloudImage)
-		// if d.GroupId > 0 {
-		// 	q = sql.UpdateSql(d, registry.UpdateCloudImage, searchMap, registry.UpdateCloudImageExclude)
-		// }
-		// _, err = sql.Raw(q).Exec()
+			q := sql.InsertSql(d, registry.InsertCloudImage)
+			if isExist {
+				imageSearchMap := sql.SearchMap{}
+				imageSearchMap.Put("Name", d.Name)
+				q = sql.UpdateSql(d, registry.UpdateCloudImage, searchMap, registry.UpdateCloudImageExclude)
+			}
+			_, err = sql.Raw(q).Exec()
+		}
+
 	}
+
+	num, err = sql.OrderByPagingSql(searchSql,
+		"create_time",
+		*this.Ctx.Request,
+		&data,
+		k8s.CloudImage{})
+
 	r := util.ResponseMap(data,
 		sql.Count("cloud_image", int(num), key),
 		this.GetString("draw"))

@@ -61,7 +61,8 @@ File: Menu
   line-height: 68px;
 }
 .logo {
-  color: #313a46 !important;
+  /* color: #313a46 !important; */
+  color: #fff !important; 
   font-size: 24px;
   text-transform: uppercase;
   font-family: 'Nunito Sans', sans-serif;
