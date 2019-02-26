@@ -1,17 +1,17 @@
 package k8s
 
 import (
+	"cloud/util"
 	"fmt"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"strings"
+
 	"github.com/astaxie/beego/logs"
 	v12 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"strings"
-	"cloud/util"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/client-go/dynamic"
 
 	"encoding/json"
 )
-
 
 // 通过yaml文件创建服务
 
@@ -42,15 +42,14 @@ func YamlDeployment(clustername string, yaml []byte, namespace string, isService
 	podobj := unstructured.Unstructured{Object: conf}
 
 	labels := podobj.GetLabels()
-	if len(labels) < 1{
+	if len(labels) < 1 {
 		labels = make(map[string]string)
 	}
-	labels["zcloud-app"] = namespace
+	labels["cloud-app"] = namespace
 	labels["space"] = namespace
 	labels["release-version"] = "0"
 	labels["uuid"] = uuid
 	podobj.SetLabels(labels)
-
 
 	d, err := cl.Resource(resource, namespace).Create(&podobj)
 	if err != nil {
@@ -127,7 +126,6 @@ func YamlLbHaproxy() {
 
 }
 
-
 // --service-node-port-range=20000-65535
 // NodePort 对外部可见的
 // 创建一个service, 在应用创建完成后,自动创建一个service
@@ -147,7 +145,7 @@ func YamlCreateService(appname string, resourceName string, containerPort int32,
 			},
 		},
 		"spec": map[string]interface{}{
-			"type": "NodePort",
+			"type":     "NodePort",
 			"selector": selector,
 			"ports": []map[string]interface{}{
 				map[string]interface{}{
@@ -158,7 +156,7 @@ func YamlCreateService(appname string, resourceName string, containerPort int32,
 			},
 		},
 	}
-	d1 ,_ := json.Marshal(conf)
+	d1, _ := json.Marshal(conf)
 	fmt.Println(string(d1))
 	resource := &v12.APIResource{Name: "Services", Namespaced: true}
 	obj := unstructured.Unstructured{Object: conf}

@@ -469,7 +469,8 @@ File: Menu
 }
 .page-title-box {
   padding: 8px 20px;
-  margin: 0 -20px 20px;
+  /* margin: 0 -20px 20px; */
+  margin: 0 -20px 0px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e2e2;
 }
@@ -741,7 +742,8 @@ body.enlarged.bg-transparent {
 .app-table {
   background-color: #ffffff;
   margin-top: 15px;
-  padding-top: 20px;
+  /* padding-top: 20px; */
+  padding-top: 10px;
 }
 
 .noleft-radius{

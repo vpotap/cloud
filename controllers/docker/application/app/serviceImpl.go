@@ -1,22 +1,23 @@
 package app
 
 import (
-	"github.com/astaxie/beego/logs"
+	"cloud/cache"
+	"cloud/controllers/image"
 	"cloud/k8s"
 	"cloud/models/app"
-	"cloud/util"
-	"golang.org/x/crypto/openpgp/errors"
-	"cloud/sql"
-	"strconv"
-	"encoding/json"
-	"strings"
-	"cloud/controllers/image"
-	"time"
 	"cloud/models/ci"
-	"cloud/cache"
-	"cloud/userperm"
-	"cloud/models/log"
 	"cloud/models/ent"
+	"cloud/models/log"
+	"cloud/sql"
+	"cloud/userperm"
+	"cloud/util"
+	"encoding/json"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/astaxie/beego/logs"
+	"golang.org/x/crypto/openpgp/errors"
 )
 
 // 2019-01-13 16:36
@@ -156,17 +157,17 @@ func GetServiceRunData(data []app.CloudAppService, user string) []k8s.CloudApp {
 	result := make([]k8s.CloudApp, 0)
 	for _, d := range data {
 		// 不是自己创建的才检查
-		if d.CreateUser != user && user != "admin"{
-			pName := d.AppName+";"+d.ResourceName+";"+d.ServiceName
-			if ! userperm.CheckPerm(pName, d.ClusterName, d.Entname, perm) && len(user) > 0 {
-				if ! userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+		if d.CreateUser != user && user != "admin" {
+			pName := d.AppName + ";" + d.ResourceName + ";" + d.ServiceName
+			if !userperm.CheckPerm(pName, d.ClusterName, d.Entname, perm) && len(user) > 0 {
+				if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
 					continue
 				}
 			}
 		}
 
 		namespace := util.Namespace(d.AppName, d.ResourceName) +
-			d.ServiceName  + d.Entname + d.ClusterName
+			d.ServiceName + d.Entname + d.ClusterName
 		if len(d.ServiceVersion) > 0 {
 			namespace = util.Namespace(namespace, d.ServiceVersion)
 		}
@@ -200,18 +201,18 @@ func setChangeData(this *ServiceController) app.CloudAppService {
 // 2018-10-03 14:57
 // 获取日志驱动
 func getLogDriver(ent string, cluster string) log.LogDataSource {
-	searchMap :=  sql.SearchMap{}
+	searchMap := sql.SearchMap{}
 	searchMap.Put("Ent", ent)
 	searchMap.Put("ClusterName", cluster)
 	searchMap.Put("DataType", "driver")
-	q := sql.SearchSql(log.LogDataSource{}, log.SelectLogDataSource,searchMap)
+	q := sql.SearchSql(log.LogDataSource{}, log.SelectLogDataSource, searchMap)
 	data := log.LogDataSource{}
 	sql.Raw(q).QueryRow(&data)
 	return data
 }
 
 // 获取环境英文名称
-func GetEntDescription(entname string)  string{
+func GetEntDescription(entname string) string {
 	searchMap := sql.SearchMap{}
 	searchMap.Put("Entname", entname)
 	q := sql.SearchSql(ent.CloudEnt{}, ent.SelectCloudEnt, searchMap)
@@ -221,12 +222,12 @@ func GetEntDescription(entname string)  string{
 }
 
 // 设置filebeat需要的参数
-func setFilebeatParam(param k8s.ServiceParam, d app.CloudAppService)   k8s.ServiceParam{
+func setFilebeatParam(param k8s.ServiceParam, d app.CloudAppService) k8s.ServiceParam {
 	if len(d.LogPath) > 0 {
 		dataDriver := getLogDriver(d.Entname, param.ClusterName)
 		param.LogPath = d.LogPath
 		param.Kafka = dataDriver.Address
-		if dataDriver.DriverType == "elasticsearch"{
+		if dataDriver.DriverType == "elasticsearch" {
 			param.ElasticSearch = dataDriver.Address
 		}
 		param.Ent = GetEntDescription(d.Entname)
@@ -308,8 +309,10 @@ func responseData(err error, this *ServiceController, serviceName string, info s
 // 2019-01-09 21:32
 // 创建secret文件
 func CreateSecretFile(param k8s.ServiceParam) k8s.ServiceParam {
+	//根据镜像获取私有仓库地址
+	RegServer, _, _, _ := registry.GetRegistryGroup(strings.Split(param.Image, "/")[1], param.ClusterName)
 	// 创建私有仓库镜像获取私密文件
-	param.Registry = strings.Split(param.Image, "/")[0]
+	param.Registry = RegServer.ServerDomain //strings.Split(param.Image, "/")[0]
 	logs.Info("获取到仓库地址", param.Registry)
 	servers := registry.GetRegistryServer(strings.Split(param.Registry, ":")[0])
 	if len(servers) > 0 {
@@ -362,7 +365,7 @@ func serviceToRedis(namespace string, id int64, sv k8s.CloudApp) {
 	cache.ServiceCache.Put(
 		namespace+strconv.FormatInt(id, 10),
 		util.ObjToString(sv),
-		time.Minute * 10)
+		time.Minute*10)
 }
 
 // 2019-01-31 16:04
@@ -397,7 +400,7 @@ func GoServerThread(data []app.CloudAppService) {
 				r := cache.ServiceCache.Get(namespace + strconv.FormatInt(d.ServiceId, 10))
 				s := util.RedisObj2Obj(r, &sv)
 				now := time.Now().Unix()
-				if s && now-sv.CheckTime > 60 * 15 {
+				if s && now-sv.CheckTime > 60*15 {
 					sv.Status = "False"
 					sv.AvailableReplicas = 0
 					serviceToRedis(namespace, d.ServiceId, sv)
@@ -462,8 +465,8 @@ func getService(this *ServiceController) app.CloudAppService {
 	sql.Raw(q).QueryRow(&d)
 	// 不是自己创建的才检查
 	if d.CreateUser != user && user != util.ADMIN {
-		if ! userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+d.ServiceName, d.ClusterName, d.Entname, perm) {
-			if ! userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+		if !userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+d.ServiceName, d.ClusterName, d.Entname, perm) {
+			if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
 				return app.CloudAppService{}
 			}
 		}
@@ -593,7 +596,7 @@ func getServices(d app.CloudAppService) []app.CloudAppService {
 // 服务创建后持续更新redis换成
 func updateServiceRedisCache(d app.CloudAppService) {
 	services := getServices(d)
-	for i := 1; i < 5; i ++ {
+	for i := 1; i < 5; i++ {
 		go GoServerThread(services)
 		go MakeContainerData(util.Namespace(d.AppName, d.ResourceName))
 		time.Sleep(time.Second * 5)

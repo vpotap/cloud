@@ -232,5 +232,5 @@ function selectImageGroup(registryName, target) {
 
 /*
 /**
- * Created by zhaoyun on 2018/1/5.
+ * Created by ygqbasic on 2018/1/5.
  */

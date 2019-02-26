@@ -307,7 +307,8 @@ a:focus {
 }
 /* Card Box */
 .card-box {
-  padding: 20px;
+  /* padding: 20px; */
+  padding: 8px;
   border: 1px solid #e2e2e2;
   -webkit-border-radius: 3px;
   border-radius: 3px;

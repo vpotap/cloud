@@ -206,29 +206,39 @@ func (this *RegistryGroupController) RegistryGroupImages() {
 		&data,
 		k8s.CloudImage{})
 
-	if num < len(repos) {
-
-		for _, v := range repos {
-			d := k8s.CloudImage{}
-			isExist := false
-			d.Name = strings.Replace(v.Name, group+"/", "", -1)
-			d.Download = v.PullCount
-			d.RepositoriesGroup = group
-			for _, r := range data {
-				if v.Name == r.Name {
-					isExist = true
+	//insert or update images and tags
+	for _, v := range repos {
+		d := k8s.CloudImage{}
+		isUpdate := false
+		d.Name = v.Name //strings.Replace(v.Name, group+"/", "", -1)
+		d.Download = v.PullCount
+		d.RepositoriesGroup = group
+		for _, r := range data {
+			if v.Name == r.Name {
+				isUpdate = true
+			}
+		}
+		//get image tags
+		tagReps, _, tagerr := harborClient.Repositories.ListRepositoryTags(v.Name)
+		if tagerr == nil {
+			d.TagNumber = len(tagReps)
+			for _, t := range tagReps {
+				if d.Tags == "" {
+					d.Tags = t.Name
+				} else {
+					d.Tags = d.Tags + "," + t.Name
 				}
 			}
-
-			q := sql.InsertSql(d, registry.InsertCloudImage)
-			if isExist {
-				imageSearchMap := sql.SearchMap{}
-				imageSearchMap.Put("Name", d.Name)
-				q = sql.UpdateSql(d, registry.UpdateCloudImage, searchMap, registry.UpdateCloudImageExclude)
-			}
-			_, err = sql.Raw(q).Exec()
 		}
 
+		q := sql.InsertSql(d, registry.InsertCloudImage)
+		if isUpdate {
+			imageSearchMap := sql.SearchMap{}
+			imageSearchMap.Put("Name", d.Name)
+
+			q = sql.UpdateSql(d, registry.UpdateCloudImage, searchMap, registry.UpdateCloudImageExclude)
+		}
+		_, err = sql.Raw(q).Exec()
 	}
 
 	num, err = sql.OrderByPagingSql(searchSql,

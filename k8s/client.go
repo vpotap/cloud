@@ -1,21 +1,22 @@
 package k8s
 
 import (
-	"k8s.io/client-go/dynamic"
-	"k8s.io/client-go/rest"
+	"cloud/cache"
+	"cloud/sql"
+	"cloud/util"
+	"strings"
+	"time"
+
+	"github.com/astaxie/beego/logs"
+	"github.com/garyburd/redigo/redis"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	restclient "k8s.io/client-go/rest"
-	"cloud/sql"
-	"time"
-	"strings"
-	"github.com/garyburd/redigo/redis"
-	"cloud/cache"
-	"cloud/util"
-	"github.com/astaxie/beego/logs"
 )
 
 const SelectCloudClusterHosts = "select host_ip,host_type,cluster_name,api_port from cloud_cluster_hosts"
@@ -73,18 +74,20 @@ func getTnlCfg(cluster string) restclient.Config {
 	config.CAData = []byte(caData.CaData)
 	tlsCfg := restclient.TLSClientConfig{
 		Insecure: false,
-		CAData:config.CAData,
-		KeyData:[]byte(caData.KeyData),
-		CertData:[]byte(caData.CertData),
+		CAData:   config.CAData,
+		KeyData:  []byte(caData.KeyData),
+		CertData: []byte(caData.CertData),
 	}
 	config.TLSClientConfig = tlsCfg
 	port = "6443"
-	config.Host = "https://" + master + ":" + port
+	//config.Host = "https://" + master + ":" + port
+	config.Host = "https://kubernetes:" + port
 	return config
 }
 
 // client信息缓存
 var clientPool = util.Lock{}
+
 func GetClient(cluster string) (kubernetes.Clientset, error) {
 	key := cluster + "clientSet"
 	c, ok := clientPool.Get(key)

@@ -735,7 +735,7 @@ func CreateServicePod(param ServiceParam) (string, error) {
 					"terminationGracePeriodSeconds": param.TerminationSeconds, // 优雅的关闭进程,默认30秒
 					"containers": []map[string]interface{}{
 						map[string]interface{}{
-							"image": param.Image,
+							"image": param.Registry+param.Image,
 							"name":  name,
 							"ports": getPorts(param.Port, param.HostPort),
 							"resources": map[string]interface{}{
