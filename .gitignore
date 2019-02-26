@@ -23,3 +23,6 @@ app.conf
 server.key
 server.pem
 make.go
+cloud.exe
+cloud.exe~
+cloud.tar.gz
