@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "cloud/routers"
+	"cloud/tty"
 
 	"github.com/astaxie/beego"
 	_ "github.com/astaxie/beego/session/redis"
@@ -25,7 +26,7 @@ func main() {
 	beego.BConfig.WebConfig.Session.SessionProvider = "redis"
 	beego.BConfig.WebConfig.Session.SessionProviderConfig = beego.AppConfig.String("redis")
 	//go perm.UpdateResource()
-	//go tty.TtyStart()
+	go tty.TtyStart()
 
 	//go auth_server.StartRegistryAuthServer()
 	//go crontab.CronStart()

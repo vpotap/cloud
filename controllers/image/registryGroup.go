@@ -213,6 +213,7 @@ func (this *RegistryGroupController) RegistryGroupImages() {
 		d.Name = v.Name //strings.Replace(v.Name, group+"/", "", -1)
 		d.Download = v.PullCount
 		d.RepositoriesGroup = group
+		d.Access = "reg.testcloud.com"
 		for _, r := range data {
 			if v.Name == r.Name {
 				isUpdate = true
@@ -650,10 +651,10 @@ func (this *RegistryGroupController) GetDeployImage() {
 	result := make([]registry.CloudDeployImage, 0)
 	for _, v := range data {
 		temp := registry.CloudDeployImage(v)
-		servers := strings.Split(v.ServerAddress, ":")
-		if len(servers) > 0 {
-			temp.ServerDomain = v.ServerDomain + ":" + servers[1]
-		}
+		// servers := strings.Split(v.ServerAddress, ":")
+		// if len(servers) > 0 {
+		// 	temp.ServerDomain = v.ServerDomain + ":" + servers[1]
+		// }
 		result = append(result, temp)
 	}
 	r := util.ResponseMap(result, len(data), this.GetString("draw"))

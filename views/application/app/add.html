@@ -124,9 +124,10 @@
                                                 </div>
                                                 <br>
                                                 <br>
-                                                <!-- <div class="row m-t-20">
-                                                    {%include application/app/image.html%}
-                                                </div> -->
+                                                <div class="row m-t-20">
+                                                    <!-- {%include application/app/image.html%} -->
+                                                    {{template "application/app/image.html" .}}
+                                                </div>
                                                 <div class="row top10"></div>
                                         </fieldset>
 
@@ -215,8 +216,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-10 top10">
-                                                    <div class="form-group col-sm-12">
-                                                        <label class="col-md-3 fw100 -control-label">部署类型:</label>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3 fw100 -control-label">部署类型</label>
                                                         <input value="Deployment" name="serviceType" type="hidden">
                                                         <div class="col-sm-9">
                                                             <span id="deployment_border"
@@ -244,7 +245,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                               
+                                                {{template "application/service/cpu_mem.html" .}}
                                                 <div class="col-md-10" id="show_labels_id">
                                                     <div class="form-group">
                                                         <label for="Replicas"

@@ -935,3 +935,21 @@ body.enlarged.bg-transparent {
 .th-top-8{
   position: relative;top: 8px;
 }
+
+.service-header{
+  background-color: #fff;
+
+
+}
+
+.service-header.service-cpumem-selected {
+  background-color: #eee;
+  color:green;
+  font-weight: bold; 
+}
+
+.service-cpumem-selected {
+  background-color: #eee;
+  color:green;
+  font-weight: bold; 
+}

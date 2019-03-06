@@ -1,19 +1,20 @@
 package k8s
 
 import (
-	"k8s.io/client-go/kubernetes"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"github.com/astaxie/beego/logs"
-	"strings"
-	v1beta12 "k8s.io/api/apps/v1beta1"
-	"fmt"
 	"cloud/util"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"strconv"
 	"encoding/json"
-	"k8s.io/apimachinery/pkg/api/errors"
+	"fmt"
+	"strconv"
+	"strings"
+
+	"github.com/astaxie/beego/logs"
+	v1beta12 "k8s.io/api/apps/v1beta1"
 	"k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/client-go/kubernetes"
 )
 
 // 获某个namespace下面的deployment信息
@@ -48,7 +49,6 @@ func GetDeploymentsVersion(namespace string, name string, client kubernetes.Clie
 	}
 	return ""
 }
-
 
 // 2019-01-04 19:55
 // 更新镜像
@@ -331,8 +331,8 @@ func GetDeploymentApp(clientSet kubernetes.Clientset, namespace string, service 
 // 2019-01-11 13:47
 func getPorts(port string, hostport string) []map[string]interface{} {
 	ports := make([]map[string]interface{}, 0)
-	hostsports := strings.Split(hostport, ",")
-	for idx, p := range strings.Split(port, ",") {
+	//hostsports := strings.Split(hostport, ",")
+	for _, p := range strings.Split(port, ",") {
 		pv, err := strconv.Atoi(p)
 		if err != nil {
 			continue
@@ -341,12 +341,12 @@ func getPorts(port string, hostport string) []map[string]interface{} {
 			"containerPort": pv,
 			"protocol":      "TCP",
 		}
-		if len(hostsports) > idx {
-			hostport, err := strconv.Atoi(hostsports[idx])
-			if err == nil {
-				data["hostPort"] = hostport
-			}
-		}
+		// if len(hostsports) > idx {
+		// 	hostport, err := strconv.Atoi(hostsports[idx])
+		// 	if err == nil {
+		// 		data["hostPort"] = hostport
+		// 	}
+		// }
 		ports = append(ports, data)
 	}
 
@@ -379,16 +379,17 @@ func getServicePorts(param ServiceParam) []map[string]interface{} {
 				"name":       oldp.GetV("name"),
 				"port":       oldp.GetV("port"),
 				"targetPort": oldp.GetV("targetPort"),
-				"nodePort":   oldp.GetV("nodePort"),
-				"protocol":   oldp.GetV("protocol"),
+				//"nodePort":   oldp.GetV("nodePort"),
+				//"protocol":   oldp.GetV("protocol"),
 			}
 		} else {
 			temp = map[string]interface{}{
-				"name":       param.Name + "-" + strconv.Itoa(id),
+				//"name": param.Name + "-" + strconv.Itoa(id),
+				"name":       "k8s-backend",
 				"port":       free,
 				"targetPort": util.StringToInt(port),
-				"nodePort":   free,
-				"protocol":   "TCP",
+				//"nodePort":   free,
+				//"protocol":   "TCP",
 			}
 		}
 		ports = append(ports, temp)
@@ -398,14 +399,14 @@ func getServicePorts(param ServiceParam) []map[string]interface{} {
 		json.Unmarshal([]byte(param.PortYaml), &data)
 		logs.Info("yaml 数据", data)
 		if len(data) > 0 {
-			for _, v := range data{
+			for _, v := range data {
 				d := v
 				if d != nil {
 					if d["kind"] == "Service" {
 						spec := d["spec"].(map[string]interface{})
 						if spec != nil {
 							portData := spec["ports"].([]interface{})
-							jsonData, err  := json.Marshal(portData)
+							jsonData, err := json.Marshal(portData)
 							if err == nil {
 								json.Unmarshal(jsonData, &ports)
 							}
@@ -550,7 +551,6 @@ func getHealthData(healthData string) (interface{}, bool) {
 				"tcpSocket": map[string]interface{}{
 					"port": port,
 				},
-
 			},
 		}
 	default:
@@ -576,13 +576,15 @@ func createService(ports []map[string]interface{}, param ServiceParam) (interfac
 		"metadata": map[string]interface{}{
 			"name": param.ServiceName,
 			"labels": map[string]interface{}{
-				"app": param.ServiceName,
+				"app":  param.ServiceName,
+				"tier": "backend",
 			},
 		},
 		"spec": map[string]interface{}{
-			"type": "NodePort",
+			//"type": "NodePort",
 			"selector": map[string]interface{}{
 				"name": param.ServiceName,
+				"tier": "backend",
 			},
 			"ports": ports,
 		},
@@ -602,7 +604,7 @@ func createService(ports []map[string]interface{}, param ServiceParam) (interfac
 		}
 	}
 
-	if param.SessionAffinity  != "" {
+	if param.SessionAffinity != "" {
 		conf["spec"].(map[string]interface{})["sessionAffinity"] = param.SessionAffinity
 	}
 
@@ -628,15 +630,83 @@ func createService(ports []map[string]interface{}, param ServiceParam) (interfac
 	return conf, err
 }
 
+func createIngress(ports []map[string]interface{}, param ServiceParam) (interface{}, error) {
+
+	conf := map[string]interface{}{
+		"apiVersion": "extensions/v1beta1",
+		"kind":       "Ingress",
+		"metadata": map[string]interface{}{
+			"name": param.ServiceName,
+		},
+		"spec": map[string]interface{}{
+			//"type": "NodePort",
+			"rules": []map[string]interface{}{
+				map[string]interface{}{
+					"host": param.ServiceName + ".test.com",
+					"http": map[string]interface{}{
+						"paths": []map[string]interface{}{
+							map[string]interface{}{
+								"backend": map[string]interface{}{
+									"serviceName": param.ServiceName,
+									"servicePort": "k8s-backend",
+								},
+							},
+						},
+					},
+				},
+			},
+			//"ports": ports,
+		},
+	}
+
+	// // 标签配置
+	// if len(param.Labels) > 0 {
+	// 	conf["metadata"].(map[string]interface{})["labels"] = param.Labels
+	// }
+
+	// // 更新的时候需要集群IP地址
+	// if _, ok := param.OldPort.Get("clusterIp"); ok {
+	// 	clusterIp := param.OldPort.GetV("clusterIp").(string)
+	// 	if clusterIp != "" {
+	// 		conf["spec"].(map[string]interface{})["clusterIP"] = clusterIp
+	// 		//conf["metadata"].(map[string]interface{})["resourceVersion"] = param.OldPort.GetV("resourceVersion")
+	// 	}
+	// }
+
+	// if param.SessionAffinity != "" {
+	// 	conf["spec"].(map[string]interface{})["sessionAffinity"] = param.SessionAffinity
+	// }
+
+	resource := &metav1.APIResource{Name: "Ingresses", Namespaced: true}
+
+	obj := unstructured.Unstructured{Object: conf}
+
+	var d *unstructured.Unstructured
+	var err error
+	cl4 := param.Cl4
+
+	delopt := metav1.DeleteOptions{}
+	err = cl4.Resource(resource, param.Namespace).Delete(param.ServiceName, &delopt)
+
+	if err != nil {
+		logs.Error("删除Ingress失败,原有Ingress不存在", err)
+	}
+
+	d, err = cl4.Resource(resource, param.Namespace).Create(&obj)
+	if err != nil {
+		logs.Error("创建yaml的ingress失败", err)
+		return "", err
+	}
+	logs.Info("创建yaml的ingress服务成功", d)
+	return conf, err
+}
+
 // 2019-01-02 12:40
 func setContainerCommand(param ServiceParam, v map[string]interface{}) map[string]interface{} {
 	command := make([]string, 0)
 	err := json.Unmarshal([]byte(param.Command), &command)
 	if err == nil {
-		v["spec"].(map[string]interface{})["template"].
-		(map[string]interface{})["spec"].
-		(map[string]interface{})["containers"].
-		([]map[string]interface{})[0]["command"] = command
+		v["spec"].(map[string]interface{})["template"].(map[string]interface{})["spec"].(map[string]interface{})["containers"].([]map[string]interface{})[0]["command"] = command
 	}
 	return v
 }
@@ -646,10 +716,7 @@ func setContainerCommand(param ServiceParam, v map[string]interface{}) map[strin
 func setPrivileged(param ServiceParam, v map[string]interface{}) map[string]interface{} {
 	// 有特权的操作
 	if param.Privileged {
-		v["spec"].(map[string]interface{})["template"].
-		(map[string]interface{})["spec"].
-		(map[string]interface{})["containers"].
-		([]map[string]interface{})[0]["securityContext"] = map[string]interface{}{
+		v["spec"].(map[string]interface{})["template"].(map[string]interface{})["spec"].(map[string]interface{})["containers"].([]map[string]interface{})[0]["securityContext"] = map[string]interface{}{
 			"capabilities": map[string]interface{}{},
 			"privileged":   true,
 		}
@@ -683,7 +750,7 @@ func setImagePullPolice(param ServiceParam, v map[string]interface{}) map[string
 func CreateServicePod(param ServiceParam) (string, error) {
 	status, result := GetDeploymentStatus(param.Namespace, param.Name, param.Cl3)
 	CreateServiceAccount(param.Cl3, param.Namespace, "default")
-	if ! status {
+	if !status {
 		return "服务已经在更新,不能更新", errors.NewTooManyRequestsError(result)
 	}
 	if len(param.ConfigureData) > 0 {
@@ -705,6 +772,8 @@ func CreateServicePod(param ServiceParam) (string, error) {
 		"metadata": map[string]interface{}{
 			"labels": map[string]interface{}{
 				"name": name,
+				"app":  name,
+				"tier": "backend",
 			},
 			"name": name,
 		},
@@ -722,20 +791,24 @@ func CreateServicePod(param ServiceParam) (string, error) {
 			"selector": map[string]interface{}{
 				"matchLabels": map[string]interface{}{
 					"name": name,
+					"app":  name,
+					"tier": "backend",
 				},
 			},
 			"template": map[string]interface{}{
 				"metadata": map[string]interface{}{
 					"labels": map[string]interface{}{
 						"name": name,
+						"app":  name,
+						"tier": "backend",
 					},
 				},
 				"spec": map[string]interface{}{
-					"nodeSelector": getNodeSelectorNode(param.Selector),
+					//"nodeSelector":                  getNodeSelectorNode(param.Selector),
 					"terminationGracePeriodSeconds": param.TerminationSeconds, // 优雅的关闭进程,默认30秒
 					"containers": []map[string]interface{}{
 						map[string]interface{}{
-							"image": param.Registry+param.Image,
+							"image": param.Image,
 							"name":  name,
 							"ports": getPorts(param.Port, param.HostPort),
 							"resources": map[string]interface{}{
@@ -759,20 +832,20 @@ func CreateServicePod(param ServiceParam) (string, error) {
 	}
 
 	// 主机网络模式
-	if len(param.NetworkMode) > 0 {
-		v["spec"].(map[string]interface{})["template"].(map[string]interface{})["spec"].(map[string]interface{})["hostNetwork"] = true
-	}
+	// if len(param.NetworkMode) > 0 {
+	// 	v["spec"].(map[string]interface{})["template"].(map[string]interface{})["spec"].(map[string]interface{})["hostNetwork"] = true
+	// }
 
 	// 绑定filebeat容器
 	if len(param.Kafka) > 0 && len(param.LogPath) > 0 {
 		spec := v["spec"].(map[string]interface{})["template"].(map[string]interface{})["spec"].(map[string]interface{})
 		spec["containers"] = append(spec["containers"].([]map[string]interface{}), map[string]interface{}{})
 		filebeatContainer := CreateFilebeatConfig(param)
-	    spec["containers"].([]map[string]interface{})[1] = filebeatContainer
+		spec["containers"].([]map[string]interface{})[1] = filebeatContainer
 		filebeatVolumes, filebeatMount := getFilebeatStorage(param)
 		logs.Info("filebeatMount", filebeatMount)
 		if len(filebeatVolumes) > 0 {
-			oldvolumes :=  spec["volumes"].([]map[string]interface{})
+			oldvolumes := spec["volumes"].([]map[string]interface{})
 			oldvolumes = append(oldvolumes, filebeatVolumes...)
 			oldvolumes = append(oldvolumes, getFilebeatConfig(param))
 			spec["volumes"] = oldvolumes
@@ -836,11 +909,20 @@ func CreateServicePod(param ServiceParam) (string, error) {
 
 	d1, err := createService(ports, param)
 
+	d2, err2 := createIngress(ports, param)
+
 	if err != nil {
 		logs.Error("创建服务失败", err)
 		return "", err
 	}
 	yamldata = append(yamldata, d1)
+
+	if err2 != nil {
+		logs.Error("创建Ingress失败", err2)
+		return "", err2
+	}
+	yamldata = append(yamldata, d2)
+
 	conf, err := json.Marshal(yamldata)
 	return string(conf), err
 }

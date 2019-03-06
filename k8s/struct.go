@@ -1,10 +1,11 @@
 package k8s
 
 import (
+	"cloud/models/hosts"
+	"cloud/util"
+
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
-	"cloud/util"
-	"cloud/models/hosts"
 )
 
 // 配置服务存储数据
@@ -55,7 +56,6 @@ type PortData struct {
 	Type string
 }
 
-
 // 创建服务参数文件
 // 2019-01-11 21:02
 type ServiceParam struct {
@@ -94,6 +94,8 @@ type ServiceParam struct {
 	PortData string
 	// 获取数据客户端
 	Cl3 kubernetes.Clientset
+	// 客户端
+	Cl4 *dynamic.Client
 	// 更新类型
 	Update bool
 	// 滚动升级时候,会优先启动的pod数量
@@ -145,8 +147,8 @@ type ServiceParam struct {
 	IsRedeploy bool
 	// pod关闭时间
 	TerminationSeconds int
-    // session 亲和性
-	SessionAffinity  string
+	// session 亲和性
+	SessionAffinity string
 	// kafka 地址
 	Kafka string
 	// 日志路径,文件或目录,目录以/结尾
@@ -183,20 +185,16 @@ type HealthData struct {
 // 2019-01-17 21:34
 type ConfigureData struct {
 	ContainerPath string
-	DataName string
-	DataId string
-	ConfigDbData map[string]interface{}
+	DataName      string
+	DataId        string
+	ConfigDbData  map[string]interface{}
 }
-
 
 const SelectCloudConfigureMount = "select service_name,mount_path,data_name,create_time,mount_id,configure_name,namespace,cluster_name,last_update_time from cloud_configure_mount"
 const UpdateCloudConfigureMount = "update cloud_configure_mount"
 const DeleteCloudConfigureMount = "delete from cloud_configure_mount"
 const InsertCloudConfigureMount = "insert into cloud_configure_mount"
 const SelectCloudLb = "select service_number,entname,cpu,memory,host_log_path,lb_ip,lb_type,lb_id,description,create_time,cluster_name,resource_name,last_modify_time,lb_name,lb_domain_prefix,lb_domain_suffix,create_user,last_modify_user,status from cloud_lb"
-
-
-
 
 //2019-01-18 10:45:25.5832512 +0800 CST
 type CloudConfigureMount struct {
@@ -399,7 +397,6 @@ type CloudClusterHosts struct {
 	ApiPort string
 }
 
-
 //2019-01-01 13:32:07.5158035 +0800 CST
 type CloudLbNginxConf struct {
 	//
@@ -495,7 +492,6 @@ type CloudLbCert struct {
 	PemValue string
 }
 
-
 //2019-01-06 10:40:26.9362807 +0800 CST
 type CloudImageSyncLog struct {
 	//镜像仓库组
@@ -525,45 +521,45 @@ type CloudImageSyncLog struct {
 // 2019-01-13 09:46
 // 镜像数据,
 type HostImages struct {
-	Id int
+	Id   int
 	Name string
-	Tag string
+	Tag  string
 	Size string
 }
 
 // 2019-01-16 18:36
 // 服务滚动更新参数
 type RollingParam struct {
-	MinReadySeconds int32
+	MinReadySeconds               int32
 	TerminationGracePeriodSeconds int64
-	MaxUnavailable int32
-	MaxSurge int32
-	Namespace string
-	Name string
-	Client kubernetes.Clientset
-	Images string
+	MaxUnavailable                int32
+	MaxSurge                      int32
+	Namespace                     string
+	Name                          string
+	Client                        kubernetes.Clientset
+	Images                        string
 }
 
 // 2019-01-17 21:09
 // 更新upstream，参数
 type UpdateLbNginxUpstream struct {
-	Master string
-	Port string
-	Domain string
-	Namespace string
+	Master      string
+	Port        string
+	Domain      string
+	Namespace   string
 	ServiceName string
-	V CloudLbService
+	V           CloudLbService
 	ClusterName string
 }
 
 // 2019-01-19 14:50
 // 获取自动扩容的扩容数量参数
 type AutoScaleParam struct {
-	ReplicasMax int32
-	ReplicasMin int32
-	Cpu int64
-	Memory int64
-	CreateUser string
+	ReplicasMax  int32
+	ReplicasMin  int32
+	Cpu          int64
+	Memory       int64
+	CreateUser   string
 	ResourceName string
 }
 
@@ -652,25 +648,24 @@ type EventData struct {
 	Type string
 }
 
-
 type NodeStatus struct {
 	hosts.CloudClusterHosts
 	Lables     []string
 	K8sVersion string
 	ErrorMsg   string
 	MemSize    int64
-	OsVersion string
+	OsVersion  string
 }
 
 type ClusterStatus struct {
-	ClusterId    int64
-	ClusterType  string
+	ClusterId   int64
+	ClusterType string
 	NodeStatus
 	ClusterAlias string
 	ClusterName  string
 	Nodes        int64
 	Services     int
-	OsVersion string
+	OsVersion    string
 }
 
 type ClusterResources struct {
@@ -754,11 +749,11 @@ type CertData struct {
 // 集群节点资源使用情况
 type NodeReport struct {
 	//
-	Ip string
-	Namespace string
-	Name string
-	CpuRequests string
+	Ip             string
+	Namespace      string
+	Name           string
+	CpuRequests    string
 	MemoryRequests string
-	CpuLimits string
-	MemoryLimits string
+	CpuLimits      string
+	MemoryLimits   string
 }

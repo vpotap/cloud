@@ -8,30 +8,31 @@
 package routers
 
 import (
-	"github.com/astaxie/beego"
-	"cloud/controllers/index"
 	"cloud/controllers/base/cluster"
-	"cloud/controllers/docker/application/app"
-	"github.com/astaxie/beego/context"
-	"strings"
-	"github.com/astaxie/beego/logs"
-	"cloud/util"
 	"cloud/controllers/base/hosts"
-	"cloud/controllers/base/quota"
 	"cloud/controllers/base/lb"
-	"cloud/controllers/users"
-	"cloud/controllers/image"
-	"cloud/controllers/ci"
+	"cloud/controllers/base/quota"
 	"cloud/controllers/base/storage"
-	"cloud/controllers/pipeline"
-	"cloud/controllers/operlog"
+	"cloud/controllers/ci"
+	"cloud/controllers/docker/application/app"
 	"cloud/controllers/ent"
-	"cloud/controllers/perm"
-	"cloud/controllers/monitor"
-	"cloud/controllers/resource"
-	"fmt"
-	"cloud/sql"
+	"cloud/controllers/image"
+	"cloud/controllers/index"
 	"cloud/controllers/log"
+	"cloud/controllers/monitor"
+	"cloud/controllers/operlog"
+	"cloud/controllers/perm"
+	"cloud/controllers/pipeline"
+	"cloud/controllers/resource"
+	"cloud/controllers/users"
+	"cloud/sql"
+	"cloud/util"
+	"fmt"
+	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/context"
+	"github.com/astaxie/beego/logs"
 )
 
 func init() {
@@ -354,7 +355,6 @@ func init() {
 				beego.NSRouter("/:id:int", &ci.DockerFileController{}, "delete:DockerFileDelete"),
 				// 获取docker file数据单条数据
 				beego.NSRouter("/:id:int", &ci.DockerFileController{}, "get:DockerFileData"),
-
 			),
 			beego.NSNamespace("/batch",
 				// 获取批量部署数据
@@ -363,7 +363,6 @@ func init() {
 				beego.NSRouter("", &ci.BatchController{}, "post:BatchSave"),
 				// 删除部门团队
 				beego.NSRouter("/:id:int", &ci.BatchController{}, "delete:BatchDelete"),
-
 			),
 			beego.NSNamespace("/code",
 				// 代码仓库保存,
@@ -521,7 +520,7 @@ func init() {
 					// 删除镜像
 					beego.NSRouter("/images/:id:int", &registry.RegistryGroupController{}, "delete:DeleteRegistryGroupImage", "删除仓库组镜像", "镜像仓库组", "镜像中心"),
 				),
-				// 08-2-7 11:20
+				// 19-2-7 11:20
 				// 在安装应用时候选择的镜像数据
 				beego.NSNamespace("/deploy",
 					beego.NSRouter("/images", &registry.RegistryGroupController{}, "get:GetDeployImage", "获取部署镜像", "应用管理", "容器治理"),
@@ -744,7 +743,7 @@ func init() {
 				// 环境入口列表
 				beego.NSRouter("/list", &ent.EntController{}, "get:EntList", "环境配置", "环境管理", "系统设置"),
 				// 环境添加页面,
-				beego.NSRouter("/add", &ent.EntController{}, "get:EntAdd", "创建环境配置", "环境配置", "环境管理", ),
+				beego.NSRouter("/add", &ent.EntController{}, "get:EntAdd", "创建环境配置", "环境配置", "环境管理"),
 			),
 			beego.NSNamespace("/operlog",
 				// 日志入口
@@ -784,14 +783,14 @@ func init() {
 			// 添加监控配置页面,
 			beego.NSRouter("/history", &log.ControllerLog{}, "get:HistoryList"),
 			beego.NSNamespace("/datasrc",
-				beego.NSRouter("/list", &log.DataSourceController{}, "get:DataSourceList","数据源配置列表","数据源配置","应用日志"),
+				beego.NSRouter("/list", &log.DataSourceController{}, "get:DataSourceList", "数据源配置列表", "数据源配置", "应用日志"),
 				// 添加监控配置页面,
-				beego.NSRouter("/add", &log.DataSourceController{}, "get:DataSourceAdd","数据源配置添加","数据源配置","应用日志"),
+				beego.NSRouter("/add", &log.DataSourceController{}, "get:DataSourceAdd", "数据源配置添加", "数据源配置", "应用日志"),
 			),
 			beego.NSNamespace("/driver",
-				beego.NSRouter("/list", &log.DataSourceController{}, "get:DriverList","日志驱动配置列表","数据源配置","应用日志"),
+				beego.NSRouter("/list", &log.DataSourceController{}, "get:DriverList", "日志驱动配置列表", "数据源配置", "应用日志"),
 				// 添加监控配置页面,
-				beego.NSRouter("/add", &log.DataSourceController{}, "get:DriverAdd","日志驱动添加","数据源配置","应用日志"),
+				beego.NSRouter("/add", &log.DataSourceController{}, "get:DriverAdd", "日志驱动添加", "数据源配置", "应用日志"),
 			),
 		)
 

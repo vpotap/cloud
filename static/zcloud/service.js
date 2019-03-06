@@ -251,9 +251,13 @@ function setSelectConfig(cpu, mem, id, custom) {
         $("#show-custom-config").hide();
     }
     $(".service-header").css("background-color", "#ffffff");
+    $(".service-cpumem").removeClass("service-cpumem-selected");
+    $(".service-header").removeClass("service-cpumem-selected");
     $(".showfa").hide();
     $("#" + id).css("background-color", "#eee");
+    $("#" + id).addClass("service-cpumem-selected");
     $("#" + id + "fa").show();
+
     $("input[name='Cpu']").val(cpu);
     $("input[name='Memory']").val(mem * 1024);
 }

@@ -194,6 +194,7 @@
             position: 'absolute',
             top: 0,
             opacity: o.opacity,
+            //display: o.alwaysVisible ? 'block' : 'none',
             display: o.alwaysVisible ? 'block' : 'none',
             'border-radius' : o.borderRadius,
             BorderRadius: o.borderRadius,
@@ -401,8 +402,8 @@
           barHeight = Math.max((me.outerHeight() / me[0].scrollHeight) * me.outerHeight(), minBarHeight);
           bar.css({ height: barHeight + 'px' });
 
-          // hide scrollbar if content is not long enough
-          var display = barHeight == me.outerHeight() ? 'none' : 'block';
+          // hide scrollbar if content is not long enough todo 
+          var display = barHeight == me.outerHeight() ? 'none' : 'none';
           bar.css({ display: display });
         }
 

@@ -10,10 +10,10 @@
     <div class="container">
         <!-- Start content -->
         <div class="content">
-            {%include ci/job/dockerfile.html%}
+            {{template "ci/job/dockerfile.html" .}}
             <div id="add_pipeline_html"></div>
             <div id="add_job_html"></div>
-            {%include ci/job/dockerfile.html%}
+            {{template "ci/job/dockerfile.html" .}}
             <div class="row ">
                 <div class="col-xs-12">
                     <div class="page-title-box">

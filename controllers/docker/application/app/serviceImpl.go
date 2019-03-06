@@ -277,9 +277,12 @@ func getParam(d app.CloudAppService, user string) k8s.ServiceParam {
 	// service
 	cl2, _ := k8s.GetYamlClient(d.ClusterName, "", "v1", "api")
 	cl3, _ := k8s.GetClient(d.ClusterName)
+	// Ingress
+	cl4, _ := k8s.GetYamlClient(d.ClusterName, "extensions", "v1beta1", "/apis")
 	param.Cl3 = cl3
 	param.Cl2 = cl2
 	param.C1 = c1
+	param.Cl4 = cl4
 	param.Envs = d.Envs
 	param.Master = master
 	param.MasterPort = port

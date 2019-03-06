@@ -9,8 +9,8 @@
 <!-- ============================================================== -->
 <div class="content-page">
     <!-- Start content -->
-    <!-- <div id="add_groups_html"></div>
-    {%include image/registry/group/tags.html%} -->
+    <div id="add_groups_html"></div>
+    {{template "image/registry/group/tags.html" .}}
     <div class="content">
         <div id="show_upload_html" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true"
@@ -189,7 +189,7 @@
                             <div class="col-sm-12 ">
                                 <input type="hidden" value="{{.data.GroupName}}" id="project-value">
                                 <input type="hidden" value="{{.data.ServerDomain}}" id="select-registry-server-value">
-                                {%include image/permissions/content.html%}
+                                {{template "image/permissions/content.html" .}}
                             </div>
                         </div>
                     </div>

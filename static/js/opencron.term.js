@@ -97,12 +97,12 @@
     };
 
     self.socket.onerror = function () {
-        self.term.write("Sorry! zcloud terminal connect error!please try again.\n");
+        self.term.write("Sorry! terminal connect error!please try again.\n");
         window.clearInterval(self.term._blink);
     };
 
     self.socket.onclose = function () {
-        self.term.write("Thank you for using zcloud terminal! bye...");
+        self.term.write("Thank you for using terminal! bye...");
         //清除光标闪烁
         window.clearInterval(self.term._blink);
         self.termClosed = true;
