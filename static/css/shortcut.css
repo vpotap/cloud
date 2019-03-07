@@ -9,17 +9,17 @@ ul li{list-style: none;}
 .pageWrap .model-page{margin-top: 0;}
 
 /*å¿«æ·æ–¹å¼*/
-.shortcut-box>li{ height: 70px !important; color: rgba(255,255,255,0.8); border: none !important; text-align: center; box-sizing: border-box; padding: 5px;}
-.shortcut-box>li>div{display:inline-block; width:100%; height: 100%; border-radius: 5px; text-align: center; cursor: pointer;}
+.shortcut-box>li{ height: 100px !important; color: rgba(255,255,255,0.8); border: none !important; text-align: center; box-sizing: border-box; padding: 5px;}
+.shortcut-box>li>div{display:inline-block; width:100%; height: 100%; border-radius: 5px; text-align: center; cursor: pointer;padding-top: 10px}
 .shortcut-box>li:nth-child(1)>div{background:#82D5FF;}
-.shortcut-box>li:nth-child(2)>div{background:#C0E774;}
+.shortcut-box>li:nth-child(2)>div{background:#59d6ac;}
 .shortcut-box>li:nth-child(3)>div{background:#E96C96;}
 .shortcut-box>li:nth-child(4)>div{background:#fe8103;}
-.shortcut-box>li:nth-child(5)>div{background:#f7d418;}
-.shortcut-box>li:nth-child(6)>div{background:#59d6ac;}
+.shortcut-box>li:nth-child(5)>div{background:#CCAAD7;}
+.shortcut-box>li:nth-child(6)>div{background:#C0E774;}
 .shortcut-box>li:nth-child(7)>div{background:#8290db;}
 .shortcut-box>li:nth-child(8)>div{background:#f36c62;}
-.shortcut-box>li:nth-child(9)>div{background:#CCAAD7;}
+.shortcut-box>li:nth-child(9)>div{background:#f7d418;}
 .shortcut-box>li:last-child>div{background:#45b6c8;}
 .shortcut-box>li>div>i{font-size: 1.5em; text-align: center; margin-top: 10px; display: inline-block;}
 .shortcut-box>li>div>p{padding: 0 !important; line-height: 2;}
