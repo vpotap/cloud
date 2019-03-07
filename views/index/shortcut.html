@@ -10,6 +10,7 @@
         border: 1px solid #ccc;
     }
 </style>
+
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -57,45 +58,30 @@
     </div>
     <div class="col-sm-12"></div>
     <div class="row m-l-10">
-
-        <div class="col-sm-2">
-            <div class="card-box widget-box-four index-cart" onclick="loadpage('/application/app/list')"
-                 onmousemove="setBorderMove($(this))"
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <ul class="shortcut-box clearfix">
+                <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/application/app/list')">
+                    <div style="background: rgb(89, 214, 172);">
+                        <i class="fa fa-car"></i>
+                        <p>应用管理</p>
+                    </div>
+                </li>
+                <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/application/service/list')">
+                        <div style="background: rgb(130, 213, 255);">
+                            <i class="fa fa-car"></i>
+                            <p>服务管理</p>
+                        </div>
+                    </li>
+                    <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/application/container/list')"
+                    onmousemove="setBorderMove($(this))"
                  onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted m-t-10 text-center"><a><i
-                            class="fa m-r-10 m-l-10 fa-plus-square-o"></i></a>应用管理
-                    </p>
-                    <span class="font-secondary text-muted">业务线自己的应用查看</span>
-                </div>
-
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
-
-        <div class="col-sm-2" onclick="loadpage('/application/service/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i
-                            class="fa m-r-10 m-l-10  fa-plus-square-o"></i></a>服务管理<br></p>
-                    <span class="font-secondary text-muted">业务线自己的应用查看和管理,升级扩容等</span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
-
-        <div class="col-sm-2" onclick="loadpage('/application/container/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i
-                            class="fa m-r-10 m-l-10  fa-plus-square-o"></i></a>容器管理<br></p>
-                    <span class="font-secondary text-muted">管理应用容器,删除,登录容器操作</span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
+                            <div style="background: rgb(233, 108, 150);">
+                                <i class="fa fa-car"></i>
+                                <p>容器管理</p>
+                            </div>
+                        </li>
+            </ul>
+        </div>
     </div>
     <div class="row m-l-10">
         <div class="col-sm-2">
@@ -105,16 +91,17 @@
         </div><!-- end col -->
     </div>
     <div class="row m-l-10">
-        <div class="col-sm-2" onclick="loadpage('/image/registry/group/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i class="fa m-r-10 m-l-10  fa-plus-square-o"></i></a>镜像仓库组<br></p>
-                    <span class="font-secondary text-muted">查看提交的镜像信息</span>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <ul class="shortcut-box clearfix">
+                        <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/image/registry/group/list')">
+                            <div style="background: rgb(130, 213, 255);">
+                                <i class="fa fa-car"></i>
+                                <p>镜像仓库组</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
     </div>
     <div class="row m-l-10">
         <div class="col-sm-2">
@@ -124,46 +111,36 @@
         </div><!-- end col -->
     </div>
     <div class="row m-l-10">
-        <div class="col-sm-2" onclick="loadpage('/ci/job/list')">
-        <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-             onmouseout="setBorderOut($(this))">
-            <div class="wigdet-four-content text-center">
-                <p class="font-secondary text-muted"><a><i class="fa m-r-10 m-l-10 fa-plus-square-o"></i></a>构建项目<br></p>
-                <span class="font-secondary text-muted">构建docker镜像或打包程序到镜像</span>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        </div><!-- end col -->
-        <div class="col-sm-2" onclick="loadpage('/pipeline/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i class="fa m-r-10 m-l-10 fa-plus-square-o"></i></a>流水线项目<br></p>
-                    <span class="font-secondary text-muted">一键发布和构建,包括打包镜像,更新服务</span>
+
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <ul class="shortcut-box clearfix">
+                        <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/ci/job/list')">
+                            <div style="background: rgb(130, 213, 255);">
+                                <i class="fa fa-car"></i>
+                                <p>构建项目</p>
+                            </div>
+                        </li>
+                        <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/pipeline/list')">
+                            <div style="background: rgb(130, 213, 255);">
+                                <i class="fa fa-car"></i>
+                                <p>流水线项目</p>
+                            </div>
+                        </li>
+                        <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/ci/batch/list')">
+                            <div style="background: rgb(130, 213, 255);">
+                                <i class="fa fa-car"></i>
+                                <p>部署配置</p>
+                            </div>
+                        </li>
+                        <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/ci/dockerfile/list')">
+                            <div style="background: rgb(130, 213, 255);">
+                                <i class="fa fa-car"></i>
+                                <p>Dockerfile</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
-        <div class="col-sm-2" onclick="loadpage('/ci/batch/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i class="fa m-r-10 m-l-10  fa-plus-square-o"></i></a>部署配置<br></p>
-                    <span class="font-secondary text-muted">暂无功能</span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
-        <div class="col-sm-2" onclick="loadpage('/ci/dockerfile/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i class="fa m-r-10 m-l-10  fa-plus-square-o"></i></a>Dockerfile<br></p>
-                    <span class="font-secondary text-muted">构建docker镜像使用的构建脚本和Dockerfile</span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
 
     </div>
     <div class="row m-l-10">
@@ -174,26 +151,24 @@
         </div><!-- end col -->
     </div>
     <div class="row m-l-10">
-        <div class="col-sm-2" onclick="loadpage('/base/quota/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i class="fa m-r-10 m-l-10  fa-plus-square-o"></i></a>资源配额<br></p>
-                    <span class="font-secondary text-muted">对资源使用镜像限制,cpu,内存,服务数量,应用数量等多种资源的限制</span>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <ul class="shortcut-box clearfix">
+                        <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/base/quota/list')">
+                            <div style="background: rgb(130, 213, 255);">
+                                <i class="fa fa-car"></i>
+                                <p>资源配额</p>
+                            </div>
+                        </li>
+                        <li class="col-xs-4 col-sm-4 col-md-3 col-lg-3" onclick="loadpage('/base/network/lb/list')">
+                            <div style="background: rgb(130, 213, 255);">
+                                <i class="fa fa-car"></i>
+                                <p>负载均衡</p>
+                            </div>
+                        </li>
+                      
+                    </ul>
                 </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
-        <div class="col-sm-2" onclick="loadpage('/base/network/lb/list')">
-            <div class="card-box widget-box-four index-cart" onmousemove="setBorderMove($(this))"
-                 onmouseout="setBorderOut($(this))">
-                <div class="wigdet-four-content text-center">
-                    <p class="font-secondary text-muted"><a><i class="fa m-r-10 m-l-10  fa-plus-square-o"></i></a>负载均衡<br></p>
-                    <span class="font-secondary text-muted">负载均衡查看和配置</span>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div><!-- end col -->
     </div>
 {{template "template/bottom.html" .}}
     </body>

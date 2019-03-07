@@ -185,7 +185,9 @@ func (this *RegistryGroupController) RegistryGroupImages() {
 		searchSql += strings.Replace(registry.SelectCloudImageWhere, "?", key, -1)
 	}
 
-	harborClient := harbor.NewClient(nil, "https://reg.testcloud.com", "admin", "Harbor12345")
+	registrData := getRegistryGroup(this)
+
+	harborClient := harbor.NewClient(nil, "https://"+registrData.ServerDomain, "admin", "Harbor12345")
 	// Project Name in Harbor
 	opt := &harbor.ListProjectsOptions{Name: group}
 	projects, _, errs := harborClient.Projects.ListProject(opt)
@@ -213,7 +215,7 @@ func (this *RegistryGroupController) RegistryGroupImages() {
 		d.Name = v.Name //strings.Replace(v.Name, group+"/", "", -1)
 		d.Download = v.PullCount
 		d.RepositoriesGroup = group
-		d.Access = "reg.testcloud.com"
+		d.Access = registrData.ServerDomain //"reg.testcloud.com"
 		for _, r := range data {
 			if v.Name == r.Name {
 				isUpdate = true
