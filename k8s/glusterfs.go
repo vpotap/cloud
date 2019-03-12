@@ -1,17 +1,18 @@
 package k8s
 
 import (
-	"k8s.io/client-go/kubernetes"
 	"cloud/util"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"github.com/astaxie/beego/logs"
 	"time"
+
+	"github.com/astaxie/beego/logs"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/client-go/kubernetes"
 )
 
 var (
-	glusterNamespace = util.Namespace("glusterfs", "glusterfs")
-	glusterStorageClass = "zcloud-gluster-vol"
+	glusterNamespace    = util.Namespace("glusterfs", "glusterfs")
+	glusterStorageClass = "cloud-gluster-vol"
 )
 
 // 2019-01-21 13:50
@@ -216,7 +217,7 @@ func createHeketiDeployment(clustername string) error {
 
 // 2019-01-21 14:51
 // 创建glusterfs部署
-func createGlusterDeployment(clustername string) error{
+func createGlusterDeployment(clustername string) error {
 	conf := map[string]interface{}{
 		"kind":       "DaemonSet",
 		"apiVersion": "extensions/v1beta1",
@@ -314,7 +315,6 @@ func createGlusterDeployment(clustername string) error{
 									"mountPath": "/etc/localtime",
 								},
 							},
-
 						},
 					},
 					"volumes": []map[string]interface{}{
@@ -366,8 +366,8 @@ func createGlusterDeployment(clustername string) error{
 						{
 							"name": "localtime",
 							"hostPath": map[string]interface{}{
-								"path": "/etc/localtime",
-								"defaultMode":400,
+								"path":        "/etc/localtime",
+								"defaultMode": 400,
 							},
 						},
 					},
@@ -425,7 +425,7 @@ Brick server 数量是条带数的倍数，兼具 distribute 和 stripe 卷的�
 分布式的条带卷，volume 中 brick 所包含的存储服务器数必须是 stripe 的倍数(>=2倍)，
 兼顾分布式和条带式的功能。每个文件分布在四台共享服务器上，
 通常用于大文件访问处理，最少需要 4 台服务器才能创建分布条带卷。
- */
+*/
 // 2019-01-22 10:07
 // 创建glusterfs提供者
 func createGlusterfsStorageClass(clustername string) {
@@ -438,7 +438,7 @@ func createGlusterfsStorageClass(clustername string) {
 		"parameters": map[string]interface{}{
 			"resturl":         "http://127.0.0.1:48080",
 			"restuser":        "", // 可选，authentication 的用户名
-			"secretName":      "",  // 可选，authentication 的密码所在的 secret
+			"secretName":      "", // 可选，authentication 的密码所在的 secret
 			"secretNamespace": "", // 可选，authentication 的密码所在的 secret 所在的namespace
 		},
 		"provisioner":   "kubernetes.io/glusterfs",
@@ -465,7 +465,6 @@ func CreateGlusterfs(param StorageParam) {
 	createGlusterfsStorageClass(param.ClusterName)
 }
 
-
 // 2019-01-22 10:38
 // 创建glusterfs pvc
 func createGlusterfsPvc(param StorageParam) {
@@ -474,7 +473,7 @@ func createGlusterfsPvc(param StorageParam) {
 		"kind":       "PersistentVolumeClaim",
 		"metadata": map[string]interface{}{
 			"annotations": map[string]interface{}{
-				"volume.beta.kubernetes.io/storage-class":   glusterStorageClass,
+				"volume.beta.kubernetes.io/storage-class":       glusterStorageClass,
 				"volume.beta.kubernetes.io/storage-provisioner": "kubernetes.io/glusterfs",
 			},
 			// glusterfs-claim

@@ -36,4 +36,4 @@ mkdir cloud
 chmod -R 777 cloud
 tar -xzvf cloud.tar.gz -C cloud
 ```
-<br>![image](https://github.com/ygqbasic/zcloud/blob/master/image/1.png)<br>
+<br>![image](https://github.com/ygqbasic/cloud/blob/master/image/1.png)<br>

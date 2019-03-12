@@ -1,7 +1,7 @@
 // @APIVersion 1.0.0
-// @Title Zcloud API
+// @Title Ecloud API
 // @Description api
-// @Contact 270851812@qq.com
+// @Contact ygqbaisc@gmail.com
 // @TermsOfServiceUrl http://github.com/Asura/
 // @License Apache 2.0
 // @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
