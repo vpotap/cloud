@@ -8,7 +8,9 @@ import (
 	"cloud/models/registry"
 	"cloud/sql"
 	"cloud/util"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -87,7 +89,12 @@ func (this *IndexController) GetUser() {
 func DbAuth(user string, password string) bool {
 	searchMap := sql.SearchMap{}
 	searchMap.Put("UserName", user)
-	searchMap.Put("Pwd", util.Md5String(password))
+	if len(password) < 20 {
+		searchMap.Put("Pwd", util.Md5String(password))
+	} else {
+		searchMap.Put("Pwd", password)
+	}
+
 	data := index.DockerCloudAuthorityUser{}
 	q := sql.SearchSql(data, index.SelectDockerCloudAuthorityUser, searchMap)
 	sql.Raw(q).QueryRow(&data)
@@ -155,11 +162,15 @@ func RecordLoginUser(username string, password string) (bool, error) {
 	if redisr == cacheStr {
 		return true, nil
 	}
-	r1, _ := util.LdapLoginAuth(username, password)
-	if !r1 {
-		r1 = DbAuth(username, password)
-		logs.Info("通过db验证用户", username, r)
-	}
+	// r1, _ := util.LdapLoginAuth(username, password)
+	// if !r1 {
+	// 	r1 = DbAuth(username, password)
+	// 	logs.Info("通过db验证用户", username, r)
+	// }
+
+	r1 := DbAuth(username, password)
+	logs.Info("通过db验证用户", username, r)
+
 	if r1 {
 		cache.RedisUserCache.Put(username, cacheStr, time.Minute*180)
 		// 如果是ldap登录的,将数据记录到数据库里面
@@ -242,6 +253,60 @@ func (this *IndexController) Login() {
 	}
 }
 
+// @router /api/auth/login [post]
+func (this *IndexController) AuthLogin() {
+
+	var v map[string]string
+	json.Unmarshal(this.Ctx.Input.RequestBody, &v)
+	username := v["username"]
+	password := v["password"]
+
+	if getUserIsDel(util.GetUser(username)) {
+		//this.Ctx.WriteString("false,")
+		setAuthLoginJson(this, util.ApiResponse(false, "用户已经禁用，用户名："+username))
+	}
+	r, err := RecordLoginUser(util.GetUser(username), password)
+	ip := this.Ctx.Request.RemoteAddr
+	o := sql.GetOrm()
+	data := index.CloudLoginRecord{
+		LoginStatus: 0,
+		LoginTime:   util.GetDate(),
+		LoginUser:   username,
+		LoginIp:     ip}
+
+	if !r {
+		o.Raw(sql.InsertSql(data, index.InsertCloudLoginRecord)).Exec()
+		setAuthLoginJson(this, util.ApiResponse(false, "验证失败，用户名："+username+","+err.Error()))
+	}
+
+	data.LoginStatus = 1
+	o.Raw(sql.InsertSql(data, index.InsertCloudLoginRecord)).Exec()
+
+	this.SetSession("username", username)
+	this.SetSession("logintime", time.Now().Unix())
+	this.SetSession("clientIp", ip)
+	info := make(map[string]string)
+	info["token"] = "abc"
+	setAuthLoginJson(this, util.NewApiResponse(true, info))
+}
+
+// 查询用户token使用
+type User struct {
+	IsDel int64
+	//用户名称
+	UserName string
+	// token
+	Token string
+}
+
+// @router /api/user/info [get]
+func (this *IndexController) UserInfo() {
+	u := User{}
+	q := fmt.Sprintf(`select user_name from cloud_authority_user where token='%v' and is_del=0`, "abc")
+	sql.Raw(q).QueryRow(&u)
+	setAuthLoginJson(this, util.NewApiResponse(true, u))
+}
+
 // 快捷入口页面
 // @router /shortcut [get]
 func (this *IndexController) Index() {
@@ -269,4 +334,9 @@ func (this *IndexController) OutLogin() {
 	this.DelSession("logintime")
 	this.DelSession("clientIp")
 	this.Redirect("/login", 302)
+}
+
+func setAuthLoginJson(this *IndexController, data interface{}) {
+	this.Data["json"] = data
+	this.ServeJSON(false)
 }

@@ -49,6 +49,10 @@ func init() {
 	beego.Router("/webtty/:id:int", &index.IndexController{}, "*:WebTty")
 	beego.Router("/api/resource/name", &resource.ControllerResource{}, "get:GetResourceSelect")
 
+	// api list
+	beego.Router("/api/auth/login", &index.IndexController{}, "post:AuthLogin")
+	beego.Router("/api/user/info", &index.IndexController{}, "get:GetUser")
+
 	applicationNs :=
 		beego.NewNamespace("/application",
 			// 应用交互中心,
@@ -972,7 +976,7 @@ func init() {
 	var FilterUser = func(ctx *context.Context) {
 		uri := ctx.Request.RequestURI
 		setUserLogin(ctx)
-		if !strings.Contains(uri, "/static/") && !strings.Contains(uri, "/api/user/login") {
+		if !strings.Contains(uri, "/static/") && !strings.Contains(uri, "/api/user/login") && !strings.Contains(uri, "/api/auth/login") {
 			_, ok := ctx.Input.Session("username").(string)
 			uris := strings.Split(uri, "?referer=/")
 			if !ok && uri != "/login" && uris[0] != "/login" {

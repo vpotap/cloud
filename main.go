@@ -25,6 +25,7 @@ func main() {
 	//beego.ErrorController(&index.ErrorController{})
 	beego.BConfig.WebConfig.Session.SessionProvider = "redis"
 	beego.BConfig.WebConfig.Session.SessionProviderConfig = beego.AppConfig.String("redis")
+	//beego.BConfig.CopyRequestBody = true
 	//go perm.UpdateResource()
 	go tty.TtyStart()
 

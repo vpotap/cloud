@@ -1,15 +1,15 @@
 package util
 
 import (
-	"sync"
 	"encoding/json"
 	"os"
+	"sync"
 )
 
 type Param struct {
 	length int64
-	start int64
-	draw int64
+	start  int64
+	draw   int64
 }
 
 type MapLock struct {
@@ -17,7 +17,7 @@ type MapLock struct {
 	Lock sync.RWMutex
 }
 
-func (m *MapLock) Set(k string, v interface{}){
+func (m *MapLock) Set(k string, v interface{}) {
 	m.Lock.Lock()
 	if len(m.Data) < 1 {
 		m.Data = make(map[string]interface{})
@@ -26,9 +26,9 @@ func (m *MapLock) Set(k string, v interface{}){
 	defer m.Lock.Unlock()
 }
 
-func returnMap(data interface{})string  {
+func returnMap(data interface{}) string {
 	v, err := json.Marshal(data)
-	if err == nil{
+	if err == nil {
 		return string(v)
 	}
 	return "{}"
@@ -36,7 +36,7 @@ func returnMap(data interface{})string  {
 
 // 为表格提供的数据
 // return
-func ResponseMap(listResult interface{}, total interface{}, draw interface{}) map[string]interface{}{
+func ResponseMap(listResult interface{}, total interface{}, draw interface{}) map[string]interface{} {
 	maps := MapLock{}
 	maps.Set("data", listResult)
 	maps.Set("recordsTotal", total)
@@ -47,12 +47,12 @@ func ResponseMap(listResult interface{}, total interface{}, draw interface{}) ma
 
 // 2019-01-15
 //  获取表的行数
-func GetTableRows(table string)  {
+func GetTableRows(table string) {
 
 }
 
 // 响应错误信息
-func ResponseMapError(err string)map[string]interface{} {
+func ResponseMapError(err string) map[string]interface{} {
 	maps := MapLock{}
 	maps.Set("data", err)
 	maps.Set("recordsTotal", 0)
@@ -66,13 +66,27 @@ func ApiResponse(status bool, info interface{}) map[string]interface{} {
 	maps := MapLock{}
 	maps.Set("data", info)
 	maps.Set("status", status)
-	maps.Set("date",GetDate())
-	hostname,_ := os.Hostname()
+	maps.Set("date", GetDate())
+	hostname, _ := os.Hostname()
 	maps.Set("server", hostname)
 	maps.Set("code", 0)
-	if !status{
+	if !status {
 		maps.Set("code", -1)
 	}
 	return maps.Data
 }
 
+// API响应信息
+func NewApiResponse(status bool, info interface{}) map[string]interface{} {
+	maps := MapLock{}
+	maps.Set("result", info)
+	maps.Set("status", status)
+	maps.Set("date", GetDate())
+	hostname, _ := os.Hostname()
+	maps.Set("server", hostname)
+	maps.Set("code", 0)
+	if !status {
+		maps.Set("code", -1)
+	}
+	return maps.Data
+}
