@@ -17,6 +17,7 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	restclient "k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 const SelectCloudClusterHosts = "select host_ip,host_type,cluster_name,api_port from cloud_cluster_hosts"
@@ -55,11 +56,20 @@ func GetMasterIp(cluster string) (string, string) {
 	return "", ""
 }
 
-// 2018-03-01 14:24
+// 2019-03-01 14:24
 // 获取证书信息
 func getCertFile(name string) CertData {
 	data := CertData{}
-	q := "select ca_data,cert_data,key_data from cloud_cluster where cluster_name=?"
+	q := "select ca_data,cert_data,key_data,config_file from cloud_cluster where cluster_name=?"
+	sql.GetOrm().Raw(q, name).QueryRow(&data)
+	return data
+}
+
+// 2019-03-01 14:24
+// 获取证书信息
+func getClusterData(name string) ClusterData {
+	data := ClusterData{}
+	q := "select ca_data,cert_data,key_data,config_file,cluster_type from cloud_cluster where cluster_name=?"
 	sql.GetOrm().Raw(q, name).QueryRow(&data)
 	return data
 }
@@ -85,6 +95,24 @@ func getTnlCfg(cluster string) restclient.Config {
 	return config
 }
 
+// 2019-03-01 14:50
+// 获取访问证书配置
+func getKubeCfg(cluster string) restclient.Config {
+	clusterData := getClusterData(cluster)
+	config, _ := clientcmd.BuildConfigFromFlags("", clusterData.ConfigFile)
+	if clusterData.ClusterType == "Standard" {
+		config.CAData = []byte(clusterData.CaData)
+		tlsCfg := restclient.TLSClientConfig{
+			Insecure: false,
+			CAData:   config.CAData,
+			KeyData:  []byte(clusterData.KeyData),
+			CertData: []byte(clusterData.CertData),
+		}
+		config.TLSClientConfig = tlsCfg
+	}
+	return *config
+}
+
 // client信息缓存
 var clientPool = util.Lock{}
 
@@ -95,7 +123,7 @@ func GetClient(cluster string) (kubernetes.Clientset, error) {
 		return c.(kubernetes.Clientset), nil
 	}
 
-	config := getTnlCfg(cluster)
+	config := getKubeCfg(cluster) //getTnlCfg(cluster)
 
 	config.Timeout = time.Second * 3
 	client, err := kubernetes.NewForConfig(&config)
@@ -109,7 +137,7 @@ func GetClient(cluster string) (kubernetes.Clientset, error) {
 
 // 通过yaml方式部署服务
 func GetYamlClient(cluster string, groups string, version string, api string) (*dynamic.Client, error) {
-	config := getTnlCfg(cluster)
+	config := getKubeCfg(cluster) //getTnlCfg(cluster)
 	//指定gv
 	// k8s 1.8.2
 	gv := &schema.GroupVersion{groups, version}
@@ -132,7 +160,7 @@ func GetRestlient(cluster string) (*rest.RESTClient, restclient.Config, error) {
 		Group:   "",
 		Version: "v1",
 	}
-	config := getTnlCfg(cluster)
+	config := getKubeCfg(cluster) //getTnlCfg(cluster)
 	config.GroupVersion = &groupversion
 	config.APIPath = "/api"
 	config.ContentType = runtime.ContentTypeJSON

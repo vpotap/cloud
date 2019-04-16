@@ -206,3 +206,46 @@ func (this *HostsController) LabelSave() {
 	setHostJson(this, data)
 }
 
+// v1 主机数据获取
+// @router /api/v1/hosts/data [get]
+func (this *HostsController) ClusterHosts() {
+	data := make([]hosts.CloudClusterHosts, 0)
+	searchMap := sql.SearchMap{}
+	id := this.Ctx.Input.Param(":id")
+	ip := this.GetString("ip")
+	cluster := this.GetString("cluster")
+	if len(cluster) < 1 {
+		setHostJson(this, util.ResponseMapError("缺少集群名称"))
+		return
+	}
+	if len(id) > 0 {
+		searchMap.Put("HostId", id)
+	}
+	searchMap.Put("ClusterName", cluster)
+	searchSql := sql.SearchSql(
+		hosts.CloudClusterHosts{},
+		hosts.SelectCloudClusterHosts,
+		searchMap)
+
+	if len(ip) > 0 {
+		q := ` and (host_ip like "%?%")`
+		searchSql += strings.Replace(q, "?", sql.Replace(ip), -1)
+	}
+	searchSql = sql.SearchSqlPages(searchSql, *this.Ctx.Request)
+
+	num, err := sql.Raw(searchSql).QueryRows(&data)
+	c, err := k8s.GetClient(cluster)
+	var r map[string]interface{}
+
+	if err == nil {
+		returnData := getRedisNodeData(data)
+		r = util.NewResponseMap(returnData, int(num), 0, 10)
+	}else{
+		r = util.ResponseMapError(err.Error())
+	}
+	setHostJson(this, r)
+	if err == nil {
+		go CacheNodeStatus(data, c)
+	}
+}
+

@@ -1,17 +1,18 @@
 package util
 
 import (
-	"github.com/astaxie/beego/cache"
+	"encoding/json"
+
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/cache"
 	_ "github.com/astaxie/beego/cache/redis"
 	"github.com/astaxie/beego/logs"
 	"github.com/garyburd/redigo/redis"
-	"encoding/json"
 )
 
 // 2019-01-20 redis写入数据
-func RedisCacheClient(key string) (cache.Cache,error) {
-	return cache.NewCache("redis", `{"conn":"`+beego.AppConfig.String("redis")+`", "key":"`+key+`_"}`)
+func RedisCacheClient(key string) (cache.Cache, error) {
+	return cache.NewCache("redis", `{"conn":"`+beego.AppConfig.String("redis")+`", "key":"`+key+`_", "dbNum":"`+beego.AppConfig.String("redis.dbNum")+`"}`)
 }
 
 // 2019-01-19 08:51
@@ -23,7 +24,7 @@ func RedisObj2Obj(r interface{}, o interface{}) bool {
 			json.Unmarshal([]byte(redisStr), &o)
 			return true
 		}
-		logs.Error("转换redis数据出错" , err)
+		logs.Error("转换redis数据出错", err)
 	}
 	return false
 }

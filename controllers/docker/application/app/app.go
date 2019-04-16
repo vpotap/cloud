@@ -1,20 +1,21 @@
 package app
 
 import (
-	"github.com/astaxie/beego"
+	"cloud/controllers/base/quota"
+	"cloud/controllers/ent"
 	"cloud/k8s"
-	"cloud/sql"
 	"cloud/models/app"
-	"cloud/util"
-	"database/sql/driver"
-	"github.com/astaxie/beego/logs"
-	"strings"
 	"cloud/models/ci"
 	"cloud/models/registry"
-	"cloud/controllers/ent"
-	"cloud/controllers/base/quota"
-	"strconv"
+	"cloud/sql"
 	"cloud/userperm"
+	"cloud/util"
+	"database/sql/driver"
+	"strconv"
+	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 )
 
 type AppController struct {
@@ -101,10 +102,10 @@ func (this *AppController) GetAppName() {
 	sql.Raw(searchSql).QueryRows(&datas)
 	permApp := userperm.GetResourceName("应用", getUser(this))
 	// 不是自己创建的才检查
-	user :=  getUser(this)
+	user := getUser(this)
 	for _, data := range datas {
-		if data.CreateUser != getUser(this) &&  user != "admin"{
-			if ! userperm.CheckPerm(data.AppName, "", "", permApp) {
+		if data.CreateUser != getUser(this) && user != "admin" {
+			if !userperm.CheckPerm(data.AppName, "", "", permApp) {
 				continue
 			}
 		}
@@ -112,8 +113,6 @@ func (this *AppController) GetAppName() {
 	}
 	SetAppDataJson(this, result)
 }
-
-
 
 // 容器列表入口
 // 2019-01-15 14:57
@@ -136,8 +135,6 @@ func (this *AppController) ContainerList() {
 	this.TplName = "application/container/list.html"
 }
 
-
-
 // 应用详情页面
 // @router /application/app/detail/:id:int [get]
 func (this *AppController) AppDetail() {
@@ -158,10 +155,10 @@ func (this *AppController) AppDetail() {
 	permApp := userperm.GetResourceName("应用", getUser(this))
 	// 不是自己创建的才检查
 	if data.CreateUser != getUser(this) {
-			if ! userperm.CheckPerm(data.AppName, data.ClusterName, data.Entname, permApp) {
-				this.TplName = "application/app/list.html"
-				return
-			}
+		if !userperm.CheckPerm(data.AppName, data.ClusterName, data.Entname, permApp) {
+			this.TplName = "application/app/list.html"
+			return
+		}
 	}
 
 	yamlShow := this.GetString("yaml")
@@ -232,7 +229,7 @@ func (this *AppController) RedeployApp() {
 	perm := userperm.GetResourceName("服务", user)
 	permApp := userperm.GetResourceName("应用", user)
 
-	for _, v:= range strings.Split(ids, ","){
+	for _, v := range strings.Split(ids, ",") {
 
 		if _, err := strconv.Atoi(v); err != nil {
 			continue
@@ -244,8 +241,8 @@ func (this *AppController) RedeployApp() {
 				d := service
 				// 不是自己创建的才检查
 				if d.CreateUser != user {
-					if ! userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+d.ServiceName, d.ClusterName, d.Entname, perm)  {
-						if ! userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+					if !userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+d.ServiceName, d.ClusterName, d.Entname, perm) {
+						if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
 							continue
 						}
 					}
@@ -259,7 +256,7 @@ func (this *AppController) RedeployApp() {
 
 // 2018-082-9 08:28
 // 判断服务数量,数量大于0不让删应用
-func checkServiceNumber(d app.CloudApp)  int {
+func checkServiceNumber(d app.CloudApp) int {
 	searchMap := sql.GetSearchMapV(
 		"AppName", d.AppName,
 		"Entname", d.Entname,
@@ -273,7 +270,6 @@ func checkServiceNumber(d app.CloudApp)  int {
 	return 0
 }
 
-
 // 删除应用
 // @router /api/app/:id:int [delete]
 func (this *AppController) AppDelete() {
@@ -281,7 +277,7 @@ func (this *AppController) AppDelete() {
 	d, searchMap := getApp(this)
 	n := checkServiceNumber(d)
 	if n > 0 {
-		msg := "还有"+strconv.Itoa(n)+"个服务未删除,删除后操作!"
+		msg := "还有" + strconv.Itoa(n) + "个服务未删除,删除后操作!"
 		SetAppDataJson(this, util.ApiResponse(false, msg))
 		util.SaveOperLog(getUser(this), *this.Ctx, msg, d.ClusterName)
 		return
@@ -349,12 +345,12 @@ func (this *AppController) AppData() {
 	permApp := userperm.GetResourceName("应用", user)
 	cloudApps := getCacheAppData(data)
 	result := make([]k8s.CloudApp, 0)
-	for _, d := range cloudApps{
+	for _, d := range cloudApps {
 		// 不是自己创建的才检查
-		if d.CreateUser != user &&  user != util.ADMIN {
-				if ! userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
-					continue
-				}
+		if d.CreateUser != user && user != util.ADMIN {
+			if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+				continue
+			}
 		}
 		result = append(result, d)
 	}
@@ -388,4 +384,90 @@ func (this *AppController) EnvfileList() {
 func (this *AppController) ConfigureList() {
 	//this.TplName = "application/app/service/configure.html"
 	this.Ctx.WriteString("建设中")
+}
+
+// v1 获取应用列表
+// @router /api/v1/apps [get]
+func (this *AppController) Apps() {
+	data := make([]app.CloudApp, 0)
+	searchMap := sql.SearchMap{}
+	key := this.GetString("key")
+	searchMap = sql.GetSearchMapValue(
+		sql.MKeyV("AppName"),
+		*this.Ctx, searchMap)
+
+	searchSql := sql.SearchSql(app.CloudApp{}, app.SelectCloudApp, searchMap)
+	searchSql = sql.GetWhere(searchSql, searchMap)
+	if key != "" {
+		q := ` and (app_name like "%?%")`
+		searchSql += strings.Replace(q, "?", sql.Replace(key), -1)
+	}
+
+	sql.OrderByPagingSql(searchSql, "app_id",
+		*this.Ctx.Request, &data,
+		app.CloudApp{})
+
+	user := getUser(this)
+	permApp := userperm.GetResourceName("应用", user)
+	cloudApps := getCacheAppData(data)
+	result := make([]k8s.CloudApp, 0)
+	for _, d := range cloudApps {
+		// 不是自己创建的才检查
+		if d.CreateUser != user && user != util.ADMIN {
+			if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+				continue
+			}
+		}
+		result = append(result, d)
+	}
+
+	r := util.RestApiResponse(200, result) //util.ResponseMap(result, len(data), this.GetString("draw"))
+
+	this.Data["json"] = r
+	this.ServeJSON(false)
+	go getK8sAppData(data)
+	if len(data) > 0 {
+		go MakeContainerData(util.Namespace(data[0].AppName, data[0].ResourceName))
+	}
+}
+
+// v1 获取应用详情
+// @router /api/v1/app/detail/:id:int [get]
+func (this *AppController) Detail() {
+	id := this.Ctx.Input.Param(":id")
+	data := app.CloudApp{}
+	searchMap := sql.SearchMap{}
+	searchMap.Put("AppId", id)
+
+	datas := selectAppData(searchMap)
+	if len(datas) > 0 {
+		data = datas[0]
+	}
+	r := util.RestApiResponse(200, "")
+	if data.AppId == 0 {
+		r = util.RestApiResponse(50001, "未找到对应的应用，AppId为0")
+	}
+
+	permApp := userperm.GetResourceName("应用", getUser(this))
+	// 不是自己创建的才检查
+	if data.CreateUser != getUser(this) {
+		if !userperm.CheckPerm(data.AppName, data.ClusterName, data.Entname, permApp) {
+			return
+		}
+	}
+
+	yamlShow := this.GetString("yaml")
+	this.Data["detault"] = "active"
+	this.Data["yamlActive"] = ""
+	if yamlShow == "1" {
+		this.Data["yamlActive"] = "active"
+		this.Data["detault"] = ""
+	}
+	//this.Data["namespace"] = util.Namespace(data.AppName, data.ResourceName)
+	yaml := util.Json2Yaml(data.Yaml)
+
+	data.Yaml = yaml
+	r = util.RestApiResponse(200, data)
+	this.Data["json"] = r
+	this.ServeJSON(false)
 }

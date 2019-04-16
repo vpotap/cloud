@@ -1,23 +1,22 @@
 package util
 
 import (
-	"github.com/astaxie/beego/context"
+	"bytes"
 	"cloud/models/cloudLog"
-	"strings"
 	"cloud/sql"
 	gosql "database/sql"
-	"strconv"
-	"io/ioutil"
-	"path/filepath"
-	"os"
 	"fmt"
+	"io/ioutil"
 	"net/http"
-	"bytes"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
+
+	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/logs"
 	"gopkg.in/square/go-jose.v1/json"
 )
-
-
 
 // 获取用户名
 func GetUser(user interface{}) string {
@@ -58,7 +57,6 @@ func GetReferer(ctx context.Context) string {
 	return "/index"
 }
 
-
 // 删除时返回的响应数据
 func DeleteResponse(err error, ctx context.Context, info string, username interface{}, cluster string, r gosql.Result) map[string]interface{} {
 	var data map[string]interface{}
@@ -91,6 +89,23 @@ func SaveResponse(err error, errmsg string) (map[string]interface{}, string) {
 		msg = "保存成功"
 	}
 	return ApiResponse(status, msg), msg
+}
+
+// 保存成功提示信息
+func ApiSaveResponse(err error, errmsg string) (map[string]interface{}, string) {
+	var msg string
+	var status int = 500
+	if err != nil {
+		if strings.Contains(err.Error(), "Duplicate") {
+			msg = "保存失败: " + errmsg
+		} else {
+			msg = "保存失败: " + err.Error() + " " + errmsg
+		}
+	} else {
+		status = 200
+		msg = "保存成功"
+	}
+	return RestApiResponse(status, msg), msg
 }
 
 // 将字符串转成int类型
@@ -131,7 +146,6 @@ func ListExistsString(arr []string, value string) bool {
 	return false
 }
 
-
 // 2019-01-21 07:39
 // 读取文件内容
 func ReadFile(filename string) string {
@@ -145,28 +159,26 @@ func ReadFile(filename string) string {
 // 获取认证服务器的配置文件路径
 // 2019-01-21 10:29
 func AuthServerConfigFile() string {
-	pwd,_ := os.Getwd()
-	cf := filepath.Join(pwd,"conf", "simple.yaml")
+	pwd, _ := os.Getwd()
+	cf := filepath.Join(pwd, "conf", "simple.yaml")
 	return cf
 }
-
-
 
 // 生成htmlselect的内容
 // 2019-01-26 10:57
 func GetSelectOption(name string, value string, title string) string {
-	return"<option title='"+title+"' value='"+value+"'>"+name+"</option>"
+	return "<option title='" + title + "' value='" + value + "'>" + name + "</option>"
 }
 
 // 生成htmlselect的内容
 // 2019-01-07
 func GetSelectOptionName(name string) string {
-	return"<option title='"+name+"' value='"+name+"'>"+name+"</option>"
+	return "<option title='" + name + "' value='" + name + "'>" + name + "</option>"
 }
 
 // 2019-01-31 09:30
 // 获取响应数据
-func GetResponseResult(err error,draw interface{}, returnData interface{}, totle interface{}) map[string]interface{} {
+func GetResponseResult(err error, draw interface{}, returnData interface{}, totle interface{}) map[string]interface{} {
 	var r map[string]interface{}
 	if err == nil {
 		r = ResponseMap(returnData, totle, draw)
@@ -175,7 +187,6 @@ func GetResponseResult(err error,draw interface{}, returnData interface{}, totle
 	}
 	return r
 }
-
 
 // 2018-03-24 17:03
 // 发送json请求

@@ -1,18 +1,19 @@
 package sql
 
 import (
-	_ "github.com/go-sql-driver/mysql"
+	"database/sql"
 	"encoding/json"
+	"net/http"
+	"reflect"
 	"strconv"
 	"strings"
 	"sync"
+
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/context"
-	"net/http"
 	"github.com/astaxie/beego/logs"
-	"reflect"
-	"database/sql"
+	"github.com/astaxie/beego/orm"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func StringToUpper(str string) string {
@@ -78,7 +79,7 @@ func (m *SearchMap) GetData() map[string]interface{} {
 }
 
 // 获取数据
-func (m *SearchMap) Get(key string) (interface{}) {
+func (m *SearchMap) Get(key string) interface{} {
 	m.Lock.RLock()
 	defer m.Lock.RUnlock()
 	data := m.GetData()
@@ -110,7 +111,7 @@ func getMap(obj interface{}) map[string]interface{} {
 func getReturnSql(tempSql string) string {
 	tempSql = strings.TrimSpace(tempSql)
 	temps := strings.Split(tempSql, " ")
-	v := temps[0:len(temps)-1]
+	v := temps[0 : len(temps)-1]
 	return strings.Join(v, " ")
 }
 
@@ -186,16 +187,16 @@ func UpdateSql(obj interface{}, sql string, data SearchMap, extCloumnt string) s
 		}
 	}
 	updateSql = strings.TrimSpace(updateSql)
-	updateSql = updateSql[0:len(updateSql)-1]
+	updateSql = updateSql[0 : len(updateSql)-1]
 	tempSql = sql + " set " + updateSql + " " + whereSql
 	return getReturnSql(tempSql)
 }
 
-func GetWhere(searchSql string, searchMap SearchMap) string  {
+func GetWhere(searchSql string, searchMap SearchMap) string {
 	if len(searchMap.GetData()) == 0 {
 		searchSql += " where 1=1 "
 	}
-	return  searchSql
+	return searchSql
 }
 
 func getSearchSql(obj interface{}, sql string, data SearchMap) string {
@@ -245,12 +246,12 @@ type Total struct {
 }
 
 /**
- 2018-11-27 09:09
- 获取查询sql的总行数
- */
-func CountSqlTotal(query string) int64  {
+2018-11-27 09:09
+获取查询sql的总行数
+*/
+func CountSqlTotal(query string) int64 {
 	qs := strings.Split(query, " from ")
-	total :=  Total{}
+	total := Total{}
 	if len(qs) > 1 {
 		q := strings.Split(query, " limit ")[0]
 		query := "select count(*) as total from (" + q + ") as temp"
@@ -303,6 +304,98 @@ func SearchSqlPages(sql string, request http.Request) string {
 	s := strconv.FormatInt(st, 10)
 	sql += " limit " + s + "," + l
 	return sql
+}
+
+// 带分页的sql语句
+// 2019-01-15
+func NewSearchSqlPages(sql string, request http.Request) string {
+	pageSize := getParam(&request, "pageSize")
+	pageNo := getParam(&request, "pageNo")
+	if pageNo == "" {
+		pageNo = "0"
+	}
+	if pageSize == "" {
+		pageSize = "10"
+	}
+	pstart, serr := strconv.ParseInt(pageNo, 10, 64)
+	plength, lerr := strconv.ParseInt(pageSize, 10, 64)
+	if lerr != nil || serr != nil {
+		pstart = 0
+		plength = 10
+	}
+
+	l := strconv.FormatInt(plength, 10)
+	st := (pstart - 1)
+	if st < 0 {
+		st = 0
+	}
+	s := strconv.FormatInt(st, 10)
+	sql += " limit " + s + "," + l
+	return sql
+}
+
+// 2019-01-05 09:09
+// 公共查询方法，包含orderby和分页sql
+func NewOrderByPagingSql(searchSql string, column string, request http.Request, obj interface{}, structObj interface{}) (int, error) {
+	searchSql = SearchOrder(searchSql, column)
+	searchSql = NewSearchSqlPages(searchSql, request)
+	c := []orm.Params{}
+	_, err := GetOrm().Raw(searchSql).Values(&c)
+	structMap := getObjStructMap(structObj)
+
+	var objData = make([]map[string]interface{}, 0)
+	for _, v := range c {
+		result := make(map[string]interface{}, 0)
+		for mk, v := range v {
+			key := StringToUpper(mk)
+			if structMap[key] == "string" {
+				result[StringToUpper(mk)] = v
+			}
+			if structMap[key] == "int64" {
+				if v == nil {
+					result[StringToUpper(mk)] = 0
+					continue
+				}
+				vint64, err := strconv.ParseInt(v.(string), 10, 64)
+				if err == nil {
+					result[StringToUpper(mk)] = vint64
+				} else {
+					result[StringToUpper(mk)] = 0
+				}
+			}
+			if structMap[key] == "float64" {
+				if v == nil {
+					result[StringToUpper(mk)] = 0.0
+					continue
+				}
+				vFloat64, err := strconv.ParseFloat(v.(string), 64)
+				if err == nil {
+					result[StringToUpper(mk)] = vFloat64
+				} else {
+					result[StringToUpper(mk)] = 0.0
+				}
+			}
+			if structMap[key] == "int" || structMap[key] == "int32" {
+				if v == nil {
+					result[StringToUpper(mk)] = 0
+					continue
+				}
+				vint, err := strconv.Atoi(v.(string))
+				if err == nil {
+					result[StringToUpper(mk)] = vint
+				} else {
+					result[StringToUpper(mk)] = 0
+				}
+			}
+		}
+		objData = append(objData, result)
+	}
+	temp, _ := json.Marshal(objData)
+	err = json.Unmarshal(temp, &obj)
+	if err != nil {
+		logs.Info(err)
+	}
+	return len(objData), err
 }
 
 // 添加排序
@@ -368,7 +461,7 @@ func OrderByPagingSql(searchSql string, column string, request http.Request, obj
 					result[StringToUpper(mk)] = 0.0
 					continue
 				}
-				vFloat64, err := strconv.ParseFloat(v.(string),  64)
+				vFloat64, err := strconv.ParseFloat(v.(string), 64)
 				if err == nil {
 					result[StringToUpper(mk)] = vFloat64
 				} else {
@@ -410,8 +503,8 @@ func InsertSql(obj interface{}, sql string) string {
 			valueSql += getValue(maps[k]) + ","
 		}
 	}
-	insertSql = insertSql[0:len(insertSql)-1]
-	valueSql = valueSql[0:len(valueSql)-1]
+	insertSql = insertSql[0 : len(insertSql)-1]
+	valueSql = valueSql[0 : len(valueSql)-1]
 	tempSql += insertSql + ") values(" + valueSql + ")"
 	return tempSql
 }

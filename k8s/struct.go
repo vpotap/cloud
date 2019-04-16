@@ -743,6 +743,25 @@ type CertData struct {
 	CertData string
 	// node证书私钥内容
 	KeyData string
+	// kubeconfig
+	ConfigFile string
+}
+
+// 2018-03-01 14:24
+// 获取集群信息
+type ClusterData struct {
+	// ca证书公钥文件
+	CaData string
+	// node证书公钥内容
+	CertData string
+	// node证书私钥内容
+	KeyData string
+	// kubeconfig
+	ConfigFile string
+	// //证书是自签名还是外部
+	// CertType string
+	//集群类型
+	ClusterType string
 }
 
 // 2018-09-04 09:51

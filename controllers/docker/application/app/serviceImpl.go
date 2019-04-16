@@ -298,6 +298,8 @@ func getParam(d app.CloudAppService, user string) k8s.ServiceParam {
 		}
 		param.ConfigureData = configureData
 	}
+	//判断namespace 是否存在，不存在则直接创建
+	k8s.YamlCreateNamespace(d.ClusterName, util.Namespace(d.AppName, d.ResourceName))
 	param = CreateSecretFile(param)
 	return param
 }

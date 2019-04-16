@@ -49,10 +49,38 @@ func init() {
 	beego.Router("/webtty/:id:int", &index.IndexController{}, "*:WebTty")
 	beego.Router("/api/resource/name", &resource.ControllerResource{}, "get:GetResourceSelect")
 
-	// api list
-	beego.Router("/api/auth/login", &index.IndexController{}, "post:AuthLogin")
-	beego.Router("/api/user/info", &index.IndexController{}, "get:GetUser")
-
+	// api v1 list
+	newApi :=
+		beego.NewNamespace("/api",
+			beego.NSNamespace("/v1",
+				// 登陆
+				beego.NSRouter("/auth/login", &index.IndexController{}, "post:AuthLogin"),
+				// 获取用户信息
+				beego.NSRouter("/user/info", &index.IndexController{}, "get:UserInfo"),
+				// 获取用户列表
+				beego.NSRouter("/users", &users.UserController{}, "get:Users"),
+				// 用户保存,
+				beego.NSRouter("users", &users.UserController{}, "post:SaveUser"),
+				//查询服务
+				beego.NSRouter("service", &app.ServiceController{}, "get:ServiceData"),
+				//获取集群列表名称
+				beego.NSRouter("/clusters/name", &cluster.ClusterController{}, "get:GetClusterName"),
+				//获取集群列表
+				beego.NSRouter("/clusters", &cluster.ClusterController{}, "get:Clusters"),
+				//获取集群详情
+				beego.NSRouter("/cluster/detail/:hi(.*)", &cluster.ClusterController{}, "get:ClusterDetail"),
+				//获取集群主机列表
+				beego.NSRouter("/cluster/hosts/:id(.*)", &hosts.HostsController{}, "get:ClusterHosts"),
+				// 获取环境数据,
+				beego.NSRouter("ent", &ent.EntController{}, "get:EntDetails"),
+				//获取应用列表
+				beego.NSRouter("/apps", &app.AppController{}, "get:Apps"),
+				//获取应用详情
+				beego.NSRouter("/app/detail/:id(.*)", &app.AppController{}, "get:Detail"),
+				//保存应用服务
+				beego.NSRouter("/service", &app.ServiceController{}, "post:SaveService"),
+			),
+		)
 	applicationNs :=
 		beego.NewNamespace("/application",
 			// 应用交互中心,
@@ -971,12 +999,13 @@ func init() {
 	beego.AddNamespace(clusterApi)
 	beego.AddNamespace(baseApi)
 	beego.AddNamespace(systemApi)
+	beego.AddNamespace(newApi)
 
 	// 过滤器功能实现,拦截未登陆请求
 	var FilterUser = func(ctx *context.Context) {
 		uri := ctx.Request.RequestURI
 		setUserLogin(ctx)
-		if !strings.Contains(uri, "/static/") && !strings.Contains(uri, "/api/user/login") && !strings.Contains(uri, "/api/auth/login") {
+		if !strings.Contains(uri, "/static/") && !strings.Contains(uri, "/api/user/login") && !strings.Contains(uri, "/api/v1/auth/login") {
 			_, ok := ctx.Input.Session("username").(string)
 			uris := strings.Split(uri, "?referer=/")
 			if !ok && uri != "/login" && uris[0] != "/login" {

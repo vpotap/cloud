@@ -10,7 +10,6 @@ import (
 	"cloud/util"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -98,9 +97,10 @@ func DbAuth(user string, password string) bool {
 	data := index.DockerCloudAuthorityUser{}
 	q := sql.SearchSql(data, index.SelectDockerCloudAuthorityUser, searchMap)
 	sql.Raw(q).QueryRow(&data)
-	if data.IsDel > 0 {
+	if data.IsDel > 0 || data.IsValid == 0 {
 		return false
 	}
+
 	return true
 }
 
@@ -169,7 +169,7 @@ func RecordLoginUser(username string, password string) (bool, error) {
 	// }
 
 	r1 := DbAuth(username, password)
-	logs.Info("通过db验证用户", username, r)
+	logs.Info("db验证用户", username, r)
 
 	if r1 {
 		cache.RedisUserCache.Put(username, cacheStr, time.Minute*180)
@@ -195,7 +195,7 @@ func RecordLoginUser(username string, password string) (bool, error) {
 		}
 		return true, nil
 	}
-	return false, errors.New("ldap和数据库验证失败")
+	return false, errors.New("数据库验证失败")
 }
 
 // 获取用户是否禁用
@@ -253,7 +253,8 @@ func (this *IndexController) Login() {
 	}
 }
 
-// @router /api/auth/login [post]
+// v1 登陆api
+// @router /api/v1/auth/login [post]
 func (this *IndexController) AuthLogin() {
 
 	var v map[string]string
@@ -263,7 +264,8 @@ func (this *IndexController) AuthLogin() {
 
 	if getUserIsDel(util.GetUser(username)) {
 		//this.Ctx.WriteString("false,")
-		setAuthLoginJson(this, util.ApiResponse(false, "用户已经禁用，用户名："+username))
+		setAuthLoginJson(this, util.RestApiResponse(5001, "用户已经禁用，用户名："+username))
+		return
 	}
 	r, err := RecordLoginUser(util.GetUser(username), password)
 	ip := this.Ctx.Request.RemoteAddr
@@ -276,7 +278,8 @@ func (this *IndexController) AuthLogin() {
 
 	if !r {
 		o.Raw(sql.InsertSql(data, index.InsertCloudLoginRecord)).Exec()
-		setAuthLoginJson(this, util.ApiResponse(false, "验证失败，用户名："+username+","+err.Error()))
+		setAuthLoginJson(this, util.RestApiResponse(5002, "验证失败，用户名："+username+","+err.Error()))
+		return
 	}
 
 	data.LoginStatus = 1
@@ -287,7 +290,7 @@ func (this *IndexController) AuthLogin() {
 	this.SetSession("clientIp", ip)
 	info := make(map[string]string)
 	info["token"] = "abc"
-	setAuthLoginJson(this, util.NewApiResponse(true, info))
+	setAuthLoginJson(this, util.RestApiResponse(200, info))
 }
 
 // 查询用户token使用
@@ -301,10 +304,67 @@ type User struct {
 
 // @router /api/user/info [get]
 func (this *IndexController) UserInfo() {
-	u := User{}
-	q := fmt.Sprintf(`select user_name from cloud_authority_user where token='%v' and is_del=0`, "abc")
-	sql.Raw(q).QueryRow(&u)
-	setAuthLoginJson(this, util.NewApiResponse(true, u))
+
+	result := map[string]interface{}{
+		"id":       "4291d7da9005377ec9aec4a71ea837f",
+		"name":     "管理员",
+		"username": "admin",
+		"roleId":   "admin",
+		"role": map[string]interface{}{
+			"id":         "admin",
+			"name":       "管理员",
+			"describe":   "拥有所有权限",
+			"status":     1,
+			"creatorId":  "system",
+			"createTime": 1497160610259,
+			"deleted":    0,
+			"permissions": []map[string]interface{}{
+				map[string]interface{}{
+					"roleId":         "admin",
+					"permissionId":   "dashboard",
+					"permissionName": "仪表盘",
+					"actions":        "[{\"action\":\"add\",\"defaultCheck\":false,\"describe\":\"新增\"},{\"action\":\"query\",\"defaultCheck\":false,\"describe\":\"查询\"},{\"action\":\"get\",\"defaultCheck\":false,\"describe\":\"详情\"},{\"action\":\"update\",\"defaultCheck\":false,\"describe\":\"修改\"},{\"action\":\"delete\",\"defaultCheck\":false,\"describe\":\"删除\"}]",
+					"actionEntitySet": []map[string]interface{}{
+						map[string]interface{}{
+							"action":       "add",
+							"describe":     "新增",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "query",
+							"describe":     "查询",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "get",
+							"describe":     "新增",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "get",
+							"describe":     "详情",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "update",
+							"describe":     "更新",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "delete",
+							"describe":     "删除",
+							"defaultCheck": false,
+						},
+					},
+					"actionList": "",
+					"dataAccess": "",
+				},
+			},
+		},
+	}
+	// q := fmt.Sprintf(`select user_name from cloud_authority_user where token='%v' and is_del=0`, "abc")
+	// sql.Raw(q).QueryRow(&u)
+	setAuthLoginJson(this, util.RestApiResponse(200, result))
 }
 
 // 快捷入口页面

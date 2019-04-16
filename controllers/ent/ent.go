@@ -1,12 +1,13 @@
 package ent
 
 import (
+	"cloud/controllers/base/cluster"
+	"cloud/models/ent"
 	"cloud/sql"
 	"cloud/util"
-	"github.com/astaxie/beego"
-	"cloud/models/ent"
-	"cloud/controllers/base/cluster"
 	"strings"
+
+	"github.com/astaxie/beego"
 )
 
 type EntController struct {
@@ -87,14 +88,14 @@ func (this *EntController) EntSave() {
 	setEntJson(this, data)
 }
 
-func GetEntnameSelectData(isLog bool)  string {
+func GetEntnameSelectData(isLog bool) string {
 	html := make([]string, 0)
 	html = append(html, "<option>--请选择--</option>")
 	data := getEntdata()
 	for _, v := range data {
 		e := util.GetSelectOptionName(v.Entname)
 		if isLog {
-			e =  util.GetSelectOptionName(v.Description)
+			e = util.GetSelectOptionName(v.Description)
 		}
 		html = append(html, e)
 	}
@@ -152,7 +153,6 @@ func (this *EntController) EntDatas() {
 		sql.Count("cloud_ent", int(num), key),
 		this.GetString("draw"))
 	setEntJson(this, r)
-
 }
 
 // json
@@ -179,4 +179,32 @@ func (this *EntController) EntDelete() {
 func setEntJson(this *EntController, data interface{}) {
 	this.Data["json"] = data
 	this.ServeJSON(false)
+}
+
+// v1 环境数据
+// @router /api/v1/ent [get]
+func (this *EntController) EntDetails() {
+	data := make([]ent.CloudEnt, 0)
+	searchMap := sql.SearchMap{}
+	id := this.Ctx.Input.Param(":id")
+	key := this.GetString("search")
+
+	if id != "" {
+		searchMap.Put("EntId", id)
+	}
+
+	searchSql := sql.SearchSql(ent.CloudEnt{}, ent.SelectCloudEnt, searchMap)
+	if key != "" && id == "" {
+		key = sql.Replace(key)
+		searchSql += strings.Replace(ent.SelectCloudEntWhere, "?", key, -1)
+	}
+
+	num, _ := sql.OrderByPagingSql(searchSql,
+		"ent_id",
+		*this.Ctx.Request,
+		&data,
+		ent.CloudEnt{})
+
+	r := util.NewResponseMap(data, int(num), 0, 10)
+	setEntJson(this, r)
 }

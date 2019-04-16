@@ -633,3 +633,63 @@ func MakeFilebeatConfig(Entname string, clusterName string)  {
 		}
 	}
 }
+
+
+// string
+// Service 保存
+// @router /v1/api/service [post]
+func (this *ServiceController) SaveService() {
+	d := app.CloudAppService{}
+	err := this.ParseForm(&d)
+	if err != nil {
+		this.Ctx.WriteString("参数错误" + err.Error())
+		return
+	}
+	oldUser := d.CreateUser
+	user := getServiceUser(this)
+
+	util.SetPublicData(d, user, &d)
+	if user == "admin" {
+		if len(oldUser) > 0 && oldUser != "admin"{
+			d.CreateUser = oldUser
+		}
+	}
+
+	serviceData := GetServiceData(d.ServiceName, d.ClusterName, d.AppName)
+	logs.Info("创建服务数据", util.ObjToString(d))
+	if serviceData.ServiceId > 0 {
+		logs.Error("创建服务失败", "该服务已经存在")
+		responseData(err, this, d.ServiceName, "该服务已经存在")
+		return
+	}
+
+	status, msg := k8s.CheckQuota(
+		d.CreateUser, d.Replicas,
+		int64(d.Cpu), d.Memory,
+		d.ResourceName)
+
+	if !status {
+		logs.Error("用户超过配额", msg)
+		responseData(errors.InvalidArgumentError(msg), this, d.ServiceName, msg)
+		return
+	}
+
+	d, err  = ExecDeploy(d, false)
+	if err != nil {
+		logs.Error("创建服务失败", "k8s执行错误", err.Error())
+		responseData(err, this, d.ServiceName, "创建服务时失败")
+		return
+	}
+
+	if len(d.Domain) > 0 {
+		createLbConfig(d, d.ClusterName, d.Entname, d.AppName, d.Domain, d.CreateUser, d.ResourceName)
+		go k8s.CreateNginxConf("")
+	}
+
+	data, msg := util.SaveResponse(nil, "保存成功")
+	util.SaveOperLog(d.CreateUser, *this.Ctx,
+		"保存Service 配置 "+msg, d.ServiceName)
+	setServiceJson(this, data)
+	saveAppData(d)
+
+}

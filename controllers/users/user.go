@@ -1,11 +1,14 @@
 package users
 
 import (
+	"cloud/models/index"
 	"cloud/sql"
 	"cloud/util"
-	"github.com/astaxie/beego"
-	"cloud/models/index"
+	"encoding/json"
+	"strconv"
 	"strings"
+
+	"github.com/astaxie/beego"
 )
 
 type UserController struct {
@@ -48,7 +51,7 @@ func GetUserSelect() string {
 	html := make([]string, 0)
 	html = append(html, "<option>--请选择--</option>")
 	data := getUserData()
-	for _,v := range data{
+	for _, v := range data {
 		html = append(html, util.GetSelectOptionName(v.UserName))
 	}
 	return strings.Join(html, "\n")
@@ -74,8 +77,6 @@ func (this *UserController) UserData() {
 	setUserJson(this, data)
 }
 
-
-
 // string
 // 用户保存
 // @router /api/user [post]
@@ -83,7 +84,7 @@ func (this *UserController) UserSave() {
 	d := index.DockerCloudAuthorityUser{}
 	err := this.ParseForm(&d)
 	if err != nil {
-		setUserJson(this, util.ApiResponse(false,err.Error()))
+		setUserJson(this, util.ApiResponse(false, err.Error()))
 		return
 	}
 
@@ -207,6 +208,96 @@ func (this *UserController) UserDelete() {
 		"删除用户"+userData.UserName,
 		this.GetSession("username"),
 		userData.CreateUser, r)
+	setUserJson(this, data)
+}
+
+// v1 用户数据 NewUI
+// @router /api/v1/users [get]
+func (this *UserController) Users() {
+	pageNo := this.GetString("pageNo")
+	pageSize := this.GetString("pageSize")
+	data := make([]index.DockerCloudAuthorityUser, 0)
+	searchMap := sql.SearchMap{}
+	id := this.Ctx.Input.Param(":id")
+	key := this.GetString("search")
+	if id != "" {
+		searchMap.Put("UserId", id)
+	}
+
+	u := util.GetUser(this.GetSession("username"))
+	if u != "admin" {
+		searchMap.Put("UserName", u)
+	}
+	searchSql := sql.SearchSql(
+		index.DockerCloudAuthorityUser{},
+		index.SelectDockerCloudAuthorityUser,
+		searchMap)
+
+	if key != "" && id == "" {
+		key = sql.Replace(key)
+		searchSql += strings.Replace(index.SelectUserWhere, "?", key, -1)
+	}
+
+	num, _ := sql.NewOrderByPagingSql(
+		searchSql, "user_id",
+		*this.Ctx.Request,
+		&data,
+		index.DockerCloudAuthorityUser{})
+
+	result := make([]index.DockerCloudAuthorityUser, 0)
+	for _, v := range data {
+		v.Pwd = "******"
+		result = append(result, v)
+	}
+
+	pno, serr := strconv.ParseInt(pageNo, 10, 64)
+	psize, lerr := strconv.ParseInt(pageSize, 10, 64)
+	if lerr != nil || serr != nil {
+		pno = 0
+		psize = 10
+	}
+	r := util.NewResponseMap(
+		result,
+		sql.Count("cloud_authority_user", int(num), key), pno, psize)
+	setUserJson(this, r)
+
+}
+
+// vstring
+// v1 用户保存
+// @router /api/v1/user [post]
+func (this *UserController) SaveUser() {
+	d := index.DockerCloudAuthorityUser{}
+	err := json.Unmarshal(this.Ctx.Input.RequestBody, &d)
+	//err := this.ParseForm(&d)
+	if err != nil {
+		setUserJson(this, util.RestApiResponse(50001, err.Error()))
+		return
+	}
+
+	u := util.GetUser(this.GetSession("username"))
+	if u != "admin" {
+		setUserJson(this, util.RestApiResponse(50002, "无权限"))
+		return
+	}
+	util.SetPublicData(d, util.GetUser(this.GetSession("username")), &d)
+
+	if d.Pwd != "******" {
+		d.Pwd = util.Md5String(d.Pwd)
+	}
+	q := sql.InsertSql(d, index.InsertDockerCloudAuthorityUser)
+	if d.UserId > 0 {
+		searchMap := sql.SearchMap{}
+		searchMap.Put("UserId", d.UserId)
+		q = sql.UpdateSql(
+			d,
+			index.UpdateDockerCloudAuthorityUser,
+			searchMap, "CreateTime,CreateUser")
+	}
+	_, err = sql.Raw(q).Exec()
+
+	data, msg := util.ApiSaveResponse(err, "名称已经被使用")
+	util.SaveOperLog(this.GetSession("username"), *this.Ctx, "保存用户配置 "+msg, d.UserName)
 	setUserJson(this, data)
 }
 

@@ -76,12 +76,45 @@ func ApiResponse(status bool, info interface{}) map[string]interface{} {
 	return maps.Data
 }
 
+// API为表格提供的数据
+// return
+func NewResponseMap(listResult interface{}, total int, pageNo int64, pageSize int64) map[string]interface{} {
+	maps := MapLock{}
+	maps.Set("status", 200)
+	maps.Set("timestamp", TimeToStamp(string(GetDate())))
+	maps.Set("result", map[string]interface{}{
+		"data":       listResult,
+		"pageSize":   pageSize,
+		"pageNo":     pageNo,
+		"totalCount": total,
+	})
+	return maps.Data
+}
+
+// API响应信息
+func RestApiResponse(code int, info interface{}) map[string]interface{} {
+	maps := MapLock{}
+	maps.Set("status", 200)
+	maps.Set("timestamp", TimeToStamp(string(GetDate())))
+	hostname, _ := os.Hostname()
+	maps.Set("server", hostname)
+	if code != 200 {
+		maps.Set("status", 500)
+		maps.Set("message", info)
+	} else {
+		maps.Set("result", info)
+	}
+
+	maps.Set("code", code)
+	return maps.Data
+}
+
 // API响应信息
 func NewApiResponse(status bool, info interface{}) map[string]interface{} {
 	maps := MapLock{}
 	maps.Set("result", info)
 	maps.Set("status", status)
-	maps.Set("date", GetDate())
+	maps.Set("date", TimeToStamp(string(GetDate())))
 	hostname, _ := os.Hostname()
 	maps.Set("server", hostname)
 	maps.Set("code", 0)

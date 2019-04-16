@@ -210,3 +210,87 @@ func (this *ClusterController) Delete() {
 		r)
 	setClusterJson(this, data)
 }
+
+// json响应
+// v1 集群数据,直返回,集群名称和id的数据
+// @router /api/v1/cluster/name [get]
+func (this *ClusterController) GetClusterName() {
+	var r = util.RestApiResponse(200, GetClusterName())
+	setClusterJson(this, r)
+}
+
+// json 响应
+// v1 集群数据获取
+// @router /api/v1/clusters [get]
+func (this *ClusterController) Clusters() {
+	searchMap := sql.SearchMap{}
+	id := this.Ctx.Input.Param(":id")
+	key := this.GetString("key")
+	if id != "" {
+		searchMap.Put("ClusterId", id)
+	}
+
+	searchSql := sql.SearchSql(
+		cluster.CloudCluster{},
+		cluster.SelectCloudCluster,
+		searchMap)
+
+	if key != "" && id == "" {
+		pkey := sql.Replace(key)
+		searchSql += strings.Replace(cluster.SelectCloudClusterWhere, "?", pkey, -1)
+	}
+	data := make([]k8s.ClusterStatus, 0)
+	sql.Raw(searchSql).QueryRows(&data)
+	result := make([]k8s.ClusterStatus, 0)
+	for _, v := range data {
+		r := cache.ClusterCache.Get("data" + v.ClusterName)
+		v1 := k8s.ClusterStatus{}
+		status := util.RedisObj2Obj(r, &v1)
+		if status {
+			result = append(result, v1)
+		} else {
+			result = append(result, v)
+			CacheClusterData()
+		}
+	}
+	var r = util.RestApiResponse(200, result)
+
+	setClusterJson(this, r)
+}
+
+// json 响应
+// v1 获取集群详情
+// @router /api/v1/cluster/detail/:hi(.*) [get]
+func (this *ClusterController) ClusterDetail() {
+	name := this.Ctx.Input.Param(":hi")
+	var r map[string]interface{}
+	if len(name) < 1 {
+		r = util.RestApiResponse(50001, "参数格式不正确")
+	}
+
+	detail := GetClusterDetailData(name)
+	if detail.ClusterId < 1 {
+		r = util.RestApiResponse(50001, "要查询的集群信息不存在")
+	} else {
+		r = util.RestApiResponse(200, detail)
+	}
+
+	setClusterJson(this, r)
+}
+
+// @router /api/v1/cluster/nodes [get]
+func (this *ClusterController) ClusterNodes() {
+	clusterName := this.GetString("clusterName")
+	var check bool = true
+	var r map[string]interface{}
+	c, err := k8s.GetClient(clusterName)
+	if err != nil {
+		check = false
+	}
+	if !check {
+		r = util.RestApiResponse(50001, "获取Kubernetes 的Client异常")
+	} else {
+		r = util.RestApiResponse(200, k8s.GetNodesIp(c))
+	}
+	setClusterJson(this, r)
+}
