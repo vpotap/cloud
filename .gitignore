@@ -27,3 +27,4 @@ make.go
 cloud.exe~
 cloud.tar.gz
 conf/key/*
+debug
