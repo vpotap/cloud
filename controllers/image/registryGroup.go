@@ -7,6 +7,7 @@ import (
 	"cloud/sql"
 	"cloud/util"
 	"database/sql/driver"
+	"fmt"
 	"strings"
 
 	"github.com/astaxie/beego"
@@ -648,6 +649,8 @@ func (this *RegistryGroupController) GetDeployImage() {
 		sql.SearchMap{})
 
 	q = strings.Replace(q, "{0}", sql.Replace(search), -1)
+	fmt.Println("-----------------------------------")
+	fmt.Println(q)
 	sql.GetOrm().Raw(q, user).QueryRows(&data)
 
 	result := make([]registry.CloudDeployImage, 0)
@@ -687,4 +690,31 @@ func GetImageTag(images string) string {
 		tagsTemp = append(tagsTemp, util.GetSelectOptionName(tags[i]))
 	}
 	return strings.Join(tagsTemp, "")
+}
+
+// 2019-04-18
+// v1 在部署时使用的镜像数据API
+// @router /api/v1/registry/deploy/image [get]
+func (this *RegistryGroupController) QueryDeployImage() {
+	data := make([]registry.CloudDeployImage, 0)
+	user := getUser(this)
+	//clusterName := this.GetString("clusterName")
+	search := this.GetString("cloudimgname")
+
+	q := sql.SearchSql(registry.CloudDeployImage{},
+		registry.SelectDeployImage,
+		sql.SearchMap{})
+
+	q = strings.Replace(q, "{0}", sql.Replace(search), -1)
+	fmt.Println("---------------cloudimgname--------------------")
+	fmt.Println(q)
+	sql.GetOrm().Raw(q, user).QueryRows(&data)
+
+	result := make([]registry.CloudDeployImage, 0)
+	for _, v := range data {
+		temp := registry.CloudDeployImage(v)
+		result = append(result, temp)
+	}
+	r := util.RestApiResponse(200, result)
+	setJson(this, r)
 }

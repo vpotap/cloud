@@ -16,7 +16,7 @@ import (
 	"cloud/controllers/ci"
 	"cloud/controllers/docker/application/app"
 	"cloud/controllers/ent"
-	"cloud/controllers/image"
+	registry "cloud/controllers/image"
 	"cloud/controllers/index"
 	"cloud/controllers/log"
 	"cloud/controllers/monitor"
@@ -79,6 +79,8 @@ func init() {
 				beego.NSRouter("/app/detail/:id(.*)", &app.AppController{}, "get:Detail"),
 				//保存应用服务
 				beego.NSRouter("/service", &app.ServiceController{}, "post:SaveService"),
+				//在部署时使用的镜像数据
+				beego.NSRouter("/registry/deploy/images", &registry.RegistryGroupController{}, "get:QueryDeployImage"),
 			),
 		)
 	applicationNs :=
