@@ -81,6 +81,10 @@ func init() {
 				beego.NSRouter("/service", &app.ServiceController{}, "post:SaveService"),
 				//在部署时使用的镜像数据
 				beego.NSRouter("/registry/deploy/images", &registry.RegistryGroupController{}, "get:QueryDeployImage"),
+				//部署时点击下一步，获取镜像版本
+				beego.NSRouter("/registry/group/images/:id:int", &registry.RegistryGroupController{}, "get:QueryRegistryGroupImage"),
+				//部署时点击下一步，获取镜像版本
+				beego.NSRouter("/registry/group/images/:hi(.*)", &registry.RegistryGroupController{}, "get:QueryRegistryGroupImage"),
 			),
 		)
 	applicationNs :=
