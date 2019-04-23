@@ -77,6 +77,8 @@ func init() {
 				beego.NSRouter("/apps", &app.AppController{}, "get:Apps"),
 				//获取应用详情
 				beego.NSRouter("/app/detail/:id(.*)", &app.AppController{}, "get:Detail"),
+				//获取服务列表
+				beego.NSRouter("/services", &app.ServiceController{}, "get:Services"),
 				//保存应用服务
 				beego.NSRouter("/service", &app.ServiceController{}, "post:SaveService"),
 				//在部署时使用的镜像数据
