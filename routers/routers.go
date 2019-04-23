@@ -85,6 +85,8 @@ func init() {
 				beego.NSRouter("/registry/group/images/:id:int", &registry.RegistryGroupController{}, "get:QueryRegistryGroupImage"),
 				//部署时点击下一步，获取镜像版本
 				beego.NSRouter("/registry/group/images/:hi(.*)", &registry.RegistryGroupController{}, "get:QueryRegistryGroupImage"),
+				// 获取资源空间
+				beego.NSRouter("/app/queryResource", &app.AppController{}, "get:QueryResource"),
 			),
 		)
 	applicationNs :=

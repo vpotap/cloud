@@ -1,15 +1,17 @@
 package quota
 
 import (
+	"cloud/controllers/users"
+	"cloud/models/quota"
 	"cloud/sql"
 	"cloud/util"
-	"github.com/astaxie/beego"
-	"cloud/models/quota"
-	"strings"
-	"cloud/controllers/users"
-	"github.com/astaxie/beego/logs"
 	"encoding/json"
+	"fmt"
 	"strconv"
+	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 )
 
 type ControllerQuota struct {
@@ -96,7 +98,7 @@ func (this *ControllerQuota) QuotaAdd() {
 // @router /api/quota [post]
 func (this *ControllerQuota) QuotaSave() {
 	d := quota.CloudQuota{}
-	d.QuotaName = strings.Replace(d.QuotaName,"--", "-", -1)
+	d.QuotaName = strings.Replace(d.QuotaName, "--", "-", -1)
 	err := this.ParseForm(&d)
 	if err != nil {
 		this.Ctx.WriteString("参数错误" + err.Error())
@@ -151,9 +153,9 @@ func (this *ControllerQuota) QuotaData() {
 	num, err := sql.Raw(searchSql).QueryRows(&data)
 
 	result := make([]quota.CloudQuota, 0)
-	for _, v := range data{
+	for _, v := range data {
 		v.Status = "<span class='RunningNoTop'>未使用</span>"
-		if _, ok := usedData.Get(v.QuotaName) ; ok {
+		if _, ok := usedData.Get(v.QuotaName); ok {
 			v.Status = "<span class='FailNoTop'>已使用</span>&nbsp;/&nbsp;" + usedData.GetVString(v.QuotaName)
 		}
 		result = append(result, v)
@@ -273,19 +275,28 @@ func GetUserQuotaData(username string, quotaName string) []quota.QuotaUsed {
 func GetUserQuota(username string, quotaType string) string {
 	freeQuotas := make([]string, 0)
 	dataQ := getQuotaData(sql.GetSearchMapV("UserName", username))
+	fmt.Println("------------quota---GetUserQuota---------------")
+	fmt.Println(dataQ)
 	if len(dataQ) > 0 {
 		for _, v := range dataQ {
 			result := quota.QuotaUsed{}
 			t, _ := json.Marshal(v)
 			json.Unmarshal(t, &result)
 			result = setQuotaUserUsed(username, result)
-			if result.CpuFree > 0 && result.MemoryFree * 1024 > 512 {
+			fmt.Println("------------quota---result---------------")
+			fmt.Println(result)
+			if result.CpuFree > 0 && result.MemoryFree*1024 > 512 {
 				freeQuotas = append(
 					freeQuotas,
 					getFreeQuota(
 						quotaType,
 						result,
 						freeQuotas)...)
+				fmt.Println("------------quota---freeQuotas---------------")
+				fmt.Println(getFreeQuota(
+					quotaType,
+					result,
+					freeQuotas))
 			}
 		}
 	}
@@ -319,13 +330,68 @@ func GetUserQuota(username string, quotaType string) string {
 	return option
 }
 
+func GetUserQuotaDataValue(username string, quotaType string) []string {
+	freeQuotas := make([]string, 0)
+	dataQ := getQuotaData(sql.GetSearchMapV("UserName", username))
+	fmt.Println("------------quota---GetUserQuota---------------")
+	fmt.Println(dataQ)
+	if len(dataQ) > 0 {
+		for _, v := range dataQ {
+			result := quota.QuotaUsed{}
+			t, _ := json.Marshal(v)
+			json.Unmarshal(t, &result)
+			result = setQuotaUserUsed(username, result)
+			fmt.Println("------------quota---result---------------")
+			fmt.Println(result)
+			if result.CpuFree > 0 && result.MemoryFree*1024 > 512 {
+				freeQuotas = append(
+					freeQuotas,
+					getFreeQuota(
+						quotaType,
+						result,
+						freeQuotas)...)
+				fmt.Println("------------quota---freeQuotas---------------")
+				fmt.Println(getFreeQuota(
+					quotaType,
+					result,
+					freeQuotas))
+			}
+		}
+	}
+	logs.Info("freeQuotas", freeQuotas)
+	// 如果用户没有可用配额,再查看是否有组的配额
+
+	if len(freeQuotas) == 0 {
+		detps := users.GetUserDept(username)
+
+		for _, dept := range detps {
+			searchMap := sql.GetSearchMapV("GroupName", dept)
+			deptQuotaData := getQuotaData(searchMap)
+			if len(deptQuotaData) > 0 {
+				for _, v := range deptQuotaData {
+					result := quota.QuotaUsed{}
+					t, _ := json.Marshal(v)
+					json.Unmarshal(t, &result)
+					result = setQuotaGroupUsed(dept, result)
+					logs.Info(result.CpuFree, result.MemoryFree, result.MemoryFree*1024)
+					if result.CpuFree > 0 && result.MemoryFree*1024 > 512 {
+						freeQuotas = getFreeQuota(quotaType, result, freeQuotas)
+					}
+				}
+			}
+		}
+	}
+
+	return freeQuotas
+}
+
 // 2019-01-11 18:57
 // 获取是否有可用配额
 func getFreeQuota(quotaType string, result quota.QuotaUsed, freeQuotas []string) []string {
 	var free bool
 	switch quotaType {
 	case "app":
-		if result.AppFree > 0  && result.ServiceFree > 0{
+		if result.AppFree > 0 && result.ServiceFree > 0 {
 			free = true
 		}
 		break
@@ -375,7 +441,7 @@ func queryAppQuotaUsed(quotaName string) util.Lock {
 	qdata := make([]quota.QuotaAppUsed, 0)
 	sql.Raw(qgroupby).QueryRows(&qdata)
 	mapData := util.Lock{}
-	for _, v := range qdata{
+	for _, v := range qdata {
 		mapData.Put(v.ResourceName, strconv.FormatInt(v.Cnt, 10))
 	}
 	return mapData
@@ -385,7 +451,7 @@ func getQuotaUser(this *ControllerQuota) string {
 	return util.GetUser(this.GetSession("username"))
 }
 
-func setQuotaJson(this *ControllerQuota, data interface{})  {
+func setQuotaJson(this *ControllerQuota, data interface{}) {
 	this.Data["json"] = data
 	this.ServeJSON(false)
 }

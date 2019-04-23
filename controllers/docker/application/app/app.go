@@ -11,6 +11,7 @@ import (
 	"cloud/userperm"
 	"cloud/util"
 	"database/sql/driver"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -216,6 +217,8 @@ func (this *AppController) AppAdd() {
 
 	quotas := quota.GetUserQuota(getUser(this), "app")
 	this.Data["quotas"] = quotas
+	fmt.Println("-------------------")
+	fmt.Println(getUser(this))
 	logs.Info("quotas", quotas)
 	this.TplName = "application/app/add.html"
 }
@@ -469,5 +472,20 @@ func (this *AppController) Detail() {
 	data.Yaml = yaml
 	r = util.RestApiResponse(200, data)
 	this.Data["json"] = r
+	this.ServeJSON(false)
+}
+
+// v1 获取资源空间
+// @router /api/v1/app/queryResource
+func (this *AppController) QueryResource() {
+	username := this.GetString("username")
+	quotas := quota.GetUserQuotaDataValue(username, "app")
+	r := util.RestApiResponse(200, quotas)
+	setJson(this, r)
+}
+
+// 设置json数据
+func setJson(this *AppController, data interface{}) {
+	this.Data["json"] = data
 	this.ServeJSON(false)
 }
