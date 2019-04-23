@@ -718,3 +718,12 @@ func (this *RegistryGroupController) QueryDeployImage() {
 	r := util.RestApiResponse(200, result)
 	setJson(this, r)
 }
+
+// 2019-01-29 10:57
+// v1 获取镜像数据
+// @router /api/v1/registry/group/images/:id:int [delete]
+func (this *RegistryGroupController) QueryRegistryGroupImage() {
+	data := getImageData(this)
+	r := util.RestApiResponse(200, data)
+	setJson(this, r)
+}
