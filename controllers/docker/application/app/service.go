@@ -732,3 +732,36 @@ func (this *ServiceController) Services() {
 
 	go GoServerThread(data)
 }
+
+// v1 Service 名称数据
+// @router /api/v1/service/name [get]
+func (this *ServiceController) QueryServiceName() {
+	data := make([]app.CloudAppServiceName, 0)
+	key := strings.Split(app.ServiceSearchKey, ",")
+
+	searchMap := sql.GetSearchMapValue(key, *this.Ctx, sql.SearchMap{})
+	searchSql := sql.SearchSql(
+		app.CloudAppService{},
+		app.SelectCloudAppService,
+		searchMap)
+
+	sql.Raw(searchSql).QueryRows(&data)
+
+	user := getServiceUser(this)
+	perm := userperm.GetResourceName("服务", user)
+	permApp := userperm.GetResourceName("应用", user)
+	result := make([]app.CloudAppServiceName, 0)
+	for _, d := range data {
+		// 不是自己创建的才检查
+		if d.CreateUser != user && user != "admin" {
+			if !userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+d.ServiceName, d.ClusterName, d.Entname, perm) {
+				if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+					continue
+				}
+			}
+		}
+		result = append(result, d)
+	}
+
+	setServiceJson(this, result)
+}

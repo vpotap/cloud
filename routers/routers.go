@@ -89,6 +89,8 @@ func init() {
 				beego.NSRouter("/registry/group/images/:hi(.*)", &registry.RegistryGroupController{}, "get:QueryRegistryGroupImage"),
 				// 获取资源空间
 				beego.NSRouter("/app/queryResource", &app.AppController{}, "get:QueryResource"),
+				// 获取名称数据
+				beego.NSRouter("/service/name", &app.ServiceController{}, "get:QueryServiceName"),
 			),
 		)
 	applicationNs :=
