@@ -1,19 +1,20 @@
 package app
 
 import (
+	"cloud/cache"
+	registry2 "cloud/controllers/image"
 	"cloud/k8s"
-	"cloud/sql"
 	"cloud/models/app"
+	"cloud/models/registry"
+	"cloud/sql"
+	"cloud/userperm"
 	"cloud/util"
 	"database/sql/driver"
 	"strings"
-	"k8s.io/client-go/kubernetes"
-	"cloud/models/registry"
-	registry2 "cloud/controllers/image"
-	"github.com/astaxie/beego/logs"
-	"cloud/userperm"
 	"time"
-	"cloud/cache"
+
+	"github.com/astaxie/beego/logs"
+	"k8s.io/client-go/kubernetes"
 )
 
 // 获取详情数据
@@ -156,12 +157,12 @@ func (this *AppController) ContainerData() {
 		key := cv.AppName + cv.ContainerName
 		d := cv
 		// 不是自己创建的才检查
-		if d.CreateUser != user  && user != util.ADMIN  {
+		if d.CreateUser != user && user != util.ADMIN {
 			service := strings.Replace(d.ServiceName, "--1", "", -1)
 			service = strings.Replace(service, "--2", "", -1)
 
-			if ! userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+service, d.ClusterName, d.Entname, perm) && len(user) > 0 {
-				if ! userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+			if !userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+service, d.ClusterName, d.Entname, perm) && len(user) > 0 {
+				if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
 					continue
 				}
 			}
@@ -244,7 +245,7 @@ func getContainerMap(data []app.CloudContainerName) util.Lock {
 
 // 2018-10-10 22:15
 // 通过多线程获取数据
-func goGetContainer(d app.CloudAppService, containerMap, containerDatas *util.Lock)  {
+func goGetContainer(d app.CloudAppService, containerMap, containerDatas *util.Lock) {
 	namespace := d.ServiceName
 	c, err := k8s.GetClient(d.ClusterName)
 	if err != nil {
@@ -261,7 +262,7 @@ func goGetContainer(d app.CloudAppService, containerMap, containerDatas *util.Lo
 }
 
 // 获取namespace
-func getNamespace(namespace string) []app.CloudAppService  {
+func getNamespace(namespace string) []app.CloudAppService {
 	searchMap := sql.SearchMap{}
 	if namespace != "" {
 		searchMap.Put("Namespace", namespace)
@@ -296,25 +297,24 @@ func MakeContainerData(namespace string) {
 }
 
 // 删除数据库中的容器数据
-func deleteDbContainerData(dataS []app.CloudContainerName)  {
+func deleteDbContainerData(dataS []app.CloudContainerName) {
 	time.Sleep(time.Second * 20)
 	// 要删除的数据
 	deleteData := util.Lock{}
 
 	for _, d := range dataS {
-		r := cache.ContainerCache.Get(d.AppName+d.ContainerName)
+		r := cache.ContainerCache.Get(d.AppName + d.ContainerName)
 		c := app.CloudContainer{}
 		status := util.RedisObj2Obj(r, &c)
 		if !status {
-			logs.Info("获取缓存失败", status, d.AppName + d.ContainerName, r)
-			deleteData.Put( d.ContainerName, d)
+			logs.Info("获取缓存失败", status, d.AppName+d.ContainerName, r)
+			deleteData.Put(d.ContainerName, d)
 		}
 	}
 
 	// 删除数据
 	go deleteDbContainer(deleteData)
 }
-
 
 func SetAppDataJson(this *AppController, data interface{}) {
 	this.Data["json"] = data
@@ -326,11 +326,11 @@ func SetAppDataJson(this *AppController, data interface{}) {
 var cmd = []string{"ps", "aux"}
 
 // 缓存服务数据
-func cacheServiceInfo()  {
+func cacheServiceInfo() {
 	data := getServiceData(sql.SearchMap{}, "")
-	for _, v := range data{
-		key := v.Entname+ v.ClusterName+ v.ServiceName+ v.ResourceName
-		cache.ServiceInfoCache.Put(key, util.ObjToString(v), time.Minute * 20)
+	for _, v := range data {
+		key := v.Entname + v.ClusterName + v.ServiceName + v.ResourceName
+		cache.ServiceInfoCache.Put(key, util.ObjToString(v), time.Minute*20)
 	}
 }
 
@@ -338,10 +338,10 @@ func cacheServiceInfo()  {
 func setAppData(all app.CloudContainer, d app.CloudAppService, c kubernetes.Clientset) app.CloudContainer {
 	serviceData := app.CloudAppService{}
 	name := strings.Split(d.ServiceName, "--")
-	key := d.Entname+ d.ClusterName+ strings.Split(all.ServiceName,"--")[0] + name[1]
+	key := d.Entname + d.ClusterName + strings.Split(all.ServiceName, "--")[0] + name[1]
 	r := cache.ServiceInfoCache.Get(key)
 	status := util.RedisObj2Obj(r, &serviceData)
-	if ! status{
+	if !status {
 		return all
 	}
 	all.ResourceName = serviceData.ResourceName
@@ -399,4 +399,68 @@ func getImageCommitParam(d registry.CloudImageSync, user string) k8s.ImagePushPa
 		}
 	}
 	return imagePushParam
+}
+
+// 获取容器运行情况
+// 2019-01-15 15:11
+// v1 @router /api/v1/containers [get]
+func (this *AppController) Containers() {
+	data := make([]app.CloudContainer, 0)
+	search := this.GetString("search")
+
+	key := sql.MKeyV("Entname", "Service", "AppName")
+
+	searchMap := sql.GetSearchMapValue(key,
+		*this.Ctx,
+		sql.SearchMap{})
+
+	searchSql := sql.SearchSql(app.CloudContainer{},
+		app.SelectCloudContainer,
+		searchMap)
+
+	searchSql = sql.GetWhere(searchSql, searchMap)
+	if search != "" {
+		q := ` and container_name like "%?%"`
+		searchSql += strings.Replace(q, "?", sql.Replace(search), -1)
+	}
+
+	sql.OrderByPagingSql(searchSql, "create_time",
+		*this.Ctx.Request,
+		&data,
+		app.CloudContainer{})
+
+	user := getUser(this)
+	perm := userperm.GetResourceName("服务", user)
+	permApp := userperm.GetResourceName("应用", user)
+	datas := make([]interface{}, 0)
+	for _, cv := range data {
+		key := cv.AppName + cv.ContainerName
+		d := cv
+		// 不是自己创建的才检查
+		if d.CreateUser != user && user != util.ADMIN {
+			service := strings.Replace(d.ServiceName, "--1", "", -1)
+			service = strings.Replace(service, "--2", "", -1)
+
+			if !userperm.CheckPerm(d.AppName+";"+d.ResourceName+";"+service, d.ClusterName, d.Entname, perm) && len(user) > 0 {
+				if !userperm.CheckPerm(d.AppName, d.ClusterName, d.Entname, permApp) {
+					continue
+				}
+			}
+		}
+		r := cache.ContainerCache.Get(key)
+		var v interface{}
+		status := util.RedisObj2Obj(r, &v)
+		if status {
+			v.(map[string]interface{})["ContainerId"] = cv.ContainerId
+			v.(map[string]interface{})["CreateTime"] = util.GetMinTime(cv.CreateTime)
+			datas = append(datas, v)
+		} else {
+			datas = append(datas, cv)
+		}
+	}
+
+	r := util.NewResponseMap(datas, int(sql.CountSqlTotal(searchSql)), 0, 10)
+
+	SetAppDataJson(this, r)
+	go MakeContainerData("")
 }

@@ -726,9 +726,20 @@ func (this *ServiceController) Services() {
 	} else {
 		r = util.ResponseMapError(err.Error())
 	}
-	result := GetServiceRunData(data, user)
-	r = util.RestApiResponse(200, result)
 	setServiceJson(this, r)
 
 	go GoServerThread(data)
+}
+
+// v1 Service 数据获取
+// @router /api/v1/service/detail/:id [get]
+func (this *ServiceController) ServiceDetail() {
+	id := this.Ctx.Input.Param(":id")
+	data := app.CloudAppService{}
+	err := sql.GetOrm().Raw(app.SelectCloudAppService + " where service_id=?", id).QueryRow(&data)
+	if err == nil {
+		setServiceJson(this, util.RestApiResponse(200, data))
+	} else {
+		setServiceJson(this, util.RestApiResponse(50001, data))
+	}
 }
