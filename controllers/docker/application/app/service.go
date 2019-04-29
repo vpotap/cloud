@@ -742,6 +742,7 @@ func (this *ServiceController) ServiceDetail() {
 	} else {
 		setServiceJson(this, util.RestApiResponse(50001, data))
 	}
+}
 // v1 Service 名称数据
 // @router /api/v1/service/name [get]
 func (this *ServiceController) QueryServiceName() {
