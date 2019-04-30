@@ -95,6 +95,8 @@ func init() {
 				beego.NSRouter("/app/queryResource", &app.AppController{}, "get:QueryResource"),
 				// 获取名称数据
 				beego.NSRouter("/service/name", &app.ServiceController{}, "get:QueryServiceName"),
+				// 获取容器终端信息
+				beego.NSRouter("/webtty/:id", &index.IndexController{}, "get:WebTtyInfo"),
 			),
 		)
 	applicationNs :=

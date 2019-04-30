@@ -73,6 +73,38 @@ func (this *IndexController) WebTty() {
 	this.TplName = "webtty/tty.html"
 }
 
+// web 终端
+// 2019-01-15 10:00
+func (this *IndexController) WebTtyInfo() {
+	searchMap := sql.GetSearchMap("ContainerId", *this.Ctx)
+	data := app.CloudContainer{}
+	q := sql.SearchSql(app.CloudContainer{}, app.SelectCloudContainer, searchMap)
+	sql.Raw(q).QueryRow(&data)
+	res := make(map[string]interface{})
+	res["username"] = this.GetSession("username")
+	res["namespace"] = util.Namespace(data.AppName, data.ResourceName)
+	res["pod"] = data.ContainerName
+	res["container"] = data.ServiceName
+	res["timestamp"] = strconv.FormatInt(time.Now().Unix(), 10)
+	res["cluster"] = data.ClusterName
+	res["time"] = util.GetDate()
+
+	d := make([]string, 0)
+	d = append(d, res["username"].(string))
+	d = append(d, res["namespace"].(string))
+	d = append(d, res["pod"].(string))
+	d = append(d, res["container"].(string))
+	d = append(d, res["timestamp"].(string))
+	d = append(d, res["cluster"].(string))
+
+	pass := beego.AppConfig.String("ttysecurity")
+	token := util.Md5String(strings.Join(d, pass))
+	res["token"] = token
+	
+	this.Data["json"] = util.RestApiResponse(200, res)
+	this.ServeJSON(false)
+}
+
 // @router /api/user/ [get]
 func (this *IndexController) GetUser() {
 	u := this.GetSession("username")

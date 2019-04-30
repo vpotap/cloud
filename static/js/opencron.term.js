@@ -140,6 +140,7 @@
         }
     });
 };
+//end open method
 
 
 ;OpencronTerm.prototype.theme = function () {
