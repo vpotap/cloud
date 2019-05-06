@@ -750,6 +750,10 @@ type CertData struct {
 // 2018-03-01 14:24
 // 获取集群信息
 type ClusterData struct {
+	// 域名
+	ApiAddress string
+	// 端口
+	NetworkCart string
 	// ca证书公钥文件
 	CaData string
 	// node证书公钥内容

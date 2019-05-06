@@ -69,7 +69,7 @@ func getCertFile(name string) CertData {
 // 获取证书信息
 func getClusterData(name string) ClusterData {
 	data := ClusterData{}
-	q := "select ca_data,cert_data,key_data,config_file,cluster_type from cloud_cluster where cluster_name=?"
+	q := "select ca_data,cert_data,key_data,config_file,cluster_type,api_address,network_cart from cloud_cluster where cluster_name=?"
 	sql.GetOrm().Raw(q, name).QueryRow(&data)
 	return data
 }
@@ -109,6 +109,8 @@ func getKubeCfg(cluster string) restclient.Config {
 			CertData: []byte(clusterData.CertData),
 		}
 		config.TLSClientConfig = tlsCfg
+		//config.Host = "https://" + master + ":" + port
+		config.Host = "https://"+clusterData.ApiAddress+":"+clusterData.NetworkCart
 	}
 	return *config
 }
