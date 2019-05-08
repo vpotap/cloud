@@ -286,17 +286,15 @@ func GetUserQuota(username string, quotaType string) string {
 			fmt.Println("------------quota---result---------------")
 			fmt.Println(result)
 			if result.CpuFree > 0 && result.MemoryFree*1024 > 512 {
-				freeQuotas = append(
-					freeQuotas,
-					getFreeQuota(
-						quotaType,
-						result,
-						freeQuotas)...)
-				fmt.Println("------------quota---freeQuotas---------------")
-				fmt.Println(getFreeQuota(
+				quota := getFreeQuota(
 					quotaType,
 					result,
-					freeQuotas))
+					freeQuotas)
+				freeQuotas = append(
+					freeQuotas,
+					quota...)
+				fmt.Println("------------quota---freeQuotas---------------")
+				fmt.Println(quota)
 			}
 		}
 	}
@@ -333,7 +331,7 @@ func GetUserQuota(username string, quotaType string) string {
 func GetUserQuotaDataValue(username string, quotaType string) []string {
 	freeQuotas := make([]string, 0)
 	dataQ := getQuotaData(sql.GetSearchMapV("UserName", username))
-	fmt.Println("------------quota---GetUserQuota---------------")
+	fmt.Println("------------quota---获取用户可用配额---------------")
 	fmt.Println(dataQ)
 	if len(dataQ) > 0 {
 		for _, v := range dataQ {
@@ -344,17 +342,12 @@ func GetUserQuotaDataValue(username string, quotaType string) []string {
 			fmt.Println("------------quota---result---------------")
 			fmt.Println(result)
 			if result.CpuFree > 0 && result.MemoryFree*1024 > 512 {
-				freeQuotas = append(
-					freeQuotas,
+				freeQuotas = 
 					getFreeQuota(
 						quotaType,
 						result,
-						freeQuotas)...)
-				fmt.Println("------------quota---freeQuotas---------------")
-				fmt.Println(getFreeQuota(
-					quotaType,
-					result,
-					freeQuotas))
+						freeQuotas)
+				fmt.Println(freeQuotas)
 			}
 		}
 	}
