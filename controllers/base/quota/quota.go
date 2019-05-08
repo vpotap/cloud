@@ -50,14 +50,18 @@ func (this *ControllerQuota) QuotaDetailPage() {
 	result := quota.QuotaUsed{}
 	t, _ := json.Marshal(data)
 	json.Unmarshal(t, &result)
+	logs.Info("用户使用之前:-----" + util.ObjToString(result))
 	if data.UserName != "" {
 		result = setQuotaUserUsed(data.UserName, result)
+		logs.Info("用户使用之后:-----" + util.ObjToString(result))
 	}
 	if data.GroupName != "" {
 		result = setQuotaGroupUsed(data.GroupName, result)
+		logs.Info("组使用之后:-----" + util.ObjToString(result))
 	}
 
 	this.Data["data"] = result
+	logs.Info("used after:------" + util.ObjToString(result))
 	this.TplName = "base/quota/detail.html"
 }
 
@@ -342,7 +346,7 @@ func GetUserQuotaDataValue(username string, quotaType string) []string {
 			fmt.Println("------------quota---result---------------")
 			fmt.Println(result)
 			if result.CpuFree > 0 && result.MemoryFree*1024 > 512 {
-				freeQuotas = 
+				freeQuotas =
 					getFreeQuota(
 						quotaType,
 						result,

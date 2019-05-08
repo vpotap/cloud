@@ -1,18 +1,19 @@
 package quota
 
 import (
-	"cloud/sql"
 	"cloud/controllers/users"
-	"strings"
 	"cloud/models/app"
 	"cloud/models/ci"
-	"cloud/models/pipeline"
 	"cloud/models/lb"
-	"github.com/astaxie/beego/orm"
-	"strconv"
+	"cloud/models/pipeline"
 	"cloud/models/quota"
 	"cloud/models/registry"
+	"cloud/sql"
+	"strconv"
+	"strings"
+
 	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego/orm"
 )
 
 /* 资源限制查询
@@ -26,7 +27,7 @@ import (
    对部门
    对用户
    实现 某个用户或部门 整体的使用资源控制
- */
+*/
 
 // 2019-01-11 16:40
 func getQuotaUsed(userData string, used quota.QuotaUsed) quota.QuotaUsed {
@@ -53,7 +54,7 @@ func getQuotaUsed(userData string, used quota.QuotaUsed) quota.QuotaUsed {
 	used.MemoryFree = (used.QuotaMemory - used.MemoryUsed) / 1024
 	used.DockerFileFree = used.DockerFileNumber - used.DockerFileUsed
 
-    used.RegistryGroupPercent = getPercent(used.RegistryGroupUsed, used.RegistryGroupNumber)
+	used.RegistryGroupPercent = getPercent(used.RegistryGroupUsed, used.RegistryGroupNumber)
 	used.PodPercent = getPercent(used.PodUsed, used.PodNumber)
 	used.ServicePercent = getPercent(used.ServiceUsed, used.ServiceNumber)
 	used.AppPercent = getPercent(used.AppUsed, used.AppNumber)
@@ -63,8 +64,8 @@ func getQuotaUsed(userData string, used quota.QuotaUsed) quota.QuotaUsed {
 	used.CpuPercent = getPercent(used.CpuUsed, used.QuotaCpu)
 	used.MemoryPercent = getPercent(used.MemoryUsed, used.QuotaMemory)
 	used.DockerFilePercent = getPercent(used.DockerFileUsed, used.DockerFileNumber)
-	used.QuotaMemory = used.QuotaMemory / 1024
-	used.MemoryUsed = used.MemoryUsed / 1024
+	// used.QuotaMemory = used.QuotaMemory / 1024
+	// used.MemoryUsed = used.MemoryUsed / 1024
 	return used
 }
 
@@ -107,8 +108,8 @@ func getUsers(username string) string {
 // 获取多个组里的所有用户
 func GetGroupUsers(depts []string) string {
 	userDepts := make([]string, 0)
-	for _,v := range depts {
-		userDepts = append(userDepts, `"` + v +`"`)
+	for _, v := range depts {
+		userDepts = append(userDepts, `"`+v+`"`)
 	}
 	usersData := users.GetGroupUsers(userDepts)
 	return strings.Join(usersData, ",")
@@ -121,7 +122,7 @@ func getService(userData string, quotaName string) int64 {
 	q := replace(
 		userData,
 		app.SelectUserServices)
-	if quotaName != ""{
+	if quotaName != "" {
 		q += ` and resource_name="{0}"`
 	}
 	q = strings.Replace(q, "{0}", quotaName, -1)
@@ -136,7 +137,7 @@ func getPods(userData string, quotaName string) int64 {
 	q := replace(
 		userData,
 		app.SelectUserContainer)
-	if quotaName != ""{
+	if quotaName != "" {
 		q += ` and resource_name="{0}"`
 	}
 	q = strings.Replace(q, "{0}", quotaName, -1)
@@ -151,7 +152,7 @@ func getApps(userData string, quotaName string) int64 {
 	q := replace(
 		userData,
 		app.SelectUserApp)
-	if quotaName != ""{
+	if quotaName != "" {
 		q += ` and resource_name="{0}"`
 	}
 	q = strings.Replace(q, "{0}", quotaName, -1)
@@ -183,7 +184,7 @@ func getCpuMemory(q string, key string) int64 {
 // 获取用户内存使用量
 func getMemory(userData string, quotaName string) int64 {
 	q := replace(userData, app.SelectUsersMemory)
-	if quotaName != ""{
+	if quotaName != "" {
 		q += ` and resource_name="{0}"`
 	}
 	logs.Info("quotaName", quotaName, q)
@@ -195,7 +196,7 @@ func getMemory(userData string, quotaName string) int64 {
 // 获取用户cpu使用量
 func getCpu(userData string, quotaName string) int64 {
 	q := replace(userData, app.SelectUsersCpu)
-	if quotaName != ""{
+	if quotaName != "" {
 		q += ` and resource_name="{0}"`
 	}
 	q = strings.Replace(q, "{0}", quotaName, -1)
