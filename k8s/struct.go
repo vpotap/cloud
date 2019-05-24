@@ -67,6 +67,8 @@ type ServiceParam struct {
 	Name string
 	// deploy名称
 	ServiceName string
+	// 域名
+	Domain string
 	// 网络模式
 	NetworkMode string
 	// cpu

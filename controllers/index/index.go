@@ -351,11 +351,12 @@ func (this *IndexController) UserInfo() {
 			"createTime": 1497160610259,
 			"deleted":    0,
 			"permissions": []map[string]interface{}{
+				// dashboard 权限
 				map[string]interface{}{
 					"roleId":         "admin",
 					"permissionId":   "dashboard",
 					"permissionName": "仪表盘",
-					"actions":        "[{\"action\":\"add\",\"defaultCheck\":false,\"describe\":\"新增\"},{\"action\":\"query\",\"defaultCheck\":false,\"describe\":\"查询\"},{\"action\":\"get\",\"defaultCheck\":false,\"describe\":\"详情\"},{\"action\":\"update\",\"defaultCheck\":false,\"describe\":\"修改\"},{\"action\":\"delete\",\"defaultCheck\":false,\"describe\":\"删除\"}]",
+					"actions":   "[{\"action\":\"add\",\"defaultCheck\":false,\"describe\":\"新增\"},{\"action\":\"query\",\"defaultCheck\":false,\"describe\":\"查询\"},{\"action\":\"get\",\"defaultCheck\":false,\"describe\":\"详情\"},{\"action\":\"update\",\"defaultCheck\":false,\"describe\":\"修改\"},{\"action\":\"delete\",\"defaultCheck\":false,\"describe\":\"删除\"}]",
 					"actionEntitySet": []map[string]interface{}{
 						map[string]interface{}{
 							"action":       "add",
@@ -388,7 +389,48 @@ func (this *IndexController) UserInfo() {
 							"defaultCheck": false,
 						},
 					},
-					"actionList": "",
+					"actionList": []map[string]interface{}{},
+					"dataAccess": "",
+				},
+				// table 权限
+				map[string]interface{}{
+					"roleId":         "admin",
+					"permissionId":   "table",
+					"permissionName": "仪表盘",
+					"actions":   "[{\"action\":\"disable\",\"defaultCheck\":false,\"describe\":\"禁用\"},{\"action\":\"get\",\"defaultCheck\":false,\"describe\":\"详情\"},{\"action\":\"update\",\"defaultCheck\":false,\"describe\":\"修改\"},{\"action\":\"delete\",\"defaultCheck\":false,\"describe\":\"删除\"}]",
+					"actionEntitySet": []map[string]interface{}{
+						map[string]interface{}{
+							"action":       "add",
+							"describe":     "新增",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "query",
+							"describe":     "查询",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "get",
+							"describe":     "新增",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "get",
+							"describe":     "详情",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "update",
+							"describe":     "更新",
+							"defaultCheck": false,
+						},
+						map[string]interface{}{
+							"action":       "delete",
+							"describe":     "删除",
+							"defaultCheck": false,
+						},
+					},
+					"actionList": []map[string]interface{}{},
 					"dataAccess": "",
 				},
 			},

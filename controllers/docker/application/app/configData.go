@@ -1,15 +1,16 @@
 package app
 
 import (
+	"cloud/k8s"
+	"cloud/models/app"
 	"cloud/sql"
 	"cloud/util"
-	"cloud/models/app"
-	"github.com/astaxie/beego"
-	"cloud/k8s"
-	"github.com/astaxie/beego/logs"
-	"golang.org/x/crypto/openpgp/errors"
 	"database/sql/driver"
 	"strings"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
+	"golang.org/x/crypto/openpgp/errors"
 )
 
 type DataController struct {
@@ -124,7 +125,7 @@ func (this *DataController) ConfigDataDelete() {
 
 // 从数据库查询组名称
 // 2019-01-17 16:24
-func GetConfgData(configureName string, cluster string) (map[string]interface{}) {
+func GetConfgData(configureName string, cluster string) map[string]interface{} {
 	configData := app.CloudAppConfigure{}
 	searchMap := sql.GetSearchMapV("ConfigureName", configureName, "ClusterName", cluster)
 	searchSql := sql.SearchSql(app.CloudAppConfigure{}, app.SelectCloudAppConfigure, searchMap)
@@ -194,7 +195,31 @@ func updateK8sConfigMap(d app.CloudConfigData) {
 	}
 }
 
-func setDataJson(this *DataController, data interface{})  {
+// new 配置文件数据数据
+// @router /api/v1/configure/data/:id [get]
+func (this *DataController) ConfigItems() {
+	data := []app.CloudConfigData{}
+	searchMap := sql.GetSearchMap("DataId", *this.Ctx)
+	configureId := this.Ctx.Input.Param(":id")
+	if configureId != "" {
+		searchMap.Put("ConfigureId", configureId)
+	}
+	key := this.GetString("key")
+	searchSql := sql.SearchSql(app.CloudConfigData{}, app.SelectCloudConfigData, searchMap)
+	if key != "" {
+		searchSql += strings.Replace(app.SelectConfigDataWhere, "?", sql.Replace(key), -1)
+	}
+	_, err := sql.Raw(searchSql).QueryRows(&data)
+	r := util.RestApiResponse(200, "")
+
+	if err == nil {
+		r = util.RestApiResponse(200, data)
+	} else {
+		r = util.RestApiResponse(500, "查询配置项列表出错")
+	}
+	setDataJson(this, r)
+}
+func setDataJson(this *DataController, data interface{}) {
 	this.Data["json"] = data
 	this.ServeJSON(false)
 }

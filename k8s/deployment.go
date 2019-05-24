@@ -642,7 +642,7 @@ func createIngress(ports []map[string]interface{}, param ServiceParam) (interfac
 			//"type": "NodePort",
 			"rules": []map[string]interface{}{
 				map[string]interface{}{
-					"host": param.ServiceName + ".test.com",
+					"host": param.ServiceName + "." + param.ResourceName + "." + param.Domain,
 					"http": map[string]interface{}{
 						"paths": []map[string]interface{}{
 							map[string]interface{}{

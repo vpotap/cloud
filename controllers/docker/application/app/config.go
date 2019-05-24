@@ -1,15 +1,16 @@
 package app
 
 import (
+	"cloud/controllers/ent"
+	"cloud/models/app"
 	"cloud/sql"
 	"cloud/util"
-	"cloud/models/app"
+	"database/sql/driver"
+	"strings"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"golang.org/x/crypto/openpgp/errors"
-	"database/sql/driver"
-	"strings"
-	"cloud/controllers/ent"
 )
 
 type ConfigureController struct {
@@ -170,6 +171,37 @@ func (this *ConfigureController) ConfigureDelete() {
 		configure.CreateUser,
 		r)
 	setConfigJson(this, data)
+}
+
+// 配置文件数据
+// @router /api/v1/configures [get]
+func (this *ConfigureController) Configures() {
+	data := make([]app.CloudAppConfigure, 0)
+	searchMap := sql.SearchMap{}
+	id := this.Ctx.Input.Param(":id")
+	key := this.GetString("key")
+	if id != "" {
+		searchMap.Put("ConfigureId", id)
+	}
+
+	user := getConfigUser(this)
+	searchMap.Put("CreateUser", user)
+
+	searchSql := sql.SearchSql(app.CloudAppConfigure{}, app.SelectCloudAppConfigure, searchMap)
+	if key != "" && id == "" {
+		key := sql.Replace(key)
+		q := strings.Replace(app.SelectCloudAppConfigSearch, "?", key, -1)
+		searchSql += q
+	}
+
+	num, _ :=sql.OrderByPagingSql(searchSql,
+		"configure_id",
+		*this.Ctx.Request,
+		&data,
+		app.CloudAppConfigure{})
+	r := util.NewResponseMap(data,int(num), 0, 10)
+
+	setConfigJson(this, r)
 }
 
 // 2019-01-05 21:45

@@ -244,6 +244,7 @@ func getParam(d app.CloudAppService, user string) k8s.ServiceParam {
 		d.ServiceVersion = "1"
 	}
 	param.ServiceName = util.Namespace(d.ServiceName, d.ServiceVersion)
+	param.Domain = d.Domain
 	param.Cpu = d.Cpu
 	param.ClusterName = d.ClusterName
 	param.PortData = d.ContainerPort
